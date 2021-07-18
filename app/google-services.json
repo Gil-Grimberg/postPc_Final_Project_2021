@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "477672212776",
+    "project_id": "centralbark-e60d7",
+    "storage_bucket": "centralbark-e60d7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:477672212776:android:b201986c975af51a83e81d",
+        "android_client_info": {
+          "package_name": "com.example.centralbark_PostPc_2021"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "477672212776-4thrad6n0abf2ef7k7o0020vg68fijti.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDotXRTSc4HS-1cIhIV51RxDqRsKPoCb8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "477672212776-4thrad6n0abf2ef7k7o0020vg68fijti.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
