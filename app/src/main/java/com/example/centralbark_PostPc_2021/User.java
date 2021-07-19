@@ -19,9 +19,9 @@ public class User implements Serializable {
     Boolean rememberMe = true;
     Boolean allowNotifications = false;
     Boolean allowLocation = false;
-    ArrayList<UUID> friendList;
-    Set<UUID> likedUsers;
-    Set<UUID> dislikeUsers;
+    ArrayList<String> friendList;
+    Set<String> likedUsers;
+    Set<String> dislikeUsers;
     String selfSummary = "";
 
     public User()
@@ -75,15 +75,15 @@ public class User implements Serializable {
         this.city = Utils.parseCity(city);
     }
 
-    public void setDislikeUsers(Set<UUID> dislikeUsers) {
+    public void setDislikeUsers(Set<String> dislikeUsers) {
         this.dislikeUsers = dislikeUsers;
     }
 
-    public void setFriendList(ArrayList<UUID> friendList) {
+    public void setFriendList(ArrayList<String> friendList) {
         this.friendList = friendList;
     }
 
-    public void setLikedUsers(Set<UUID> likedUsers) {
+    public void setLikedUsers(Set<String> likedUsers) {
         this.likedUsers = likedUsers;
     }
 
@@ -111,15 +111,15 @@ public class User implements Serializable {
         this.username = username;
     }
 
-    public Set<UUID> getDislikeUsers() {
+    public Set<String> getDislikeUsers() {
         return dislikeUsers;
     }
 
-    public Set<UUID> getLikedUsers() {
+    public Set<String> getLikedUsers() {
         return likedUsers;
     }
 
-    public ArrayList<UUID> getFriendList() {
+    public ArrayList<String> getFriendList() {
         return friendList;
     }
 
