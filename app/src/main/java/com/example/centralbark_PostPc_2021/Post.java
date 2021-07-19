@@ -6,8 +6,8 @@ import java.util.UUID;
 
 public class Post implements Serializable {
 
-    UUID userId;
-    UUID postId;
+    String userId;
+    String postId;
     String username;
     String userProfilePhoto;
     String uploadedPhoto;
@@ -15,9 +15,9 @@ public class Post implements Serializable {
     Integer numOfLikes;
     Date timePosted;
 
-    public Post(UUID userId, String username, String userProfilePhoto, String uploadedPhoto,String content, Integer numOfLikes, Date timePosted){
+    public Post(String userId, String username, String userProfilePhoto, String uploadedPhoto,String content, Integer numOfLikes, Date timePosted){
         this.userId = userId;
-        this.postId = UUID.randomUUID();
+        this.postId = UUID.randomUUID().toString();
         this.username = username;
         this.userProfilePhoto = userProfilePhoto;
         this.uploadedPhoto = uploadedPhoto;
@@ -50,11 +50,11 @@ public class Post implements Serializable {
         return userProfilePhoto;
     }
 
-    public UUID getPostId() {
+    public String getPostId() {
         return postId;
     }
 
-    public UUID getUserId() {
+    public String getUserId() {
         return userId;
     }
 
@@ -70,7 +70,7 @@ public class Post implements Serializable {
         this.numOfLikes = numOfLikes;
     }
 
-    public void setPostId(UUID postId) {
+    public void setPostId(String postId) {
         this.postId = postId;
     }
 
@@ -82,7 +82,7 @@ public class Post implements Serializable {
         this.uploadedPhoto = uploadedPhoto;
     }
 
-    public void setUserId(UUID userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

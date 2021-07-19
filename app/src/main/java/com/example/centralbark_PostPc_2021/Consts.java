@@ -1,19 +1,21 @@
 package com.example.centralbark_PostPc_2021;
 
-enum Breed
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+class Consts
 {
-    PITBULL,
-    PUG,
-    GOLDEN,
-    LABRADOR,
-    GERMAN_SHEPHERD,
-    MIXED
+    List<String> breeds = Arrays.asList("pitbull", "pug", "golden", "labrador", "german shepherd", "mixed");
+    List<String> cities = Arrays.asList("jerusalem", "rishon letzion", "tel aviv", "street dog");
+
+    public List<String> getBreeds() {
+        return breeds;
+    }
+
+    public List<String> getCities() {
+        return cities;
+    }
 }
 
-enum City
-{
-    JERUSALEM,
-    RISHON_LETZION,
-    TEL_AVIV,
-    STREET_DOG
-}
+
