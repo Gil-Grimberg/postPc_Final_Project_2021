@@ -13,6 +13,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -149,14 +151,33 @@ public class signUpFragment extends Fragment {
                 User newUser = new User(userName.getText().toString(),
                                         password.getText().toString(),
                                         mail.getText().toString(),
-                                        imagePath.getText().toString(),
+                                        "",
                                         birthday.getText().toString(),
                                         breed.getText().toString(),
                                         city.getText().toString(),
                                         true,
                                         selfSummary.getText().toString());
+                if (imagePath.getText().toString().equals(""))
+                {
+
+                }
+                else
+                {
+                    String remoteImgName = "profile_photos/" + newUser.id;
+                    String downloadUrl = this.appInstance.getDataManager().uploadImgToStorageAndGetImgPath(imagePath.getText().toString(), remoteImgName);
+                    newUser.setPhoto(downloadUrl);
+                }
+
+
                 this.appInstance.getDataManager().updateSp(newUser.getId());
                 this.appInstance.getDataManager().addToUsers(newUser);
+
+                Fragment feedFragment = new feedFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.feedFragment, feedFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
 
         });
