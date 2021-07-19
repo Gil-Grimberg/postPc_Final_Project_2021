@@ -4,8 +4,8 @@ import android.app.Application;
 
 import com.google.firebase.FirebaseApp;
 
-public class centralBarkApp extends Application {
-    private centralBarkApp instance  = null;
+public class CentralBarkApp extends Application {
+    private static CentralBarkApp instance  = null;
     private DataManager dataManager;
 
     @Override
@@ -15,7 +15,7 @@ public class centralBarkApp extends Application {
         instance = this;
         dataManager = new DataManager(this);
     }
-    public static centralBarkApp getInstance(){ return instance; };
+    public static CentralBarkApp getInstance(){ return instance; };
 
     public DataManager getDataManager() { return dataManager; }
 }
