@@ -10,6 +10,6 @@
     <string name="breed">Breed: </string>
     <string name="lives_in">Lives In:</string>
     <string name="my_self_summery">My Self-Summery:</string>
-    <string name="sign_me_in">Sign Me In !</string>
+    <string name="sign_me_up">Sign Me Up !</string>
     <string name="choose_image">Choose Image</string>
 </resources>
