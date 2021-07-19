@@ -1,14 +1,246 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".signUpFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:fontFamily="casual"
+        android:text="Central Bark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Sign_Up_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:text="@string/sign_up"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <TextView
+        android:id="@+id/user_name_title_sign_up_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/user_name"
+        android:fontFamily="casual"
+        android:layout_marginTop="30dp"
+        android:textSize="12sp"
+        android:layout_marginStart="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Sign_Up_title" />
+
+    <EditText
+        android:id="@+id/user_name_edit_text_sign_up_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:textSize="12sp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="casual"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toEndOf="@+id/user_name_title_sign_up_screen"
+        app:layout_constraintTop_toBottomOf="@+id/Sign_Up_title" />
+
+    <TextView
+        android:id="@+id/mail_title_sign_up_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="26dp"
+        android:fontFamily="casual"
+        android:textSize="12sp"
+        android:text="@string/mail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_name_title_sign_up_screen" />
+
+    <EditText
+        android:id="@+id/mail_edit_text_sign_up_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:ems="10"
+        android:fontFamily="casual"
+        android:textSize="12sp"
+        android:layout_marginTop="5dp"
+        android:inputType="textEmailAddress"
+        app:layout_constraintStart_toEndOf="@+id/mail_title_sign_up_screen"
+        app:layout_constraintTop_toBottomOf="@+id/user_name_edit_text_sign_up_screen" />
+
+    <TextView
+        android:id="@+id/password_title_sign_up_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:text="@string/password"
+        android:textSize="12sp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="26dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mail_title_sign_up_screen" />
+
+    <EditText
+        android:id="@+id/password_edit_text_sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="casual"
+        android:textSize="12sp"
+        android:layout_marginTop="5dp"
+
+        android:inputType="textPassword"
+        app:layout_constraintStart_toEndOf="@+id/password_title_sign_up_screen"
+        app:layout_constraintTop_toBottomOf="@+id/mail_edit_text_sign_up_screen" />
+
+    <TextView
+        android:id="@+id/photo_title_sign_up_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="casual"
+        android:text="@string/profile_photo"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password_title_sign_up_screen" />
+
+    <TextView
+        android:id="@+id/birthday_title_sign_up_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/birthday"
+        android:fontFamily="casual"
+        android:textSize="12sp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/photo_title_sign_up_screen" />
+
+    <Button
+        android:id="@+id/choose_photo_button_sign_up_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_image"
+        android:fontFamily="casual"
+        android:textSize="10sp"
+        android:layout_marginTop="5dp"
+
+        app:layout_constraintBottom_toTopOf="@+id/birthday_edit_text_sign_up_screen"
+        app:layout_constraintStart_toEndOf="@+id/photo_title_sign_up_screen"
+        app:layout_constraintTop_toBottomOf="@+id/password_edit_text_sign_up" />
+
+    <EditText
+        android:id="@+id/birthday_edit_text_sign_up_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="casual"
+        android:inputType="date"
+        android:layout_marginTop="5dp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/birthday_title_sign_up_screen"
+        app:layout_constraintTop_toBottomOf="@+id/choose_photo_button_sign_up_screen"
+        tools:layout_editor_absoluteY="246dp" />
+
+
+    <TextView
+        android:id="@+id/breed_title_sign_up_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/breed"
+        android:fontFamily="casual"
+        android:textSize="12sp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="26dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/birthday_title_sign_up_screen" />
+
+    <EditText
+        android:id="@+id/breed_edit_text_sign_up_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="casual"
+        android:textSize="12sp"
+        android:layout_marginTop="5dp"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toEndOf="@+id/breed_title_sign_up_screen"
+        app:layout_constraintTop_toBottomOf="@+id/birthday_edit_text_sign_up_screen" />
+
+    <TextView
+        android:id="@+id/lives_in_title_sign_up_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="26dp"
+        android:fontFamily="casual"
+        android:text="@string/lives_in"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/breed_title_sign_up_screen" />
+
+    <EditText
+        android:id="@+id/lives_in_edit_text_sign_up_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="casual"
+        android:textSize="12sp"
+        android:layout_marginTop="5dp"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toEndOf="@+id/lives_in_title_sign_up_screen"
+        app:layout_constraintTop_toBottomOf="@+id/breed_edit_text_sign_up_screen" />
+
+    <TextView
+        android:id="@+id/my_self_summery_title_sign_up_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/my_self_summery"
+        android:fontFamily="casual"
+        android:textSize="12sp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="26dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lives_in_title_sign_up_screen" />
+
+    <EditText
+        android:id="@+id/my_self_summery_edit_text_sign_up_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="casual"
+        android:textSize="12sp"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toEndOf="@+id/my_self_summery_title_sign_up_screen"
+        app:layout_constraintTop_toBottomOf="@+id/lives_in_edit_text_sign_up_screen" />
+
+    <!-- TODO: Change the buttons background color -->
+    <Button
+        android:id="@+id/sign_me_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/black"
+        android:fontFamily="casual"
+        android:text="@string/sign_me_in"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_self_summery_edit_text_sign_up_screen" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
