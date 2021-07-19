@@ -1,17 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".menuFragment"
     android:background="@color/white"
-    >
+    tools:context=".menuFragment">
 
 
     <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="88dp"
+        android:id="@+id/searchButton_ImageButton_fragmentSearchAccount"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/tinder_logo" />
-</FrameLayout>
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/search_icon"
+        android:background="@null"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+         />
+
+
+    <ImageButton
+        android:id="@+id/tinderButton_ImageButton_fragmentMatchAFriend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/tinder_logo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/searchButton_ImageButton_fragmentSearchAccount"
+        app:layout_constraintRight_toLeftOf="@id/homeButton_ImageButton_fragmentFeed" />
+
+    <ImageButton
+        android:id="@+id/homeButton_ImageButton_fragmentFeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/home_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/searchButton_ImageButton_fragmentSearchAccount"
+        app:layout_constraintRight_toLeftOf="@id/profileButton_ImageButton_fragmentMyProfile" />
+
+    <ImageButton
+        android:id="@+id/locationButton_ImageButton_fragmentSearchPlaces"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="@null"
+        android:src="@drawable/location_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/homeButton_ImageButton_fragmentFeed"
+        app:layout_constraintRight_toLeftOf="@id/profileButton_ImageButton_fragmentMyProfile"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/profileButton_ImageButton_fragmentMyProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/profile_icon"
+        android:background="@null"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+         />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
