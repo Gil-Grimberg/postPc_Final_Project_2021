@@ -23,6 +23,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 
 public class signUpFragment extends Fragment {
     CentralBarkApp appInstance;
@@ -60,6 +62,17 @@ public class signUpFragment extends Fragment {
         signUpButton = view.findViewById(R.id.sign_me_up_button);
         imagePath = view.findViewById(R.id.image_path);
 
+        if (savedInstanceState != null)
+        {
+            userName.setText(savedInstanceState.getString("username"));
+            password.setText(savedInstanceState.getString("password"));
+            mail.setText(savedInstanceState.getString("mail"));
+            birthday.setText(savedInstanceState.getString("birthday"));
+            breed.setText(savedInstanceState.getString("breed"));
+            city.setText(savedInstanceState.getString("city"));
+            selfSummary.setText(savedInstanceState.getString("self_summary"));
+            imagePath.setText(savedInstanceState.getString("image_path"));
+        }
 
         ActivityResultLauncher<Intent> upLoadLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -68,7 +81,7 @@ public class signUpFragment extends Fragment {
                     public void onActivityResult(ActivityResult result) {
                         if(result.getResultCode()== Activity.RESULT_OK){
                             Intent data = result.getData();
-                            Uri selectedImage = data.getData(); //todo: handle null case
+                            Uri selectedImage = data.getData();
                             if (selectedImage == null)
                             {
                                 Toast.makeText(getContext(), "Error uploading image", Toast.LENGTH_LONG).show();
@@ -100,8 +113,97 @@ public class signUpFragment extends Fragment {
             }
         });
 
-//        signUpButton.setOnClickListener();
+        signUpButton.setOnClickListener(v ->
+        {
+            if (!isMailUnique(mail.getText().toString()))
+            {
+                Toast.makeText(getContext(), "The mail you chose is already in use!", Toast.LENGTH_LONG).show();
+            }
 
+            else if (password.getText().toString().equals(""))
+            {
+                Toast.makeText(getContext(), "Password cannot be empty!", Toast.LENGTH_LONG).show();
+            }
+
+            else if (password.getText().toString().length() != 8)
+            {
+                Toast.makeText(getContext(), "Password must contain 8 chars!", Toast.LENGTH_LONG).show();
+            }
+
+            else if (userName.getText().toString().equals(""))
+            {
+                Toast.makeText(getContext(), "Username cannot be empty!", Toast.LENGTH_LONG).show();
+            }
+
+            else if (!isBirthdayValid(birthday.getText().toString()))
+            {
+                Toast.makeText(getContext(), "Error: birthday format is MM/DD/YYYY", Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                if (imagePath.getText().toString().equals(""))
+                {
+                    //todo:: put default profile picture
+                }
+
+                User newUser = new User(userName.getText().toString(),
+                                        password.getText().toString(),
+                                        mail.getText().toString(),
+                                        imagePath.getText().toString(),
+                                        birthday.getText().toString(),
+                                        breed.getText().toString(),
+                                        city.getText().toString(),
+                                        true,
+                                        selfSummary.getText().toString());
+                this.appInstance.getDataManager().updateSp(newUser.getId());
+                this.appInstance.getDataManager().addToUsers(newUser);
+            }
+
+        });
     }
 
+    private boolean isMailUnique(String mail)
+    {
+        ArrayList<User> users = this.appInstance.getDataManager().getAllUsers();
+        for (User user: users)
+        {
+            if (user.getMail().equals(mail))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isBirthdayValid(String birthday)
+    {
+        String[] dateParts = birthday.split("/");
+        if (dateParts.length != 3)
+        {
+            return false;
+        }
+        for (String datePart : dateParts)
+        {
+            if (!datePart.matches("[0-9]+"))
+            {
+                return false;
+            }
+        }
+        return dateParts[0].length() == 2 && dateParts[1].length() == 2 && dateParts[2].length() == 4;
+    }
+
+
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("username", this.userName.getText().toString());
+        outState.putString("password", this.password.getText().toString());
+        outState.putString("mail", this.mail.getText().toString());
+        outState.putString("birthday", this.birthday.getText().toString());
+        outState.putString("breed", this.breed.getText().toString());
+        outState.putString("city", this.breed.getText().toString());
+        outState.putString("self_summary", this.selfSummary.getText().toString());
+        outState.putString("image_path", this.imagePath.getText().toString());
+    }
 }
