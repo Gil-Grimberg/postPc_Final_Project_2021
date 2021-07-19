@@ -14,7 +14,7 @@ public class User implements Serializable {
     String breed;
     String mail;
     String photo = null;
-    Date birthday;
+    String birthday;
     String city;
     Boolean rememberMe = true;
     Boolean allowNotifications = false;
@@ -33,7 +33,7 @@ public class User implements Serializable {
     }
 
     public User(String username, String password, String mail,
-                String photo, Date birthday, String breed, String city,
+                String photo, String birthday, String breed, String city,
                 boolean rememberMe, String selfSummary)
     {
         this.id = UUID.randomUUID().toString();
@@ -59,7 +59,7 @@ public class User implements Serializable {
         this.allowNotifications = allowNotifications;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
@@ -143,7 +143,7 @@ public class User implements Serializable {
         return city;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
