@@ -49,9 +49,9 @@ public class DataManager {
 
     public void addToNotifications(Notification notification){}
 
-    public ArrayList<Post> getPosts(){}//todo: return the list of posts related to the user
+    public ArrayList<Post> getPosts(){return new ArrayList<>();}//todo: return the list of posts related to the user
 
-    public ArrayList<Notification> getNotifications(){}//todo: return the list of posts related to the user
+    public ArrayList<Notification> getNotifications(){return new ArrayList<>();}//todo: return the list of posts related to the user
 
 
 
