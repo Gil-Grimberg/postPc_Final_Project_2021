@@ -8,25 +8,25 @@ import java.util.Set;
 import java.util.UUID;
 
 public class User implements Serializable {
-    UUID id;
+    String id;
     String username;
     String password;
-    Breed breed;
+    String breed;
     String mail;
     String photo = null;
     Date birthday;
-    City city;
+    String city;
     Boolean rememberMe = true;
     Boolean allowNotifications = false;
     Boolean allowLocation = false;
-    ArrayList<UUID> friendList;
-    Set<UUID> likedUsers;
-    Set<UUID> dislikeUsers;
+    ArrayList<String> friendList;
+    Set<String> likedUsers;
+    Set<String> dislikeUsers;
     String selfSummary = "";
 
     public User()
     {
-        this.id = UUID.randomUUID();
+        this.id = UUID.randomUUID().toString();
         this.friendList = new ArrayList<>();
         this.likedUsers = Collections.emptySet();
         this.dislikeUsers = Collections.emptySet();
@@ -36,7 +36,7 @@ public class User implements Serializable {
                 String photo, Date birthday, String breed, String city,
                 boolean rememberMe, String selfSummary)
     {
-        this.id = UUID.randomUUID();
+        this.id = UUID.randomUUID().toString();
         this.friendList = new ArrayList<>();
         this.likedUsers = Collections.emptySet();
         this.dislikeUsers = Collections.emptySet();
@@ -45,8 +45,8 @@ public class User implements Serializable {
         this.mail = mail;
         this.photo = photo;
         this.birthday = birthday;
-        this.breed = Utils.convertStringToBreed(breed);
-        this.city = Utils.convertStringToCity(city);
+        this.breed = Utils.parseBreed(breed);
+        this.city = Utils.parseCity(city);
         this.rememberMe = rememberMe;
         this.selfSummary = selfSummary;
     }
@@ -63,27 +63,27 @@ public class User implements Serializable {
         this.birthday = birthday;
     }
 
-    public void setBreed(Breed breed) {
-        this.breed = breed;
+    public void setBreed(String breed) {
+        this.breed = Utils.parseBreed(breed);
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public void setCity(City city) {
-        this.city = city;
+    public void setCity(String city) {
+        this.city = Utils.parseCity(city);
     }
 
-    public void setDislikeUsers(Set<UUID> dislikeUsers) {
+    public void setDislikeUsers(Set<String> dislikeUsers) {
         this.dislikeUsers = dislikeUsers;
     }
 
-    public void setFriendList(ArrayList<UUID> friendList) {
+    public void setFriendList(ArrayList<String> friendList) {
         this.friendList = friendList;
     }
 
-    public void setLikedUsers(Set<UUID> likedUsers) {
+    public void setLikedUsers(Set<String> likedUsers) {
         this.likedUsers = likedUsers;
     }
 
@@ -111,15 +111,15 @@ public class User implements Serializable {
         this.username = username;
     }
 
-    public Set<UUID> getDislikeUsers() {
+    public Set<String> getDislikeUsers() {
         return dislikeUsers;
     }
 
-    public Set<UUID> getLikedUsers() {
+    public Set<String> getLikedUsers() {
         return likedUsers;
     }
 
-    public ArrayList<UUID> getFriendList() {
+    public ArrayList<String> getFriendList() {
         return friendList;
     }
 
@@ -135,11 +135,11 @@ public class User implements Serializable {
         return rememberMe;
     }
 
-    public Breed getBreed() {
+    public String getBreed() {
         return breed;
     }
 
-    public City getCity() {
+    public String getCity() {
         return city;
     }
 
@@ -167,7 +167,7 @@ public class User implements Serializable {
         return username;
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 }

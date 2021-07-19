@@ -1,39 +1,40 @@
 package com.example.centralbark_PostPc_2021;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Utils {
 
-    public static Breed convertStringToBreed(String breedAsString)
-    {
-        switch (breedAsString.toLowerCase())
-        {
-            case "pitbull":
-                return Breed.PITBULL;
-            case "pug":
-                return Breed.PUG;
-            case "golden":
-                return Breed.GOLDEN;
-            case "labrador":
-                return Breed.LABRADOR;
-            case "german shepherd":
-                return Breed.GERMAN_SHEPHERD;
-            default:
-                return Breed.MIXED;
-        }
+    static List<String> breeds = Arrays.asList("pitbull", "pug", "golden", "labrador", "german shepherd", "mixed");
+    static List<String> cities = Arrays.asList("jerusalem", "rishon letzion", "tel aviv", "street dog");
+
+    public static List<String> getBreeds() {
+        return breeds;
     }
 
-    public static City convertStringToCity(String cityAsString)
+    public List<String> getCities() {
+        return cities;
+    }
+
+    public static String parseBreed(String breedAsString)
     {
-        switch (cityAsString.toLowerCase())
+
+        if (breeds.contains(breedAsString.toLowerCase()))
         {
-            case "jerusalem":
-                return City.JERUSALEM;
-            case "tel aviv":
-                return City.TEL_AVIV;
-            case "rishon lezion":
-                return City.RISHON_LETZION;
-            default:
-                return City.STREET_DOG;
+            return breedAsString.toLowerCase();
         }
+        return "mixed";
+
+
+    }
+
+    public static String parseCity(String cityAsString)
+    {
+        if (cities.contains(cityAsString.toLowerCase()))
+        {
+            return cityAsString.toLowerCase();
+        }
+        return "street dog";
     }
 
 }
