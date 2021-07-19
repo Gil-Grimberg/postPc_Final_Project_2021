@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">CentralBark</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="user_name">User Name: </string>
+    <string name="mail">Mail: </string>
+    <string name="password">Password: </string>
+    <string name="profile_photo">Profile Photo: </string>
+    <string name="birthday">Birthday: </string>
+    <string name="breed">Breed: </string>
+    <string name="lives_in">Lives In:</string>
+    <string name="my_self_summery">My Self-Summery:</string>
+    <string name="sign_me_in">Sign Me In !</string>
+    <string name="choose_image">Choose Image</string>
 </resources>
