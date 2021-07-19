@@ -13,9 +13,9 @@ public class Post implements Serializable {
     String uploadedPhoto;
     String content;
     Integer numOfLikes;
-    Date timePosted;
+    String timePosted;
 
-    public Post(String userId, String username, String userProfilePhoto, String uploadedPhoto,String content, Integer numOfLikes, Date timePosted){
+    public Post(String userId, String username, String userProfilePhoto, String uploadedPhoto,String content, Integer numOfLikes, String timePosted){
         this.userId = userId;
         this.postId = UUID.randomUUID().toString();
         this.username = username;
@@ -34,7 +34,7 @@ public class Post implements Serializable {
         return username;
     }
 
-    public Date getTimePosted() {
+    public String getTimePosted() {
         return timePosted;
     }
 
@@ -74,7 +74,7 @@ public class Post implements Serializable {
         this.postId = postId;
     }
 
-    public void setTimePosted(Date timePosted) {
+    public void setTimePosted(String timePosted) {
         this.timePosted = timePosted;
     }
 

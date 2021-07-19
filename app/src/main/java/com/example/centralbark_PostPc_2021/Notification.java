@@ -4,14 +4,16 @@ import java.io.Serializable;
 import java.util.UUID;
 
 public class Notification implements Serializable {
-    String content;
     String userId;
+    String notificationId;
+    String content;
     boolean isFriendRequest;
 
-    public Notification(String userId, String content, boolean isFriendRequest)
-    {
-        this.content = content;
+
+    public Notification(String userId, String content, boolean isFriendRequest) {
         this.userId = userId;
+        this.notificationId = UUID.randomUUID().toString();
+        this.content = content;
         this.isFriendRequest = isFriendRequest;
     }
 
@@ -33,6 +35,10 @@ public class Notification implements Serializable {
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getNotificationId() {
+        return notificationId;
     }
 
     public boolean getIsFriendRequest() {
