@@ -5,13 +5,13 @@ import java.util.UUID;
 
 public class Notification implements Serializable {
     String content;
-    UUID userId;
+    String userId;
     boolean isFriendRequest;
 
-    public Notification(UUID user_id, String content, boolean isFriendRequest)
+    public Notification(String userId, String content, boolean isFriendRequest)
     {
         this.content = content;
-        this.userId = user_id;
+        this.userId = userId;
         this.isFriendRequest = isFriendRequest;
     }
 
@@ -23,7 +23,7 @@ public class Notification implements Serializable {
         this.isFriendRequest = friendRequest;
     }
 
-    public void setUserId(UUID userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -31,7 +31,7 @@ public class Notification implements Serializable {
         return content;
     }
 
-    public UUID getUserId() {
+    public String getUserId() {
         return userId;
     }
 
