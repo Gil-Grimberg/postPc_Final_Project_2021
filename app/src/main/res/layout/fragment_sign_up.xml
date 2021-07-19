@@ -128,15 +128,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/photo_title_sign_up_screen" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/choose_photo_button_sign_up_screen"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:text="@string/choose_image"
         android:fontFamily="casual"
         android:textSize="10sp"
-        android:layout_marginTop="5dp"
-
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="5dp"
+        android:background="@drawable/my_button"
         app:layout_constraintBottom_toTopOf="@+id/birthday_edit_text_sign_up_screen"
         app:layout_constraintStart_toEndOf="@+id/photo_title_sign_up_screen"
         app:layout_constraintTop_toBottomOf="@+id/password_edit_text_sign_up" />
@@ -148,7 +149,7 @@
         android:ems="10"
         android:fontFamily="casual"
         android:inputType="date"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/birthday_title_sign_up_screen"
         app:layout_constraintTop_toBottomOf="@+id/choose_photo_button_sign_up_screen"
@@ -174,7 +175,7 @@
         android:ems="10"
         android:fontFamily="casual"
         android:textSize="12sp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="6dp"
         android:inputType="textPersonName"
         app:layout_constraintStart_toEndOf="@+id/breed_title_sign_up_screen"
         app:layout_constraintTop_toBottomOf="@+id/birthday_edit_text_sign_up_screen" />
@@ -198,7 +199,7 @@
         android:ems="10"
         android:fontFamily="casual"
         android:textSize="12sp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="6dp"
         android:inputType="textPersonName"
         app:layout_constraintStart_toEndOf="@+id/lives_in_title_sign_up_screen"
         app:layout_constraintTop_toBottomOf="@+id/breed_edit_text_sign_up_screen" />
@@ -215,29 +216,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lives_in_title_sign_up_screen" />
 
+
     <EditText
         android:id="@+id/my_self_summery_edit_text_sign_up_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:fontFamily="casual"
-        android:textSize="12sp"
         android:inputType="textPersonName"
+        android:textSize="12sp"
+        android:layout_marginTop="6dp"
         app:layout_constraintStart_toEndOf="@+id/my_self_summery_title_sign_up_screen"
         app:layout_constraintTop_toBottomOf="@+id/lives_in_edit_text_sign_up_screen" />
 
-    <!-- TODO: Change the buttons background color -->
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/sign_me_up_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/black"
+        android:layout_height="30dp"
+        android:background="@drawable/my_button"
         android:fontFamily="casual"
         android:text="@string/sign_me_up"
-        android:textColor="@color/black"
+        android:textColor="@color/gray"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/my_self_summery_edit_text_sign_up_screen" />
 
@@ -247,6 +251,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="casual"
         android:textSize="12sp"
+        android:layout_marginStart="5dp"
         app:layout_constraintBottom_toTopOf="@+id/birthday_edit_text_sign_up_screen"
         app:layout_constraintStart_toEndOf="@+id/choose_photo_button_sign_up_screen"
         app:layout_constraintTop_toBottomOf="@+id/password_edit_text_sign_up" />
