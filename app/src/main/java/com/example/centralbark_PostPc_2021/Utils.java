@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Utils {
 
+
     static List<String> breeds = Arrays.asList("pitbull", "pug", "golden", "labrador", "german shepherd", "mixed");
     static List<String> cities = Arrays.asList("jerusalem", "rishon letzion", "tel aviv", "street dog");
 
@@ -18,14 +19,11 @@ public class Utils {
 
     public static String parseBreed(String breedAsString)
     {
-
         if (breeds.contains(breedAsString.toLowerCase()))
         {
             return breedAsString.toLowerCase();
         }
         return "mixed";
-
-
     }
 
     public static String parseCity(String cityAsString)
@@ -35,6 +33,11 @@ public class Utils {
             return cityAsString.toLowerCase();
         }
         return "street dog";
+    }
+
+    public static boolean checkUniqueMail(String mail)
+    {
+        return true;
     }
 
 }
