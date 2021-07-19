@@ -23,11 +23,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link signUpFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class signUpFragment extends Fragment {
     CentralBarkApp appInstance;
     EditText userName;
@@ -104,7 +100,7 @@ public class signUpFragment extends Fragment {
             }
         });
 
-        signUpButton.setOnClickListener();
+//        signUpButton.setOnClickListener();
 
     }
 
