@@ -172,6 +172,8 @@ public class signUpFragment extends Fragment {
                 this.appInstance.getDataManager().updateSp(newUser.getId());
                 this.appInstance.getDataManager().addToUsers(newUser);
 
+                //todo: fix the bellow code
+
                 Fragment feedFragment = new feedFragment();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
