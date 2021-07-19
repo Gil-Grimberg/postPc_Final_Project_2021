@@ -3,6 +3,7 @@ package com.example.centralbark_PostPc_2021;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
@@ -17,7 +18,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Set;
@@ -29,8 +35,8 @@ public class DataManager {
     public SharedPreferences sp;
     public FirebaseApp app; //
     public FirebaseFirestore db;
+    public FirebaseStorage storage;
     private String separator = "7f802626-2d3c-4b94-8df3-a5bb13fc6ff9";
-    //todo: add the storage object of firestore
     private String userId;
 
     public DataManager(Context context) {
@@ -42,6 +48,7 @@ public class DataManager {
         }
         app = FirebaseApp.initializeApp(this.context);
         db = FirebaseFirestore.getInstance();
+        storage = FirebaseStorage.getInstance();
     }
 
     private String initializeFromSp() {
@@ -49,13 +56,23 @@ public class DataManager {
 
     }
 
-    private void updateSp() {
+    public void updateSp(String updatedUserId) {
         SharedPreferences.Editor editor = this.sp.edit();
-        editor.putString("userId", userId);
+        editor.putString("userId", updatedUserId);
         editor.apply();
+        this.userId = initializeFromSp();
     }
 
     //todo: delete from sp? from db?
+
+    public String uploadImgToStorageAndGetImgPath(String localImgPath, String RemoteImageName)
+    {
+        StorageReference storageReference = storage.getReference();
+        StorageReference imgRef = storageReference.child(RemoteImageName);
+        UploadTask uploadTask = imgRef.putFile(Uri.fromFile(new File(localImgPath)));
+//        uploadTask.addOnFailureListener()
+        return "";
+    }
 
     public void addToPost(Post post) {
         this.db.collection("Users").document(this.userId).collection("myPosts").document(post.getPostId()).set(post);
@@ -67,8 +84,9 @@ public class DataManager {
 
     public void addToNotifications(Notification notification) {
         this.db.collection("Users").document(this.userId).collection("myNotifications").document(notification.getNotificationId()).set(notification);
-
     }
+
+
 
     public ArrayList<Post> getPosts() {
         ArrayList<Post> myPosts = new ArrayList<>();
@@ -82,9 +100,20 @@ public class DataManager {
                 }
             }
         });
-
         return myPosts;
     }
+
+    public ArrayList<User> getAllUsers()
+    {
+        ArrayList<User> myUsers = new ArrayList<>();
+        Task<QuerySnapshot> snapshot = this.db.collection("Users").get();
+        for (QueryDocumentSnapshot document : Objects.requireNonNull(snapshot.getResult()))
+        {
+            myUsers.add(document.toObject(User.class));
+        }
+        return myUsers;
+    }
+
 
     public ArrayList<Notification> getNotifications() {
         ArrayList<Notification> myNotifications = new ArrayList<>();
