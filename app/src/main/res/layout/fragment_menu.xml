@@ -10,12 +10,48 @@
 
 
     <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="88dp"
+        android:id="@+id/searchButton_ImageButton_fragmentSearchAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/search_icon"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="-1dp"
+        tools:layout_editor_absoluteY="1dp" />
+
+    <ImageButton
+        android:id="@+id/tinderButton_ImageButton_fragmentMatchAFriend"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/tinder_logo"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/searchButton_ImageButton_fragmentSearchAccount"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageButton
+        android:id="@+id/homeButton_ImageButton_fragmentFeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/home_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/tinderButton_ImageButton_fragmentMatchAFriend"/>
+
+    <ImageButton
+        android:id="@+id/locationButton_ImageButton_fragmentSearchPlaces"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/location_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/homeButton_ImageButton_fragmentFeed"/>
+
+    <ImageButton
+        android:id="@+id/profileButton_ImageButton_fragmentMyProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/profile_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/locationButton_ImageButton_fragmentSearchPlaces"
+         />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
