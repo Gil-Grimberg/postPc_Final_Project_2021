@@ -1,12 +1,13 @@
 package com.example.centralbark_PostPc_2021;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
-public class User {
+public class User implements Serializable {
     UUID id;
     String username;
     String password;
@@ -15,30 +16,30 @@ public class User {
     String photo = null;
     Date birthday;
     City city;
-    Boolean remember_me = true;
-    Boolean allow_notifications = false;
-    Boolean allow_location = false;
-    ArrayList<UUID> friend_list;
-    Set<UUID> liked_users;
-    Set<UUID> dislike_users;
-    String self_summary = "";
+    Boolean rememberMe = true;
+    Boolean allowNotifications = false;
+    Boolean allowLocation = false;
+    ArrayList<UUID> friendList;
+    Set<UUID> likedUsers;
+    Set<UUID> dislikeUsers;
+    String selfSummary = "";
 
     public User()
     {
         this.id = UUID.randomUUID();
-        this.friend_list = new ArrayList<>();
-        this.liked_users = Collections.emptySet();
-        this.dislike_users = Collections.emptySet();
+        this.friendList = new ArrayList<>();
+        this.likedUsers = Collections.emptySet();
+        this.dislikeUsers = Collections.emptySet();
     }
 
     public User(String username, String password, String mail,
                 String photo, Date birthday, String breed, String city,
-                boolean remember_me, String self_summary)
+                boolean rememberMe, String selfSummary)
     {
         this.id = UUID.randomUUID();
-        this.friend_list = new ArrayList<>();
-        this.liked_users = Collections.emptySet();
-        this.dislike_users = Collections.emptySet();
+        this.friendList = new ArrayList<>();
+        this.likedUsers = Collections.emptySet();
+        this.dislikeUsers = Collections.emptySet();
         this.username = username;
         this.password = password;
         this.mail = mail;
@@ -46,16 +47,16 @@ public class User {
         this.birthday = birthday;
         this.breed = Utils.convertStringToBreed(breed);
         this.city = Utils.convertStringToCity(city);
-        this.remember_me = remember_me;
-        this.self_summary = self_summary;
+        this.rememberMe = rememberMe;
+        this.selfSummary = selfSummary;
     }
 
-    public void setAllow_location(Boolean allow_location) {
-        this.allow_location = allow_location;
+    public void setAllowLocation(Boolean allowLocation) {
+        this.allowLocation = allowLocation;
     }
 
-    public void setAllow_notifications(Boolean allow_notifications) {
-        this.allow_notifications = allow_notifications;
+    public void setAllowNotifications(Boolean allowNotifications) {
+        this.allowNotifications = allowNotifications;
     }
 
     public void setBirthday(Date birthday) {
@@ -74,16 +75,16 @@ public class User {
         this.city = city;
     }
 
-    public void setDislike_users(Set<UUID> dislike_users) {
-        this.dislike_users = dislike_users;
+    public void setDislikeUsers(Set<UUID> dislikeUsers) {
+        this.dislikeUsers = dislikeUsers;
     }
 
-    public void setFriend_list(ArrayList<UUID> friend_list) {
-        this.friend_list = friend_list;
+    public void setFriendList(ArrayList<UUID> friendList) {
+        this.friendList = friendList;
     }
 
-    public void setLiked_users(Set<UUID> liked_users) {
-        this.liked_users = liked_users;
+    public void setLikedUsers(Set<UUID> likedUsers) {
+        this.likedUsers = likedUsers;
     }
 
     public void setMail(String mail) {
@@ -98,40 +99,40 @@ public class User {
         this.photo = photo;
     }
 
-    public void setRemember_me(Boolean remember_me) {
-        this.remember_me = remember_me;
+    public void setRememberMe(Boolean rememberMe) {
+        this.rememberMe = rememberMe;
     }
 
-    public void setSelf_summary(String self_summary) {
-        this.self_summary = self_summary;
+    public void setSelfSummary(String selfSummary) {
+        this.selfSummary = selfSummary;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public Set<UUID> getDislike_users() {
-        return dislike_users;
+    public Set<UUID> getDislikeUsers() {
+        return dislikeUsers;
     }
 
-    public Set<UUID> getLiked_users() {
-        return liked_users;
+    public Set<UUID> getLikedUsers() {
+        return likedUsers;
     }
 
-    public ArrayList<UUID> getFriend_list() {
-        return friend_list;
+    public ArrayList<UUID> getFriendList() {
+        return friendList;
     }
 
-    public Boolean getAllow_location() {
-        return allow_location;
+    public Boolean getAllowLocation() {
+        return allowLocation;
     }
 
-    public Boolean getAllow_notifications() {
-        return allow_notifications;
+    public Boolean getAllowNotifications() {
+        return allowNotifications;
     }
 
-    public Boolean getRemember_me() {
-        return remember_me;
+    public Boolean getRememberMe() {
+        return rememberMe;
     }
 
     public Breed getBreed() {
@@ -158,8 +159,8 @@ public class User {
         return photo;
     }
 
-    public String getSelf_summary() {
-        return self_summary;
+    public String getSelfSummary() {
+        return selfSummary;
     }
 
     public String getUsername() {
