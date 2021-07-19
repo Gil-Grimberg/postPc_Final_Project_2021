@@ -15,6 +15,7 @@ public class CentralBarkApp extends Application {
         instance = this;
         dataManager = new DataManager(this);
     }
+
     public static CentralBarkApp getInstance(){ return instance; };
 
     public DataManager getDataManager() { return dataManager; }
