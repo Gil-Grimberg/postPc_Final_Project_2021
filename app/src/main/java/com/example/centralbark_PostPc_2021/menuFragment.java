@@ -6,10 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.provider.ContactsContract;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 
@@ -39,7 +36,7 @@ public class menuFragment extends Fragment {
         tinderButton.setOnClickListener(v->
                 Utils.moveBetweenFragments(R.id.the_screen, new matchAFriendFragment(), getActivity()));
         homeButton.setOnClickListener(v->
-                Utils.moveBetweenFragments(R.id.the_screen, new feedFragment(), getActivity()));
+                Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity()));
         locationButton.setOnClickListener(v->
                 Utils.moveBetweenFragments(R.id.the_screen, new MapsFragment(), getActivity()));
         profileButton.setOnClickListener(v->
