@@ -1,8 +1,11 @@
 package com.example.centralbark_PostPc_2021;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 public class Post implements Serializable {
@@ -26,7 +29,8 @@ public class Post implements Serializable {
         this.uploadedPhoto = uploadedPhoto;
         this.content = content;
         this.numOfLikes = numOfLikes;
-        this.timePosted = timePosted; // todo: when creating new post need to send Date.now()
+        this.timePosted = timePosted; // todo: when creating new post need to send SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
     }
 
     public String getContent() {
@@ -96,6 +100,8 @@ public class Post implements Serializable {
 
 //class SortPosts implements Comparator<Post> {
 //    public int compare(Post post1, Post post2){
-//        if(post1.getTimePosted())
+//        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+//        Date post1date = format.parse(post1.getTimePosted());
+//        if(post1.getTimePosted()) //todo: filter by time need to parse
 //    }
 //}
