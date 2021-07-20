@@ -46,11 +46,11 @@ public class Utils {
         return "street dog";
     }
 
-    public static void moveBetweenFragments(int fragmentContainerViewId, Fragment fragment, FragmentActivity fragmentActivity)
+    public static void moveBetweenFragments(int fragmentContainerViewId, Fragment fragment, FragmentActivity fragmentActivity, String fragmentTag)
     {
         FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(fragmentContainerViewId, fragment);
+        fragmentTransaction.replace(fragmentContainerViewId, fragment, fragmentTag);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

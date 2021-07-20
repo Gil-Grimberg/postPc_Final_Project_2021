@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         FragmentContainerView screen = findViewById(R.id.the_screen);
@@ -25,9 +26,9 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().
                 beginTransaction().
                 replace(screen.getId(), openingFragment).
+                addToBackStack(null).
 //                replace(menu.getId(), menuFragment).
                 commit();
-
 //
 //
 //        if (dataManager==null)
