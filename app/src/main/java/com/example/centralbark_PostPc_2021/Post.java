@@ -26,7 +26,7 @@ public class Post implements Serializable {
         this.uploadedPhoto = uploadedPhoto;
         this.content = content;
         this.numOfLikes = numOfLikes;
-        this.timePosted = timePosted;
+        this.timePosted = timePosted; // todo: when creating new post need to send Date.now()
     }
 
     public String getContent() {
@@ -96,6 +96,6 @@ public class Post implements Serializable {
 
 //class SortPosts implements Comparator<Post> {
 //    public int compare(Post post1, Post post2){
-//
+//        if(post1.getTimePosted())
 //    }
 //}
