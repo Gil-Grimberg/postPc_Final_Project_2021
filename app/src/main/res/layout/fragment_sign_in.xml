@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/Sign_Up_title"
+        android:id="@+id/Sign_In_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="casual"
@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <TextView
-        android:id="@+id/mail_title_sign_up_screen"
+        android:id="@+id/mail_title_sign_in_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="76dp"
@@ -39,10 +39,10 @@
         android:textSize="12sp"
         android:layout_marginTop="70dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Sign_Up_title" />
+        app:layout_constraintTop_toBottomOf="@+id/Sign_In_title" />
 
     <EditText
-        android:id="@+id/mail_edit_text_sign_up_screen"
+        android:id="@+id/mail_edit_text_sign_in_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="54dp"
@@ -50,11 +50,11 @@
         android:fontFamily="casual"
         android:inputType="textEmailAddress"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/mail_title_sign_up_screen"
-        app:layout_constraintTop_toBottomOf="@+id/Sign_Up_title" />
+        app:layout_constraintStart_toEndOf="@+id/mail_title_sign_in_screen"
+        app:layout_constraintTop_toBottomOf="@+id/Sign_In_title" />
 
     <TextView
-        android:id="@+id/password_title_sign_up_screen"
+        android:id="@+id/password_title_sign_in_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="casual"
@@ -63,10 +63,10 @@
         android:layout_marginStart="70dp"
         android:layout_marginTop="26dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mail_title_sign_up_screen" />
+        app:layout_constraintTop_toBottomOf="@+id/mail_title_sign_in_screen" />
 
     <EditText
-        android:id="@+id/password_edit_text_sign_up"
+        android:id="@+id/password_edit_text_sign_in_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -75,11 +75,11 @@
         android:layout_marginTop="5dp"
 
         android:inputType="textPassword"
-        app:layout_constraintStart_toEndOf="@+id/password_title_sign_up_screen"
-        app:layout_constraintTop_toBottomOf="@+id/mail_edit_text_sign_up_screen" />
+        app:layout_constraintStart_toEndOf="@+id/password_title_sign_in_screen"
+        app:layout_constraintTop_toBottomOf="@+id/mail_edit_text_sign_in_screen" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/sign_me_up_button"
+        android:id="@+id/log_me_in_button_sign_in_screen"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:background="@drawable/my_button"
@@ -92,18 +92,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_edit_text_sign_up" />
+        app:layout_constraintTop_toBottomOf="@+id/password_edit_text_sign_in_screen" />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/remember_me_checkbox_sign_in_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/remember_me"
         android:fontFamily="casual"
         android:layout_marginEnd="5dp"
+        android:textColor="@color/gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_me_up_button" />
+        app:layout_constraintTop_toBottomOf="@+id/log_me_in_button_sign_in_screen" />
+
+    <TextView
+        android:id="@+id/incorrect_login_data_textview_log_in_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:textColor="@color/darkRed"
+        android:fontFamily="casual"
+        android:textSize="12sp"
+        android:text="Invalid login, please try again"
+        app:layout_constraintBottom_toTopOf="@+id/mail_edit_text_sign_in_screen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

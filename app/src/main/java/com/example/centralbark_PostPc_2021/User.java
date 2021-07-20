@@ -8,21 +8,21 @@ import java.util.Set;
 import java.util.UUID;
 
 public class User implements Serializable {
-    String id;
-    String username;
-    String password;
-    String breed;
-    String mail;
-    String photo = null;
-    String birthday;
-    String city;
-    Boolean rememberMe = true;
-    Boolean allowNotifications = false;
-    Boolean allowLocation = false;
-    ArrayList<String> friendList;
-    ArrayList<String> likedUsers;
-    ArrayList<String> dislikeUsers;
-    String selfSummary = "";
+    private String id;
+    private String username;
+    private String password;
+    private String breed;
+    private String mail;
+    private String photo = null;
+    private String birthday;
+    private String city;
+    private Boolean rememberMe = true;
+    private Boolean allowNotifications = false;
+    private Boolean allowLocation = false;
+    private ArrayList<String> friendList;
+    private ArrayList<String> likedUsers;
+    private ArrayList<String> dislikeUsers;
+    private String selfSummary = "";
 
     public User()
     {
