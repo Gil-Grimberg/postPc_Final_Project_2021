@@ -166,7 +166,7 @@ public class signUpFragment extends Fragment {
                 }
                 else
                 {
-                    String remoteImgName = "profile_photos/" + newUser.id;
+                    String remoteImgName = "profile_photos/" + newUser.getId();
                     String downloadUrl = this.appInstance.getDataManager().uploadImgToStorageAndGetImgPath(imagePath, remoteImgName);
                     newUser.setPhoto(downloadUrl);
                 }
@@ -175,7 +175,7 @@ public class signUpFragment extends Fragment {
                 this.appInstance.getDataManager().updateSp(newUser.getId());
                 this.appInstance.getDataManager().addToUsers(newUser);
 
-                Utils.moveBetweenFragments(R.id.the_screen, new feedFragment(),getActivity());
+                Utils.moveBetweenFragments(R.id.the_screen, new feedFragment(),getActivity(), "feed");
 
             }
 

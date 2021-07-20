@@ -52,7 +52,7 @@ public class signInFragment extends Fragment {
             else{
                 enteredUser.setRememberMe(rememberMe.isChecked());
                 appInstance.getDataManager().updateSp(enteredUser.getId());
-                Utils.moveBetweenFragments(R.id.the_screen, new feedFragment(),getActivity());
+                Utils.moveBetweenFragments(R.id.the_screen, new feedFragment(),getActivity(), "feed");
             }
         });
     }

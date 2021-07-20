@@ -32,14 +32,14 @@ public class menuFragment extends Fragment {
         profileButton = view.findViewById(R.id.profileButton_ImageButton_fragmentMyProfile);
 
         searchButton.setOnClickListener(v->
-                Utils.moveBetweenFragments(R.id.the_screen, new searchAcountFragment(), getActivity()));
+                Utils.moveBetweenFragments(R.id.the_screen, new searchAcountFragment(), getActivity(), "search"));
         tinderButton.setOnClickListener(v->
-                Utils.moveBetweenFragments(R.id.the_screen, new matchAFriendFragment(), getActivity()));
+                Utils.moveBetweenFragments(R.id.the_screen, new matchAFriendFragment(), getActivity(), "match_a_friend"));
         homeButton.setOnClickListener(v->
-                Utils.moveBetweenFragments(R.id.the_screen, new feedFragment(), getActivity()));
+                Utils.moveBetweenFragments(R.id.the_screen, new feedFragment(), getActivity(), "feed"));
         locationButton.setOnClickListener(v->
-                Utils.moveBetweenFragments(R.id.the_screen, new MapsFragment(), getActivity()));
+                Utils.moveBetweenFragments(R.id.the_screen, new MapsFragment(), getActivity(), "maps"));
         profileButton.setOnClickListener(v->
-                Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(), getActivity()));
+                Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(), getActivity(), "myProfile"));
     }
 }

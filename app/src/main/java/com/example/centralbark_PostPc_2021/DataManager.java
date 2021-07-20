@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -26,9 +27,11 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class DataManager {
 
@@ -115,13 +118,20 @@ public class DataManager {
     public ArrayList<User> getAllUsers()
     {
         ArrayList<User> myUsers = new ArrayList<>();
-        Task<QuerySnapshot> snapshot = this.db.collection("Users").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        Task<QuerySnapshot> result = this.db.collection("Users").get();
+        result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (QueryDocumentSnapshot document : queryDocumentSnapshots)
+            public void onSuccess(@NonNull QuerySnapshot documentSnapshots) {
+                if (!documentSnapshots.isEmpty())
                 {
-                    myUsers.add(document.toObject(User.class));
+                    myUsers.addAll(documentSnapshots.toObjects(User.class));
                 }
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "Failed to read from db", Toast.LENGTH_LONG).show();
             }
         });
         return myUsers;
