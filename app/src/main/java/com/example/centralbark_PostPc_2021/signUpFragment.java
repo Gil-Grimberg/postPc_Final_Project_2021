@@ -64,17 +64,18 @@ public class signUpFragment extends Fragment {
         signUpButton = view.findViewById(R.id.sign_me_up_button);
         imagePath = view.findViewById(R.id.image_path);
 
-        if (savedInstanceState != null)
-        {
-            userName.setText(savedInstanceState.getString("username"));
-            password.setText(savedInstanceState.getString("password"));
-            mail.setText(savedInstanceState.getString("mail"));
-            birthday.setText(savedInstanceState.getString("birthday"));
-            breed.setText(savedInstanceState.getString("breed"));
-            city.setText(savedInstanceState.getString("city"));
-            selfSummary.setText(savedInstanceState.getString("self_summary"));
-            imagePath.setText(savedInstanceState.getString("image_path"));
-        }
+
+//        if (savedInstanceState != null)
+//        {
+//            userName.setText(savedInstanceState.getString("username"));
+//            password.setText(savedInstanceState.getString("password"));
+//            mail.setText(savedInstanceState.getString("mail"));
+//            birthday.setText(savedInstanceState.getString("birthday"));
+//            breed.setText(savedInstanceState.getString("breed"));
+//            city.setText(savedInstanceState.getString("city"));
+//            selfSummary.setText(savedInstanceState.getString("self_summary"));
+//            imagePath.setText(savedInstanceState.getString("image_path"));
+//        }
 
         ActivityResultLauncher<Intent> upLoadLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
