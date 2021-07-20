@@ -13,9 +13,14 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -35,7 +40,8 @@ public class signUpFragment extends Fragment {
     EditText selfSummary;
     Button uploadPhotoButton;
     Button signUpButton;
-    TextView imagePath;
+    String imagePath;
+    TextView imageName;
 
 
     public signUpFragment() {
@@ -58,20 +64,20 @@ public class signUpFragment extends Fragment {
         selfSummary = view.findViewById(R.id.my_self_summery_edit_text_sign_up_screen);
         uploadPhotoButton = view.findViewById(R.id.choose_photo_button_sign_up_screen);
         signUpButton = view.findViewById(R.id.sign_me_up_button);
-        imagePath = view.findViewById(R.id.image_path);
+        imageName = view.findViewById(R.id.image_name);
 
-
-//        if (savedInstanceState != null)
-//        {
-//            userName.setText(savedInstanceState.getString("username"));
-//            password.setText(savedInstanceState.getString("password"));
-//            mail.setText(savedInstanceState.getString("mail"));
-//            birthday.setText(savedInstanceState.getString("birthday"));
-//            breed.setText(savedInstanceState.getString("breed"));
-//            city.setText(savedInstanceState.getString("city"));
-//            selfSummary.setText(savedInstanceState.getString("self_summary"));
-//            imagePath.setText(savedInstanceState.getString("image_path"));
-//        }
+        if (savedInstanceState != null)
+        {
+            userName.setText(savedInstanceState.getString("username"));
+            password.setText(savedInstanceState.getString("password"));
+            mail.setText(savedInstanceState.getString("mail"));
+            birthday.setText(savedInstanceState.getString("birthday"));
+            breed.setText(savedInstanceState.getString("breed"));
+            city.setText(savedInstanceState.getString("city"));
+            selfSummary.setText(savedInstanceState.getString("self_summary"));
+            imageName.setText(savedInstanceState.getString("image_name"));
+            imagePath = savedInstanceState.getString("image_path");
+        }
 
         ActivityResultLauncher<Intent> upLoadLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -92,10 +98,11 @@ public class signUpFragment extends Fragment {
                                 Cursor cursor = getActivity().getContentResolver().query(selectedImage,
                                         filePathColumn, null, null, null);
                                 cursor.moveToFirst();
-
                                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                                 String picturePath = cursor.getString(columnIndex);
-                                imagePath.setText(picturePath);
+                                String[] picturePathSplit = picturePath.split("/");
+                                imageName.setText(picturePathSplit[picturePathSplit.length - 1]);
+                                imagePath = picturePath;
                                 cursor.close();
                             }
                         }
@@ -140,7 +147,7 @@ public class signUpFragment extends Fragment {
             }
             else
             {
-                if (imagePath.getText().toString().equals(""))
+                if (imagePath.equals(""))
                 {
                     //todo:: put default profile picture
                 }
@@ -154,14 +161,14 @@ public class signUpFragment extends Fragment {
                                         city.getText().toString(),
                                         true,
                                         selfSummary.getText().toString());
-                if (imagePath.getText().toString().equals(""))
+                if (imagePath.equals(""))
                 {
 
                 }
                 else
                 {
                     String remoteImgName = "profile_photos/" + newUser.getId();
-                    String downloadUrl = this.appInstance.getDataManager().uploadImgToStorageAndGetImgPath(imagePath.getText().toString(), remoteImgName);
+                    String downloadUrl = this.appInstance.getDataManager().uploadImgToStorageAndGetImgPath(imagePath, remoteImgName);
                     newUser.setPhoto(downloadUrl);
                 }
 
@@ -169,7 +176,7 @@ public class signUpFragment extends Fragment {
                 this.appInstance.getDataManager().updateSp(newUser.getId());
                 this.appInstance.getDataManager().addToUsers(newUser);
 
-                Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(),getActivity());
+                Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(),getActivity(), "feed");
 
             }
 
@@ -179,8 +186,10 @@ public class signUpFragment extends Fragment {
     private boolean isMailUnique(String mail)
     {
         ArrayList<User> users = this.appInstance.getDataManager().getAllUsers();
+        Log.d(null, "len of array:" + users.size());
         for (User user: users)
         {
+            Log.d(null, "current mail: " + user.getMail());
             if (user.getMail().equals(mail))
             {
                 return false;
@@ -218,6 +227,7 @@ public class signUpFragment extends Fragment {
         outState.putString("breed", this.breed.getText().toString());
         outState.putString("city", this.breed.getText().toString());
         outState.putString("self_summary", this.selfSummary.getText().toString());
-        outState.putString("image_path", this.imagePath.getText().toString());
+        outState.putString("image_name", this.imageName.getText().toString());
+        outState.putString("image_path", this.imagePath);
     }
 }
