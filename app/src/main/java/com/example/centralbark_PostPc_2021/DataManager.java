@@ -115,11 +115,15 @@ public class DataManager {
     public ArrayList<User> getAllUsers()
     {
         ArrayList<User> myUsers = new ArrayList<>();
-        Task<QuerySnapshot> snapshot = this.db.collection("Users").get();
-        for (QueryDocumentSnapshot document : Objects.requireNonNull(snapshot.getResult()))
-        {
-            myUsers.add(document.toObject(User.class));
-        }
+        Task<QuerySnapshot> snapshot = this.db.collection("Users").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot document : queryDocumentSnapshots)
+                {
+                    myUsers.add(document.toObject(User.class));
+                }
+            }
+        });
         return myUsers;
     }
 
