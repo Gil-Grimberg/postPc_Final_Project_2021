@@ -96,9 +96,9 @@ public class DataManager {
 
 
 
-    public ArrayList<Post> getPosts() {
+    public ArrayList<Post> getPostsById(String idToFindPostsFor) {
         ArrayList<Post> myPosts = new ArrayList<>();
-        this.db.collection("Users").document(this.userId).collection("myPosts").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        this.db.collection("Users").document(idToFindPostsFor).collection("myPosts").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -111,6 +111,27 @@ public class DataManager {
         });
         return myPosts;
     }
+
+    public User getUserById(String idToFind) {
+        final User[] userToFind = new User[1];
+        this.db.collection("Users").document(idToFind).collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        User user = document.toObject(User.class);
+                        if(user.getId().equals(idToFind)){
+                            userToFind[0] = user;
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+        return userToFind[0];
+    }
+
+
 
     public ArrayList<User> getAllUsers()
     {
