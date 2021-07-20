@@ -31,6 +31,33 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
+    <EditText
+        android:id="@+id/editText_EditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="search"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="90dp"
+        android:ems="10"
+        android:layout_marginLeft="15dp"
+        app:layout_constraintLeft_toRightOf="@id/searchImage_ImageView"
+        />
+
+    <ImageView
+        android:id="@+id/searchImage_ImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="70dp"
+        android:src="@drawable/search_icon"
+        android:background="@null"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/editText_EditText"
+        app:layout_constraintBottom_toBottomOf="@id/editText_EditText"
+        />
+
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

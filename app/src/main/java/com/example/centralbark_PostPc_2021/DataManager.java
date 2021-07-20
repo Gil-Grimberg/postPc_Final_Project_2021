@@ -188,8 +188,15 @@ public class DataManager {
         return res;
     }
 
-
+    public User findMyUser(){
+        String userSavedString = sp.getString("userId", "NOT FOUND");
+        if(!userSavedString.equals("NOT FOUND")) {
+            for (User user : getAllUsers()) {
+                if (user.getId().equals(userSavedString)) {
+                    return user;
+                }
+            }
+        }
+        return null;
+    }
 }
-
-
-
