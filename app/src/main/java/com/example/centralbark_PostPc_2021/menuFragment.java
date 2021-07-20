@@ -36,7 +36,7 @@ public class menuFragment extends Fragment {
         tinderButton.setOnClickListener(v->
                 Utils.moveBetweenFragments(R.id.the_screen, new matchAFriendFragment(), getActivity(), "match_a_friend"));
         homeButton.setOnClickListener(v->
-                Utils.moveBetweenFragments(R.id.the_screen, new feedFragment(), getActivity(), "feed"));
+                Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed"));
         locationButton.setOnClickListener(v->
                 Utils.moveBetweenFragments(R.id.the_screen, new MapsFragment(), getActivity(), "maps"));
         profileButton.setOnClickListener(v->

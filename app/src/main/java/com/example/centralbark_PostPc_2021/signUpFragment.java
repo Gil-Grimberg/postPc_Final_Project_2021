@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -175,7 +176,7 @@ public class signUpFragment extends Fragment {
                 this.appInstance.getDataManager().updateSp(newUser.getId());
                 this.appInstance.getDataManager().addToUsers(newUser);
 
-                Utils.moveBetweenFragments(R.id.the_screen, new feedFragment(),getActivity(), "feed");
+                Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(),getActivity(), "feed");
 
             }
 
@@ -185,8 +186,10 @@ public class signUpFragment extends Fragment {
     private boolean isMailUnique(String mail)
     {
         ArrayList<User> users = this.appInstance.getDataManager().getAllUsers();
+        Log.d(null, "len of array:" + users.size());
         for (User user: users)
         {
+            Log.d(null, "current mail: " + user.getMail());
             if (user.getMail().equals(mail))
             {
                 return false;

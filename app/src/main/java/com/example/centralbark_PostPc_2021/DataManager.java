@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -137,6 +138,7 @@ public class DataManager {
 
 
     public ArrayList<User> getAllUsers()
+            //todo: we can't use this function probably :( need to wait for Reem's response
     {
         ArrayList<User> myUsers = new ArrayList<>();
         Task<QuerySnapshot> result = this.db.collection("Users").get();
