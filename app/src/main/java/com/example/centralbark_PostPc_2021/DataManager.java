@@ -112,7 +112,7 @@ public class DataManager {
         return myPosts;
     }
 
-    public User getUserById(String idToFind) {
+    public User getUserById(String idToFind) { // todo: check if works
         final User[] userToFind = new User[1];
         this.db.collection("Users").document(idToFind).collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -209,7 +209,7 @@ public class DataManager {
         return res;
     }
 
-    public User findMyUser(){
+    public User findMyUser(){ // todo: maybe need to change to not
         String userSavedString = sp.getString("userId", "NOT FOUND");
         if(!userSavedString.equals("NOT FOUND")) {
             for (User user : getAllUsers()) {
@@ -219,5 +219,9 @@ public class DataManager {
             }
         }
         return null;
+    }
+
+    public String getMyId(){
+        return sp.getString("userId", "NOT FOUND");
     }
 }
