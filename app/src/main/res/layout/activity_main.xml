@@ -22,14 +22,17 @@
         android:layout_marginBottom="70dp"
         tools:background="@color/black"
         />
+
     <fragment
         android:id="@+id/the_screen"
         class="com.example.centralbark_PostPc_2021.openingFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:text="Central Bark"
         app:layout_constraintBottom_toTopOf="@id/menuBorderLine"
+        app:layout_constraintTop_toTopOf="parent"
         />
+
     <fragment
         android:id="@+id/menu_bar"
         class="com.example.centralbark_PostPc_2021.menuFragment"

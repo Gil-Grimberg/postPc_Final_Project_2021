@@ -91,7 +91,7 @@ public class DataManager {
     }
 
     public void addToNotifications(Notification notification) {
-        this.db.collection("Users").document(this.userId).collection("myNotifications").document(notification.getNotificationId()).set(notification);
+        this.db.collection("Users").document(notification.getUserId()).collection("myNotifications").document(notification.getNotificationId()).set(notification);
     }
 
 
@@ -103,7 +103,8 @@ public class DataManager {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                        myPosts.add(document.toObject(Post.class));
+                        Post obj = document.toObject(Post.class);
+                        myPosts.add(obj);
                     }
                 }
             }
@@ -174,7 +175,7 @@ public class DataManager {
         return res;
     }
 
-    private String likedAndDislikedUsersToStr(Set<String> users) {
+    private String likedAndDislikedUsersToStr(ArrayList<String> users) {
         String res = "";
         for (String user : users) {
             res += user + separator;

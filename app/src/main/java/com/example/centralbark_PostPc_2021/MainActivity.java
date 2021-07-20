@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentContainerView;
 import android.os.Bundle;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,8 +22,10 @@ public class MainActivity extends AppCompatActivity {
         {
             dataManager = CentralBarkApp.getInstance().getDataManager();
         }
-        Post myPost = new Post("jTAfJDj6c6nB5HjD3NyB","gil","profile_photo_link","uploaded_photo_link","this post was created in android",12,"07/19/21");
 
-        this.dataManager.addToPost(myPost);
+
+
+        // -------------------------------Tests---------------------------------------------------//
+
     }
 }

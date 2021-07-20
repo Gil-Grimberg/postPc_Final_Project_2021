@@ -9,6 +9,7 @@ public class Notification implements Serializable {
     String content;
     boolean isFriendRequest;
 
+    public Notification(){}
 
     public Notification(String userId, String content, boolean isFriendRequest) {
         this.userId = userId;
