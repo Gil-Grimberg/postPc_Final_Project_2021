@@ -20,16 +20,16 @@ public class User implements Serializable {
     Boolean allowNotifications = false;
     Boolean allowLocation = false;
     ArrayList<String> friendList;
-    Set<String> likedUsers;
-    Set<String> dislikeUsers;
+    ArrayList<String> likedUsers;
+    ArrayList<String> dislikeUsers;
     String selfSummary = "";
 
     public User()
     {
         this.id = UUID.randomUUID().toString();
         this.friendList = new ArrayList<>();
-        this.likedUsers = Collections.emptySet();
-        this.dislikeUsers = Collections.emptySet();
+        this.likedUsers = new ArrayList<>();
+        this.dislikeUsers = new ArrayList<>();
     }
 
     public User(String username, String password, String mail,
@@ -38,8 +38,8 @@ public class User implements Serializable {
     {
         this.id = UUID.randomUUID().toString();
         this.friendList = new ArrayList<>();
-        this.likedUsers = Collections.emptySet();
-        this.dislikeUsers = Collections.emptySet();
+        this.likedUsers = new ArrayList<>();
+        this.dislikeUsers = new ArrayList<>();
         this.username = username;
         this.password = password;
         this.mail = mail;
@@ -75,7 +75,7 @@ public class User implements Serializable {
         this.city = Utils.parseCity(city);
     }
 
-    public void setDislikeUsers(Set<String> dislikeUsers) {
+    public void setDislikeUsers(ArrayList<String> dislikeUsers) {
         this.dislikeUsers = dislikeUsers;
     }
 
@@ -83,7 +83,7 @@ public class User implements Serializable {
         this.friendList = friendList;
     }
 
-    public void setLikedUsers(Set<String> likedUsers) {
+    public void setLikedUsers(ArrayList<String> likedUsers) {
         this.likedUsers = likedUsers;
     }
 
@@ -111,11 +111,11 @@ public class User implements Serializable {
         this.username = username;
     }
 
-    public Set<String> getDislikeUsers() {
+    public ArrayList<String> getDislikeUsers() {
         return dislikeUsers;
     }
 
-    public Set<String> getLikedUsers() {
+    public ArrayList<String> getLikedUsers() {
         return likedUsers;
     }
 

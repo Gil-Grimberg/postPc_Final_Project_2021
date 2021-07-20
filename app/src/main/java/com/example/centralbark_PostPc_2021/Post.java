@@ -15,6 +15,8 @@ public class Post implements Serializable {
     Integer numOfLikes;
     String timePosted;
 
+    public Post(){}
+
     public Post(String userId, String username, String userProfilePhoto, String uploadedPhoto,String content, Integer numOfLikes, String timePosted){
         this.userId = userId;
         this.postId = UUID.randomUUID().toString();
