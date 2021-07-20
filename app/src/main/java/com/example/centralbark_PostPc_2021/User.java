@@ -22,6 +22,7 @@ public class User implements Serializable {
     private ArrayList<String> friendList;
     private ArrayList<String> likedUsers;
     private ArrayList<String> dislikeUsers;
+    private ArrayList<String> pendingRequests;
     private String selfSummary = "";
 
     public User()
@@ -30,6 +31,7 @@ public class User implements Serializable {
         this.friendList = new ArrayList<>();
         this.likedUsers = new ArrayList<>();
         this.dislikeUsers = new ArrayList<>();
+        this.pendingRequests = new ArrayList<>();
     }
 
     public User(String username, String password, String mail,
@@ -40,6 +42,7 @@ public class User implements Serializable {
         this.friendList = new ArrayList<>();
         this.likedUsers = new ArrayList<>();
         this.dislikeUsers = new ArrayList<>();
+        this.pendingRequests = new ArrayList<>();
         this.username = username;
         this.password = password;
         this.mail = mail;
@@ -111,6 +114,8 @@ public class User implements Serializable {
         this.username = username;
     }
 
+    public void setPendingRequests(ArrayList<String> pendingRequests) { this.pendingRequests = pendingRequests; }
+
     public ArrayList<String> getDislikeUsers() {
         return dislikeUsers;
     }
@@ -170,5 +175,7 @@ public class User implements Serializable {
     public String getId() {
         return id;
     }
+
+    public ArrayList<String> getPendingRequests() { return pendingRequests; }
 }
 

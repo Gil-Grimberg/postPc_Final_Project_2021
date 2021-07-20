@@ -10,7 +10,7 @@
 
 
     <ImageButton
-        android:id="@+id/searchButton_ImageButton_fragmentSearchAccount"
+        android:id="@+id/searchImage_ImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -30,7 +30,7 @@
         android:src="@drawable/tinder_logo"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/searchButton_ImageButton_fragmentSearchAccount"
+        app:layout_constraintLeft_toRightOf="@id/searchImage_ImageView"
         app:layout_constraintRight_toLeftOf="@id/homeButton_ImageButton_fragmentFeed" />
 
     <ImageButton
@@ -41,7 +41,7 @@
         android:src="@drawable/home_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/searchButton_ImageButton_fragmentSearchAccount"
+        app:layout_constraintLeft_toRightOf="@id/searchImage_ImageView"
         app:layout_constraintRight_toLeftOf="@id/profileButton_ImageButton_fragmentMyProfile" />
 
     <ImageButton

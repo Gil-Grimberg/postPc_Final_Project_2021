@@ -25,7 +25,7 @@ public class menuFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        searchButton = view.findViewById(R.id.searchButton_ImageButton_fragmentSearchAccount);
+        searchButton = view.findViewById(R.id.searchImage_ImageView);
         tinderButton = view.findViewById(R.id.tinderButton_ImageButton_fragmentMatchAFriend);
         homeButton = view.findViewById(R.id.homeButton_ImageButton_fragmentFeed);
         locationButton = view.findViewById(R.id.locationButton_ImageButton_fragmentSearchPlaces);
