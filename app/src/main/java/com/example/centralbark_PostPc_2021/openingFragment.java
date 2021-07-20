@@ -25,29 +25,18 @@ public class openingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull  View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         signInButton = view.findViewById(R.id.sign_in_button_opening_screen);
         signUpButton = view.findViewById(R.id.sign_un_button_opening_screen);
 
-        //todo: fix the bellow code
-
         signInButton.setOnClickListener(v ->
         {
-            Fragment signInFragment = new signInFragment();
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.signInFragment, signInFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+            Utils.moveBetweenFragments(R.id.the_screen, new signInFragment(), getActivity());
         });
 
         signUpButton.setOnClickListener(v ->
         {
-            Fragment signUpFragment = new signUpFragment();
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.signUpFragment, signUpFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+            Utils.moveBetweenFragments(R.id.the_screen, new signUpFragment(), getActivity());
         });
 
 
