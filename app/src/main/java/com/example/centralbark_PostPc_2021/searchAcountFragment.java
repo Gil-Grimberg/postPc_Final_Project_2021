@@ -8,12 +8,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link searchAcountFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class searchAcountFragment extends Fragment {
+    private ArrayList<User> usersList = new ArrayList<>();
+    DataManager dataManager = CentralBarkApp.getInstance().getDataManager();
+
+
+    public ArrayList<User> getUsersList(){
+        return dataManager.getAllUsers();
+    }
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -55,10 +65,20 @@ public class searchAcountFragment extends Fragment {
         }
     }
 
+
+    //-----------------------------------------------------------------------------------------//
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search_acount, container, false);
+    }
+
+    public void addUserToPendingRequestList(User addUser) {
+        User myUser = dataManager.findMyUser();
+        if (myUser != null){
+            myUser.getPendingRequests().add(addUser.getId());
+        }
     }
 }
