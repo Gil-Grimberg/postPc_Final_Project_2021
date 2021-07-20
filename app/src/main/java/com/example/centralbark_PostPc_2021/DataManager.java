@@ -113,22 +113,14 @@ public class DataManager {
     }
 
     public User getUserById(String idToFind) { // todo: check if works
-        final User[] userToFind = new User[1];
-        this.db.collection("Users").document(idToFind).collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        User[] user = new User[1];
+        this.db.collection("Users").document(idToFind).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                        User user = document.toObject(User.class);
-                        if(user.getId().equals(idToFind)){
-                            userToFind[0] = user;
-                            break;
-                        }
-                    }
-                }
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                user[0] = documentSnapshot.toObject(User.class);
             }
         });
-        return userToFind[0];
+        return user[0];
     }
 
 
@@ -209,19 +201,7 @@ public class DataManager {
         return res;
     }
 
-    public User findMyUser(){ // todo: maybe need to change to not
-        String userSavedString = sp.getString("userId", "NOT FOUND");
-        if(!userSavedString.equals("NOT FOUND")) {
-            for (User user : getAllUsers()) {
-                if (user.getId().equals(userSavedString)) {
-                    return user;
-                }
-            }
-        }
-        return null;
-    }
-
     public String getMyId(){
-        return sp.getString("userId", "NOT FOUND");
+        return this.userId;
     }
 }
