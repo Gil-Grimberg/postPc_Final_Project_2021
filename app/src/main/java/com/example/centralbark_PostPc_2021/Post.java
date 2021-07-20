@@ -1,6 +1,7 @@
 package com.example.centralbark_PostPc_2021;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.UUID;
 
@@ -92,3 +93,9 @@ public class Post implements Serializable {
         this.userProfilePhoto = userProfilePhoto;
     }
 }
+
+//class SortPosts implements Comparator<Post> {
+//    public int compare(Post post1, Post post2){
+//
+//    }
+//}

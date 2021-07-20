@@ -7,20 +7,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+
 public class FeedFragment extends Fragment {
-    private CentralBarkApp appInstance;
+    private DataManager dataManager;
     private ImageView notification;
     private RecyclerView recyclerViewPosts;
 
     public FeedFragment() {
         super(R.layout.fragment_feed);
-        if(appInstance==null){
-            this.appInstance = CentralBarkApp.getInstance();
+        if(dataManager ==null){
+            this.dataManager = CentralBarkApp.getInstance().getDataManager();
         }
     }
 
@@ -34,7 +34,13 @@ public class FeedFragment extends Fragment {
 
     }
 
-    public int findAmountOfPosts(){
-
-    }
+//    public int findAmountOfPosts(){
+//        User myUser = this.dataManager.findMyUser();
+//        ArrayList<Post> allRelevantPosts = new ArrayList<>();
+//        allRelevantPosts.addAll(this.dataManager.getPostsById(myUser.getId())); // add all my posts
+//        for(String friendId: myUser.getFriendList()){
+//            allRelevantPosts.addAll(this.dataManager.getPostsById(friendId)); // add all my friends posts
+//        }
+//
+//    }
 }
