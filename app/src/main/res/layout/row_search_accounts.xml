@@ -2,35 +2,33 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".searchAcountFragment">
+    android:minHeight="40dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <androidx.appcompat.widget.AppCompatButton
+    <TextView
+        android:id="@+id/userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Accounts"
-        android:fontFamily="casual"
-        android:background=""
-        android:layout_marginTop="28dp"
-        android:layout_marginLeft="70dp"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="the name of the user"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="50dp"
         />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/makeFriend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Places"
+        android:text="make friend"
         android:fontFamily="casual"
-        android:background=""
-        android:layout_marginTop="28dp"
-        android:layout_marginRight="70dp"
+        android:textSize="10sp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/my_button"
         />
 
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+
