@@ -42,7 +42,7 @@ public class openingFragment extends Fragment {
 
         signUpButton.setOnClickListener(v ->
         {
-            Fragment signUpFragment = new signInFragment();
+            Fragment signUpFragment = new signUpFragment();
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.signUpFragment, signUpFragment);
