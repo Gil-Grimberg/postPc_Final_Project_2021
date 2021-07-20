@@ -3,6 +3,8 @@ package com.example.centralbark_PostPc_2021;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +19,12 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 
 public class adapterSearchAccounts extends RecyclerView.Adapter<adapterSearchAccounts.rowSearchAccountsHolder> {
 
-    searchAcountFragment searchAccountHolder;
+    searchAcountFragment searchAccountFragment;
     Context context;
 
     public adapterSearchAccounts(Context context, searchAcountFragment fragment){
         this.context = context;
-        this.searchAccountHolder = fragment;
+        this.searchAccountFragment = fragment;
     }
 
     @NonNull
@@ -35,25 +37,46 @@ public class adapterSearchAccounts extends RecyclerView.Adapter<adapterSearchAcc
 
     @Override
     public void onBindViewHolder(@NonNull rowSearchAccountsHolder holder, int position) {
-        User user = searchAccountHolder.getUsersList().get(position);
-        // changing user name
-        holder.userName.setText(user.getUsername());
+        User userInRow = searchAccountFragment.getUsersList().get(position);
+        // changing userInRow name
+        holder.userName.setText(userInRow.getUsername());
         // changing profile photo
-        if(!user.getPhoto().equals("default")){
-            holder.profilePhoto.setImageURI(Uri.parse(user.getPhoto()));
+        if(!userInRow.getPhoto().equals("default")){
+            holder.profilePhoto.setImageURI(Uri.parse(userInRow.getPhoto()));
         }
         // make friend was pressed
         holder.makeFriend.setOnClickListener(v->{
-            searchAccountHolder.addUserToPendingRequestList(user);
+            searchAccountFragment.addUserToPendingRequestList(userInRow);
             holder.makeFriend.setText("pending request");
         });
         //edit text was changed
+        holder.editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String textChanged = holder.editText.getText().toString();
+                for(User user : searchAccountFragment.getUsersList()){
+                    if(user.getUsername().equals(textChanged)){
+                        //todo : How to Filter a Recyclerview
+                    }
+                }
+            }
+        });
 
     }
 
     @Override
     public int getItemCount() {
-        return searchAccountHolder.getUsersList().size();
+        return searchAccountFragment.getUsersList().size();
     }
 
     public class rowSearchAccountsHolder extends RecyclerView.ViewHolder{
