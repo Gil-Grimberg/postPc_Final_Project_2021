@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/feedFragment"
-        android:name="com.example.centralbark_PostPc_2021.feedFragment"
+        android:name="com.example.centralbark_PostPc_2021.FeedFragment"
         android:label="fragment_feed"
         tools:layout="@layout/fragment_feed" >
         <action
