@@ -8,6 +8,7 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -70,8 +71,15 @@ public class DataManager {
         StorageReference storageReference = storage.getReference();
         StorageReference imgRef = storageReference.child(RemoteImageName);
         UploadTask uploadTask = imgRef.putFile(Uri.fromFile(new File(localImgPath)));
-//        uploadTask.addOnFailureListener()
-        return "";
+        final String[] downloadUrl = new String[1];
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() { //todo: check that it works
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                downloadUrl[0] = taskSnapshot.getStorage().getDownloadUrl().toString();
+            }
+        });
+
+        return downloadUrl[0];
     }
 
     public void addToPost(Post post) {
