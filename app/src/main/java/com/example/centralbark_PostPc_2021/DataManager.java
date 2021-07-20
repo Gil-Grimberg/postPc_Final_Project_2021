@@ -91,7 +91,7 @@ public class DataManager {
     }
 
     public void addToNotifications(Notification notification) {
-        this.db.collection("Users").document(this.userId).collection("myNotifications").document(notification.getNotificationId()).set(notification);
+        this.db.collection("Users").document(notification.getUserId()).collection("myNotifications").document(notification.getNotificationId()).set(notification);
     }
 
 
@@ -103,7 +103,8 @@ public class DataManager {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                        myPosts.add(document.toObject(Post.class));
+                        Post obj = document.toObject(Post.class);
+                        myPosts.add(obj);
                     }
                 }
             }
@@ -114,11 +115,15 @@ public class DataManager {
     public ArrayList<User> getAllUsers()
     {
         ArrayList<User> myUsers = new ArrayList<>();
-        Task<QuerySnapshot> snapshot = this.db.collection("Users").get();
-        for (QueryDocumentSnapshot document : Objects.requireNonNull(snapshot.getResult()))
-        {
-            myUsers.add(document.toObject(User.class));
-        }
+        Task<QuerySnapshot> snapshot = this.db.collection("Users").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot document : queryDocumentSnapshots)
+                {
+                    myUsers.add(document.toObject(User.class));
+                }
+            }
+        });
         return myUsers;
     }
 
@@ -174,7 +179,7 @@ public class DataManager {
         return res;
     }
 
-    private String likedAndDislikedUsersToStr(Set<String> users) {
+    private String likedAndDislikedUsersToStr(ArrayList<String> users) {
         String res = "";
         for (String user : users) {
             res += user + separator;
