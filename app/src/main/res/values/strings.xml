@@ -13,4 +13,6 @@
     <string name="choose_image">Choose Image</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
+    <string name="log_me_in">Log Me In !</string>
+    <string name="remember_me">Remember Me</string>
 </resources>

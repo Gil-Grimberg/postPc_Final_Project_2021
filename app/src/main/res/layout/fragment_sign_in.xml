@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="casual"
-        android:text="@string/sign_up"
+        android:text="@string/sign_in"
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,11 +33,11 @@
         android:id="@+id/mail_title_sign_up_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
+        android:layout_marginStart="76dp"
         android:fontFamily="casual"
         android:text="@string/mail"
         android:textSize="12sp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="70dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Sign_Up_title" />
 
@@ -45,7 +45,7 @@
         android:id="@+id/mail_edit_text_sign_up_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="54dp"
         android:ems="10"
         android:fontFamily="casual"
         android:inputType="textEmailAddress"
@@ -78,7 +78,32 @@
         app:layout_constraintStart_toEndOf="@+id/password_title_sign_up_screen"
         app:layout_constraintTop_toBottomOf="@+id/mail_edit_text_sign_up_screen" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/sign_me_up_button"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:background="@drawable/my_button"
+        android:fontFamily="casual"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:text="@string/log_me_in"
+        android:textColor="@color/gray"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password_edit_text_sign_up" />
 
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/remember_me"
+        android:fontFamily="casual"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_me_up_button" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
