@@ -6,14 +6,16 @@ import java.util.UUID;
 
 public class Post implements Serializable {
 
-    String userId;
-    String postId;
-    String username;
-    String userProfilePhoto;
-    String uploadedPhoto;
-    String content;
-    Integer numOfLikes;
-    String timePosted;
+    private String userId;
+    private String postId;
+    private String username;
+    private String userProfilePhoto;
+    private String uploadedPhoto;
+    private String content;
+    private Integer numOfLikes;
+    private String timePosted;
+
+    public Post(){}
 
     public Post(String userId, String username, String userProfilePhoto, String uploadedPhoto,String content, Integer numOfLikes, String timePosted){
         this.userId = userId;

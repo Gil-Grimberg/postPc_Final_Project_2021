@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentContainerView;
 import android.os.Bundle;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +23,11 @@ public class MainActivity extends AppCompatActivity {
 
         openingFragment openingFragment = new openingFragment();
         menuFragment menuFragment = new menuFragment();
+        if (dataManager==null)
+        {
+            dataManager = CentralBarkApp.getInstance().getDataManager();
+        }
+
 
         getSupportFragmentManager().
                 beginTransaction().

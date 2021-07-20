@@ -8,28 +8,30 @@ import java.util.Set;
 import java.util.UUID;
 
 public class User implements Serializable {
-    String id;
-    String username;
-    String password;
-    String breed;
-    String mail;
-    String photo = null;
-    String birthday;
-    String city;
-    Boolean rememberMe = true;
-    Boolean allowNotifications = false;
-    Boolean allowLocation = false;
-    ArrayList<String> friendList;
-    Set<String> likedUsers;
-    Set<String> dislikeUsers;
-    String selfSummary = "";
+    private String id;
+    private String username;
+    private String password;
+    private String breed;
+    private String mail;
+    private String photo = null;
+    private String birthday;
+    private String city;
+    private Boolean rememberMe = true;
+    private Boolean allowNotifications = false;
+    private Boolean allowLocation = false;
+    private ArrayList<String> friendList;
+    private ArrayList<String> likedUsers;
+    private ArrayList<String> dislikeUsers;
+    private ArrayList<String> pendingRequests;
+    private String selfSummary = "";
 
     public User()
     {
         this.id = UUID.randomUUID().toString();
         this.friendList = new ArrayList<>();
-        this.likedUsers = Collections.emptySet();
-        this.dislikeUsers = Collections.emptySet();
+        this.likedUsers = new ArrayList<>();
+        this.dislikeUsers = new ArrayList<>();
+        this.pendingRequests = new ArrayList<>();
     }
 
     public User(String username, String password, String mail,
@@ -38,8 +40,9 @@ public class User implements Serializable {
     {
         this.id = UUID.randomUUID().toString();
         this.friendList = new ArrayList<>();
-        this.likedUsers = Collections.emptySet();
-        this.dislikeUsers = Collections.emptySet();
+        this.likedUsers = new ArrayList<>();
+        this.dislikeUsers = new ArrayList<>();
+        this.pendingRequests = new ArrayList<>();
         this.username = username;
         this.password = password;
         this.mail = mail;
@@ -75,7 +78,7 @@ public class User implements Serializable {
         this.city = Utils.parseCity(city);
     }
 
-    public void setDislikeUsers(Set<String> dislikeUsers) {
+    public void setDislikeUsers(ArrayList<String> dislikeUsers) {
         this.dislikeUsers = dislikeUsers;
     }
 
@@ -83,7 +86,7 @@ public class User implements Serializable {
         this.friendList = friendList;
     }
 
-    public void setLikedUsers(Set<String> likedUsers) {
+    public void setLikedUsers(ArrayList<String> likedUsers) {
         this.likedUsers = likedUsers;
     }
 
@@ -111,11 +114,13 @@ public class User implements Serializable {
         this.username = username;
     }
 
-    public Set<String> getDislikeUsers() {
+    public void setPendingRequests(ArrayList<String> pendingRequests) { this.pendingRequests = pendingRequests; }
+
+    public ArrayList<String> getDislikeUsers() {
         return dislikeUsers;
     }
 
-    public Set<String> getLikedUsers() {
+    public ArrayList<String> getLikedUsers() {
         return likedUsers;
     }
 
@@ -170,5 +175,7 @@ public class User implements Serializable {
     public String getId() {
         return id;
     }
+
+    public ArrayList<String> getPendingRequests() { return pendingRequests; }
 }
 
