@@ -2,63 +2,66 @@ package com.example.centralbark_PostPc_2021;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link matchAFriendFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
 public class matchAFriendFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    CentralBarkApp appInstance;
+    //todo: define all textViews and so...
+    TextView myName;
+    TextView myDetailsDots;
+    TextView aboutMe;
+    ImageView dislike;
+    ImageView like;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public matchAFriendFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment matchAFriendFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static matchAFriendFragment newInstance(String param1, String param2) {
-        matchAFriendFragment fragment = new matchAFriendFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        super(R.layout.fragment_match_a_friend);
+        if(appInstance==null){
+            appInstance = CentralBarkApp.getInstance();
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_match_a_friend, container, false);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+        // todo: find all views
+        myName = view.findViewById(R.id.user_name_tinder);
+        myDetailsDots = view.findViewById(R.id.details_tinder);
+        aboutMe = view.findViewById(R.id.about_me_tinder);
+        dislike = view.findViewById(R.id.x_view_tinder);
+        like = view.findViewById(R.id.v_view_tinder);
+
+
+
+        //todo: setOnClick...
+        like.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+               User user = appInstance.getDataManager().getUserById(appInstance.getDataManager().getMyId());
+               user.
+            }
+        });
     }
+
+    private ArrayList<User> findRecommendedProfiles()
+    {
+        // todo: filter the best recommended matches for the user based on ML
+        return new ArrayList<>();
+    }
+
+
+
 }
