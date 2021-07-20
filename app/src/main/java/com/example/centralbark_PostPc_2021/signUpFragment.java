@@ -13,13 +13,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -173,7 +169,7 @@ public class signUpFragment extends Fragment {
                 this.appInstance.getDataManager().updateSp(newUser.getId());
                 this.appInstance.getDataManager().addToUsers(newUser);
 
-                Utils.moveBetweenFragments(R.id.the_screen, new feedFragment(),getActivity());
+                Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(),getActivity());
 
             }
 

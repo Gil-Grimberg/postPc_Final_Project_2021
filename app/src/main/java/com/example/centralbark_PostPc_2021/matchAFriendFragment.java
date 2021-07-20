@@ -51,7 +51,7 @@ public class matchAFriendFragment extends Fragment {
             @Override
             public void onClick(View v) {
                User user = appInstance.getDataManager().getUserById(appInstance.getDataManager().getMyId());
-               user.
+               user. //todo: add user to likedList
             }
         });
     }

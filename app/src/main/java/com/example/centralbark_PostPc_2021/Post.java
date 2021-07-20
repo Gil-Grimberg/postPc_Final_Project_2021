@@ -1,6 +1,7 @@
 package com.example.centralbark_PostPc_2021;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.UUID;
 
@@ -25,7 +26,7 @@ public class Post implements Serializable {
         this.uploadedPhoto = uploadedPhoto;
         this.content = content;
         this.numOfLikes = numOfLikes;
-        this.timePosted = timePosted;
+        this.timePosted = timePosted; // todo: when creating new post need to send Date.now()
     }
 
     public String getContent() {
@@ -92,3 +93,9 @@ public class Post implements Serializable {
         this.userProfilePhoto = userProfilePhoto;
     }
 }
+
+//class SortPosts implements Comparator<Post> {
+//    public int compare(Post post1, Post post2){
+//        if(post1.getTimePosted())
+//    }
+//}

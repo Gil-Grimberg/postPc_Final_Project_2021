@@ -6,10 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.provider.ContactsContract;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 
@@ -28,7 +25,7 @@ public class menuFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        searchButton = view.findViewById(R.id.searchButton_ImageButton_fragmentSearchAccount);
+        searchButton = view.findViewById(R.id.searchImage_ImageView);
         tinderButton = view.findViewById(R.id.tinderButton_ImageButton_fragmentMatchAFriend);
         homeButton = view.findViewById(R.id.homeButton_ImageButton_fragmentFeed);
         locationButton = view.findViewById(R.id.locationButton_ImageButton_fragmentSearchPlaces);
@@ -39,7 +36,7 @@ public class menuFragment extends Fragment {
         tinderButton.setOnClickListener(v->
                 Utils.moveBetweenFragments(R.id.the_screen, new matchAFriendFragment(), getActivity()));
         homeButton.setOnClickListener(v->
-                Utils.moveBetweenFragments(R.id.the_screen, new feedFragment(), getActivity()));
+                Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity()));
         locationButton.setOnClickListener(v->
                 Utils.moveBetweenFragments(R.id.the_screen, new MapsFragment(), getActivity()));
         profileButton.setOnClickListener(v->
