@@ -35,12 +35,12 @@ public class FeedFragment extends Fragment {
     }
 
 //    public int findAmountOfPosts(){
-//        User myUser = this.dataManager.findMyUser();
+//        User myUser = this.dataManager.getUserById(this.dataManager.getMyId());
 //        ArrayList<Post> allRelevantPosts = new ArrayList<>();
 //        allRelevantPosts.addAll(this.dataManager.getPostsById(myUser.getId())); // add all my posts
 //        for(String friendId: myUser.getFriendList()){
 //            allRelevantPosts.addAll(this.dataManager.getPostsById(friendId)); // add all my friends posts
 //        }
-//
+//        // todo: sort allRelevantPosts by time (comparator in Post) and show only the X relevant
 //    }
 }
