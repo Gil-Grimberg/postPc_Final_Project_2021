@@ -42,7 +42,6 @@ public class signInFragment extends Fragment {
         incorrectLoginInfo.setVisibility(View.INVISIBLE); // make the incorrect login warning invisible
         rememberMe.setChecked(true); // make thr remember me value true as default
 
-
         logIn.setOnClickListener(v->{
             String enteredMail = mail.getText().toString();
             String enteredPassword = password.getText().toString();
