@@ -76,7 +76,7 @@ public class searchAcountFragment extends Fragment {
     }
 
     public void addUserToPendingRequestList(User addUser) {
-        User myUser = dataManager.findMyUser();
+        User myUser = dataManager.getUserById(dataManager.getMyId());
         if (myUser != null){
             myUser.getPendingRequests().add(addUser.getId());
         }
