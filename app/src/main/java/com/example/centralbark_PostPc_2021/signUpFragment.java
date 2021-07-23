@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -73,19 +74,6 @@ public class signUpFragment extends Fragment {
         signUpButton = view.findViewById(R.id.sign_me_up_button);
         imageName = view.findViewById(R.id.image_name);
 
-        if (savedInstanceState != null)
-        {
-            userName.setText(savedInstanceState.getString("username"));
-            password.setText(savedInstanceState.getString("password"));
-            mail.setText(savedInstanceState.getString("mail"));
-            birthday.setText(savedInstanceState.getString("birthday"));
-            breed.setText(savedInstanceState.getString("breed"));
-            city.setText(savedInstanceState.getString("city"));
-            selfSummary.setText(savedInstanceState.getString("self_summary"));
-            imageName.setText(savedInstanceState.getString("image_name"));
-            imagePath = savedInstanceState.getString("image_path");
-        }
-
         ActivityResultLauncher<Intent> upLoadLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -128,7 +116,6 @@ public class signUpFragment extends Fragment {
 
         signUpButton.setOnClickListener(v ->
         {
-            boolean is_mail_unique = true;
             ArrayList<User> users = new ArrayList<>();
             Task<QuerySnapshot> result = this.appInstance.getDataManager().db.collection("Users").get();
             result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -140,10 +127,10 @@ public class signUpFragment extends Fragment {
                         users.addAll(documentSnapshots.toObjects(User.class));
                         for (User user: users)
                         {
-                            Log.d(null, "current mail: " + user.getMail());
                             if (user.getMail().equals(mail.getText().toString()))
                             {
                                 is_mail_unique = false;
+                                break;
                             }
                         }
                     }
@@ -172,11 +159,6 @@ public class signUpFragment extends Fragment {
                     }
                     else
                     {
-                        if (imagePath.equals(""))
-                        {
-                            //todo:: put default profile picture
-                        }
-
                         User newUser = new User(userName.getText().toString(),
                                 password.getText().toString(),
                                 mail.getText().toString(),
@@ -188,7 +170,10 @@ public class signUpFragment extends Fragment {
                                 selfSummary.getText().toString());
                         if (imagePath.equals(""))
                         {
-
+                            newUser.setPhoto("default");
+                            appInstance.getDataManager().updateSp(newUser.getId());
+                            appInstance.getDataManager().addToUsers(newUser);
+                            Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
                         }
                         else
                         {
@@ -201,6 +186,15 @@ public class signUpFragment extends Fragment {
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                     String downloadUrl = taskSnapshot.getStorage().getDownloadUrl().toString();
                                     newUser.setPhoto(downloadUrl);
+                                    appInstance.getDataManager().updateSp(newUser.getId());
+                                    appInstance.getDataManager().addToUsers(newUser);
+                                    Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    newUser.setPhoto("default");
                                     appInstance.getDataManager().updateSp(newUser.getId());
                                     appInstance.getDataManager().addToUsers(newUser);
                                     Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
@@ -229,21 +223,5 @@ public class signUpFragment extends Fragment {
             }
         }
         return dateParts[0].length() == 2 && dateParts[1].length() == 2 && dateParts[2].length() == 4;
-    }
-
-
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("username", this.userName.getText().toString());
-        outState.putString("password", this.password.getText().toString());
-        outState.putString("mail", this.mail.getText().toString());
-        outState.putString("birthday", this.birthday.getText().toString());
-        outState.putString("breed", this.breed.getText().toString());
-        outState.putString("city", this.breed.getText().toString());
-        outState.putString("self_summary", this.selfSummary.getText().toString());
-        outState.putString("image_name", this.imageName.getText().toString());
-        outState.putString("image_path", this.imagePath);
     }
 }
