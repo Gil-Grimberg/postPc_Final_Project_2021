@@ -26,6 +26,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -121,82 +128,91 @@ public class signUpFragment extends Fragment {
 
         signUpButton.setOnClickListener(v ->
         {
-            if (!isMailUnique(mail.getText().toString()))
-            {
-                Toast.makeText(getContext(), "The mail you chose is already in use!", Toast.LENGTH_LONG).show();
-            }
+            boolean is_mail_unique = true;
+            ArrayList<User> users = new ArrayList<>();
+            Task<QuerySnapshot> result = this.appInstance.getDataManager().db.collection("Users").get();
+            result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(@NonNull QuerySnapshot documentSnapshots) {
+                    boolean is_mail_unique = true;
+                    if (!documentSnapshots.isEmpty())
+                    {
+                        users.addAll(documentSnapshots.toObjects(User.class));
+                        for (User user: users)
+                        {
+                            Log.d(null, "current mail: " + user.getMail());
+                            if (user.getMail().equals(mail.getText().toString()))
+                            {
+                                is_mail_unique = false;
+                            }
+                        }
+                    }
+                    if (!is_mail_unique)
+                    {
+                        Toast.makeText(getContext(), "The mail you chose is already in use!", Toast.LENGTH_LONG).show();
+                    }
+                    else if (password.getText().toString().equals(""))
+                    {
+                        Toast.makeText(getContext(), "Password cannot be empty!", Toast.LENGTH_LONG).show();
+                    }
 
-            else if (password.getText().toString().equals(""))
-            {
-                Toast.makeText(getContext(), "Password cannot be empty!", Toast.LENGTH_LONG).show();
-            }
+                    else if (password.getText().toString().length() != 8)
+                    {
+                        Toast.makeText(getContext(), "Password must contain 8 chars!", Toast.LENGTH_LONG).show();
+                    }
 
-            else if (password.getText().toString().length() != 8)
-            {
-                Toast.makeText(getContext(), "Password must contain 8 chars!", Toast.LENGTH_LONG).show();
-            }
+                    else if (userName.getText().toString().equals(""))
+                    {
+                        Toast.makeText(getContext(), "Username cannot be empty!", Toast.LENGTH_LONG).show();
+                    }
 
-            else if (userName.getText().toString().equals(""))
-            {
-                Toast.makeText(getContext(), "Username cannot be empty!", Toast.LENGTH_LONG).show();
-            }
+                    else if (!isBirthdayValid(birthday.getText().toString()))
+                    {
+                        Toast.makeText(getContext(), "Error: birthday format is MM/DD/YYYY", Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+                        if (imagePath.equals(""))
+                        {
+                            //todo:: put default profile picture
+                        }
 
-            else if (!isBirthdayValid(birthday.getText().toString()))
-            {
-                Toast.makeText(getContext(), "Error: birthday format is MM/DD/YYYY", Toast.LENGTH_LONG).show();
-            }
-            else
-            {
-                if (imagePath.equals(""))
-                {
-                    //todo:: put default profile picture
+                        User newUser = new User(userName.getText().toString(),
+                                password.getText().toString(),
+                                mail.getText().toString(),
+                                "",
+                                birthday.getText().toString(),
+                                breed.getText().toString(),
+                                city.getText().toString(),
+                                true,
+                                selfSummary.getText().toString());
+                        if (imagePath.equals(""))
+                        {
+
+                        }
+                        else
+                        {
+                            String remoteImgName = "profile_photos/" + newUser.getId();
+                            StorageReference storageReference = appInstance.getDataManager().storage.getReference();
+                            StorageReference imgRef = storageReference.child(remoteImgName);
+                            UploadTask uploadTask = imgRef.putFile(Uri.fromFile(new File(imagePath)));
+                            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    String downloadUrl = taskSnapshot.getStorage().getDownloadUrl().toString();
+                                    newUser.setPhoto(downloadUrl);
+                                    appInstance.getDataManager().updateSp(newUser.getId());
+                                    appInstance.getDataManager().addToUsers(newUser);
+                                    Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
+                                }
+                            });
+                        }
+
                 }
-
-                User newUser = new User(userName.getText().toString(),
-                                        password.getText().toString(),
-                                        mail.getText().toString(),
-                                        "",
-                                        birthday.getText().toString(),
-                                        breed.getText().toString(),
-                                        city.getText().toString(),
-                                        true,
-                                        selfSummary.getText().toString());
-                if (imagePath.equals(""))
-                {
-
-                }
-                else
-                {
-                    String remoteImgName = "profile_photos/" + newUser.getId();
-                    String downloadUrl = this.appInstance.getDataManager().uploadImgToStorageAndGetImgPath(imagePath, remoteImgName);
-                    newUser.setPhoto(downloadUrl);
-                }
-
-
-                this.appInstance.getDataManager().updateSp(newUser.getId());
-                this.appInstance.getDataManager().addToUsers(newUser);
-
-                Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(),getActivity(), "feed");
-
-            }
-
+            }});
         });
     }
 
-    private boolean isMailUnique(String mail)
-    {
-        ArrayList<User> users = this.appInstance.getDataManager().getAllUsers();
-        Log.d(null, "len of array:" + users.size());
-        for (User user: users)
-        {
-            Log.d(null, "current mail: " + user.getMail());
-            if (user.getMail().equals(mail))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
 
     private boolean isBirthdayValid(String birthday)
     {
