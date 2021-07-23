@@ -27,14 +27,17 @@ public class MainActivity extends AppCompatActivity {
         {
             dataManager = CentralBarkApp.getInstance().getDataManager();
         }
-
-
-        getSupportFragmentManager().
-                beginTransaction().
-                replace(screen.getId(), openingFragment).
-                addToBackStack(null).
+        if (savedInstanceState == null)
+        {
+            getSupportFragmentManager().
+                    beginTransaction().
+                    replace(screen.getId(), openingFragment).
+                    addToBackStack(null).
 //                replace(menu.getId(), menuFragment).
-                commit();
+                    commit();
+        }
+
+
 //
 //
 //        if (dataManager==null)

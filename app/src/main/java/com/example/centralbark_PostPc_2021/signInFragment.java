@@ -6,12 +6,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -45,25 +51,36 @@ public class signInFragment extends Fragment {
         logIn.setOnClickListener(v->{
             String enteredMail = mail.getText().toString();
             String enteredPassword = password.getText().toString();
-            User enteredUser = findUser(enteredMail, enteredPassword);
-            if(enteredUser == null){
-                incorrectLoginInfo.setVisibility(View.VISIBLE);
-            }
-            else{
-                enteredUser.setRememberMe(rememberMe.isChecked());
-                appInstance.getDataManager().updateSp(enteredUser.getId());
-                Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(),getActivity(), "feed");
-            }
-        });
-    }
-
-    public User findUser(String enteredMail, String enteredPassword){
-        ArrayList<User> users = this.appInstance.getDataManager().getAllUsers();
-        for (User user: users){
-            if (user.getMail().equals(enteredMail) && user.getPassword().equals(enteredPassword)){
-                return user;
-            }
-        }
-        return null;
-    }
-}
+            ArrayList<User> users = new ArrayList<>();
+            Task<QuerySnapshot> result = this.appInstance.getDataManager().db.collection("Users").get();
+            result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(@NonNull QuerySnapshot documentSnapshots) {
+                    User enteredUser = null;
+                    if (!documentSnapshots.isEmpty())
+                    {
+                        users.addAll(documentSnapshots.toObjects(User.class));
+                        for (User user: users)
+                        {
+                            if (user.getMail().equals(enteredMail) && user.getPassword().equals(enteredPassword))
+                            {
+                                enteredUser = user;
+                                break;
+                            }
+                        }
+                    }
+                    if(enteredUser == null){
+                        incorrectLoginInfo.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        enteredUser.setRememberMe(rememberMe.isChecked());
+                        appInstance.getDataManager().updateSp(enteredUser.getId());
+                        Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
+                    }
+        }}).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getContext(), "Error: couldn't connect to database", Toast.LENGTH_LONG).show();
+                }
+            });
+    });};};

@@ -25,33 +25,17 @@ public class openingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull  View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        signInButton = view.findViewById(R.id.sign_in_button_opening_screen);
+        signUpButton = view.findViewById(R.id.sign_un_button_opening_screen);
 
-        signUpFragment signUpFragment = (signUpFragment) getActivity().getSupportFragmentManager().findFragmentByTag("sign_up");
-        signInFragment signInFragment = (signInFragment) getActivity().getSupportFragmentManager().findFragmentByTag("sign_in");
-        if (signUpFragment != null)
+        signInButton.setOnClickListener(v ->
         {
-            Utils.moveBetweenFragments(R.id.the_screen, signUpFragment, getActivity(), "sign_up");
-        }
+            Utils.moveBetweenFragments(R.id.the_screen, new signInFragment(), getActivity(), "sign_in");
+        });
 
-        else if (signInFragment != null)
+        signUpButton.setOnClickListener(v ->
         {
-            Utils.moveBetweenFragments(R.id.the_screen, signInFragment, getActivity(), "sign_in");
+            Utils.moveBetweenFragments(R.id.the_screen, new signUpFragment(), getActivity(), "sign_up");
+        });
         }
-
-        else
-        {
-            signInButton = view.findViewById(R.id.sign_in_button_opening_screen);
-            signUpButton = view.findViewById(R.id.sign_un_button_opening_screen);
-
-            signInButton.setOnClickListener(v ->
-            {
-                Utils.moveBetweenFragments(R.id.the_screen, new signInFragment(), getActivity(), "sign_in");
-            });
-
-            signUpButton.setOnClickListener(v ->
-            {
-                Utils.moveBetweenFragments(R.id.the_screen, new signUpFragment(), getActivity(), "sign_up");
-            });
-        }
-    }
 }
