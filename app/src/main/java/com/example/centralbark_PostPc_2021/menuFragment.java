@@ -2,7 +2,6 @@ package com.example.centralbark_PostPc_2021;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -23,7 +22,7 @@ public class menuFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         searchButton = view.findViewById(R.id.searchImage_ImageView);
         tinderButton = view.findViewById(R.id.tinderButton_ImageButton_fragmentMatchAFriend);
@@ -32,7 +31,7 @@ public class menuFragment extends Fragment {
         profileButton = view.findViewById(R.id.profileButton_ImageButton_fragmentMyProfile);
 
         searchButton.setOnClickListener(v->
-                Utils.moveBetweenFragments(R.id.the_screen, new searchAcountFragment(), getActivity(), "search"));
+                Utils.moveBetweenFragments(R.id.the_screen, new searchAccountFragment(), getActivity(), "search"));
         tinderButton.setOnClickListener(v->
                 Utils.moveBetweenFragments(R.id.the_screen, new matchAFriendFragment(), getActivity(), "match_a_friend"));
         homeButton.setOnClickListener(v->

@@ -41,15 +41,14 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.RecyclerPost
         this.dataManager = CentralBarkApp.getInstance().getDataManager();
         this.feedFragment = feedFragment;
     }
-    @NonNull
     @NotNull
     @Override
-    public RecyclerPosts onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public RecyclerPosts onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         return null;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull RecyclerPosts holder, int position) {
+    public void onBindViewHolder(@NotNull RecyclerPosts holder, int position) {
 
     }
 

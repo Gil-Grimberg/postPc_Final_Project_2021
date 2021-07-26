@@ -10,33 +10,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 public class adapterSearchAccounts extends RecyclerView.Adapter<adapterSearchAccounts.rowSearchAccountsHolder> {
 
-    searchAcountFragment searchAccountFragment;
+    searchAccountFragment searchAccountFragment = new searchAccountFragment();
+    DataManager dataManager;
     Context context;
 
-    public adapterSearchAccounts(Context context, searchAcountFragment fragment){
+    public adapterSearchAccounts(Context context, DataManager dataManager){
         this.context = context;
-        this.searchAccountFragment = fragment;
+        this.dataManager = dataManager;
     }
 
-    @NonNull
+
     @Override
-    public rowSearchAccountsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public rowSearchAccountsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.row_search_accounts, parent, false);
         return new rowSearchAccountsHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull rowSearchAccountsHolder holder, int position) {
+    public void onBindViewHolder(rowSearchAccountsHolder holder, int position) {
         User userInRow = searchAccountFragment.getUsersList().get(position);
         // changing userInRow name
         holder.userName.setText(userInRow.getUsername());
@@ -44,10 +42,12 @@ public class adapterSearchAccounts extends RecyclerView.Adapter<adapterSearchAcc
         if(!userInRow.getPhoto().equals("default")){
             holder.profilePhoto.setImageURI(Uri.parse(userInRow.getPhoto()));
         }
+
         // make friend was pressed
         holder.makeFriend.setOnClickListener(v->{
             searchAccountFragment.addUserToPendingRequestList(userInRow);
             holder.makeFriend.setText("pending request");
+            notifyDataSetChanged();
         });
         //edit text was changed
         holder.editText.addTextChangedListener(new TextWatcher() {
@@ -71,7 +71,6 @@ public class adapterSearchAccounts extends RecyclerView.Adapter<adapterSearchAcc
                 }
             }
         });
-
     }
 
     @Override
@@ -86,7 +85,7 @@ public class adapterSearchAccounts extends RecyclerView.Adapter<adapterSearchAcc
         EditText editText;
 
         @SuppressLint("CutPasteId")
-        public rowSearchAccountsHolder(@NonNull  View itemView) {
+        public rowSearchAccountsHolder(View itemView) {
             super(itemView);
             userName = itemView.findViewById(R.id.userName_TextView);
             makeFriend = itemView.findViewById(R.id.makeFriend_AppCompatButton);
@@ -94,5 +93,4 @@ public class adapterSearchAccounts extends RecyclerView.Adapter<adapterSearchAcc
             editText = itemView.findViewById(R.id.editText_EditText);
         }
     }
-
 }

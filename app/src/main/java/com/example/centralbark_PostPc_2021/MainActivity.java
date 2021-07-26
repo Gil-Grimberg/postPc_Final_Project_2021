@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentContainerView menu = findViewById(R.id.menu_bar);
 
         openingFragment openingFragment = new openingFragment();
+        searchAccountFragment searchAccountFragment = new searchAccountFragment();
         menuFragment menuFragment = new menuFragment();
         if (dataManager==null)
         {
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
                     beginTransaction().
                     replace(screen.getId(), openingFragment).
                     addToBackStack(null).
-//                replace(menu.getId(), menuFragment).
+                    replace(menu.getId(), menuFragment).
                     commit();
         }
 
