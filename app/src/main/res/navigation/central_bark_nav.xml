@@ -74,9 +74,9 @@
     </fragment>
     <fragment
         android:id="@+id/searchAcountFragment"
-        android:name="com.example.centralbark_PostPc_2021.searchAcountFragment"
+        android:name="com.example.centralbark_PostPc_2021.searchAccountFragment"
         android:label="fragment_search_acount"
-        tools:layout="@layout/fragment_search_acount" >
+        tools:layout="@layout/fragment_search_account" >
         <action
             android:id="@+id/action_searchAcountFragment_to_otherProfileFragment"
             app:destination="@id/otherProfileFragment" />

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".searchAcountFragment">
+    tools:context=".searchAccountFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <androidx.appcompat.widget.AppCompatButton
@@ -55,9 +55,12 @@
         app:layout_constraintBottom_toBottomOf="@id/editText_EditText"
         />
 
-
-
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_SearchAccounts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/editText_EditText"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

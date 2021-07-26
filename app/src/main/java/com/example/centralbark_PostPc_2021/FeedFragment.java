@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
-import java.util.ArrayList;
-
 public class FeedFragment extends Fragment {
     private DataManager dataManager;
     private ImageView notification;
@@ -25,7 +23,7 @@ public class FeedFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         // Inflate the layout for this fragment
         super.onViewCreated(view, savedInstanceState);
         notification = view.findViewById(R.id.notification_button_feed_screen);

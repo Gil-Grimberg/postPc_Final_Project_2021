@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -36,7 +35,7 @@ public class signInFragment extends Fragment {
         }
     }
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         super.onViewCreated(view, savedInstanceState);
         password = view.findViewById(R.id.password_edit_text_sign_in_screen);
@@ -55,7 +54,7 @@ public class signInFragment extends Fragment {
             Task<QuerySnapshot> result = this.appInstance.getDataManager().db.collection("Users").get();
             result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
-                public void onSuccess(@NonNull QuerySnapshot documentSnapshots) {
+                public void onSuccess(QuerySnapshot documentSnapshots) {
                     User enteredUser = null;
                     if (!documentSnapshots.isEmpty())
                     {
@@ -79,7 +78,7 @@ public class signInFragment extends Fragment {
                     }
         }}).addOnFailureListener(new OnFailureListener() {
                 @Override
-                public void onFailure(@NonNull Exception e) {
+                public void onFailure(Exception e) {
                     Toast.makeText(getContext(), "Error: couldn't connect to database", Toast.LENGTH_LONG).show();
                 }
             });

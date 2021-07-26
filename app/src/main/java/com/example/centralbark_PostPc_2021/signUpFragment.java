@@ -10,17 +10,10 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -61,7 +54,7 @@ public class signUpFragment extends Fragment {
 
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         userName = view.findViewById(R.id.user_name_edit_text_sign_up_screen);
         password =  view.findViewById(R.id.password_edit_text_sign_up);
@@ -120,7 +113,7 @@ public class signUpFragment extends Fragment {
             Task<QuerySnapshot> result = this.appInstance.getDataManager().db.collection("Users").get();
             result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
-                public void onSuccess(@NonNull QuerySnapshot documentSnapshots) {
+                public void onSuccess(QuerySnapshot documentSnapshots) {
                     boolean is_mail_unique = true;
                     if (!documentSnapshots.isEmpty())
                     {
@@ -193,7 +186,7 @@ public class signUpFragment extends Fragment {
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
-                                public void onFailure(@NonNull Exception e) {
+                                public void onFailure(Exception e) {
                                     newUser.setPhoto("default");
                                     appInstance.getDataManager().updateSp(newUser.getId());
                                     appInstance.getDataManager().addToUsers(newUser);
