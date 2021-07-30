@@ -22,19 +22,23 @@ public class MainActivity extends AppCompatActivity {
         FragmentContainerView menu = findViewById(R.id.menu_bar);
 
         openingFragment openingFragment = new openingFragment();
+        searchAccountFragment searchAccountFragment = new searchAccountFragment();
         menuFragment menuFragment = new menuFragment();
         if (dataManager==null)
         {
             dataManager = CentralBarkApp.getInstance().getDataManager();
         }
+        if (savedInstanceState == null)
+        {
+            getSupportFragmentManager().
+                    beginTransaction().
+                    replace(screen.getId(), openingFragment).
+                    addToBackStack(null).
+                    replace(menu.getId(), menuFragment).
+                    commit();
+        }
 
 
-        getSupportFragmentManager().
-                beginTransaction().
-                replace(screen.getId(), openingFragment).
-                addToBackStack(null).
-//                replace(menu.getId(), menuFragment).
-                commit();
 //
 //
 //        if (dataManager==null)

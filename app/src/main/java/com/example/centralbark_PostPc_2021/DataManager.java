@@ -2,9 +2,7 @@ package com.example.centralbark_PostPc_2021;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
 import android.net.Uri;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,25 +12,17 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class DataManager {
 
@@ -103,7 +93,7 @@ public class DataManager {
         ArrayList<Post> myPosts = new ArrayList<>();
         this.db.collection("Users").document(idToFindPostsFor).collection("myPosts").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+            public void onComplete(Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                         Post obj = document.toObject(Post.class);
@@ -135,7 +125,7 @@ public class DataManager {
         Task<QuerySnapshot> result = this.db.collection("Users").get();
         result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(@NonNull QuerySnapshot documentSnapshots) {
+            public void onSuccess(QuerySnapshot documentSnapshots) {
                 if (!documentSnapshots.isEmpty())
                 {
                     myUsers.addAll(documentSnapshots.toObjects(User.class));
@@ -144,7 +134,7 @@ public class DataManager {
         })
         .addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onFailure(@NonNull Exception e) {
+            public void onFailure(Exception e) {
                 Toast.makeText(context, "Failed to read from db", Toast.LENGTH_LONG).show();
             }
         });
@@ -156,7 +146,7 @@ public class DataManager {
         ArrayList<Notification> myNotifications = new ArrayList<>();
         this.db.collection("Users").document(this.userId).collection("myNotifications").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+            public void onComplete(Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                         myNotifications.add(document.toObject(Notification.class));
