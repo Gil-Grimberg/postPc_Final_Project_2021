@@ -104,6 +104,11 @@ public class AdapterPosts extends RecyclerView.Adapter<AdapterPosts.RecyclerPost
         // extract the current post
         Post curPost = allRelevantPostsFinal.get(position);
 
+        // set the user name
+        holder.userName.setText(curPost.getUsername());
+
+        //todo: continue setting
+
         // set users profile image
         String profilrImName = "profile_photos/" + curPost.getUserId() + "jpg";
         StorageReference profileImag = this.dataManager.storage.getReference().child(profilrImName);

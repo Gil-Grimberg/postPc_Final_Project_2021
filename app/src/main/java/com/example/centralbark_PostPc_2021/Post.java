@@ -14,7 +14,7 @@ public class Post implements Serializable {
     private String userId;
     private String postId;
     private String username;
-    private String userProfilePhoto;
+    private String userProfilePhoto; //todo: SHIR: why we need this here?
     private String uploadedPhoto;
     private String content;
     private Integer numOfLikes;
