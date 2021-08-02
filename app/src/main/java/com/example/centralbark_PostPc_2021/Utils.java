@@ -1,5 +1,6 @@
 package com.example.centralbark_PostPc_2021;
 
+import android.Manifest;
 import android.app.Activity;
 import android.view.View;
 
@@ -15,8 +16,18 @@ import java.util.List;
 public class Utils {
 
 
+    static final String[] PERMISSIONS =
+            {
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+            };
+
     static List<String> breeds = Arrays.asList("pitbull", "pug", "golden", "labrador", "german shepherd", "mixed");
     static List<String> cities = Arrays.asList("jerusalem", "rishon letzion", "tel aviv", "street dog");
+
+    static final int LOCATION_SERVICE_ID = 175;
+    static final String ACTION_START_LOCATION_SERVICE = "startLocationService";
+    static final String ACTION_STOP_LOCATION_SERVICE = "stopLocationService";
 
     public static List<String> getBreeds() {
         return breeds;
