@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     DataManager dataManager = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,11 +20,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         FragmentContainerView screen = findViewById(R.id.the_screen);
-        FragmentContainerView menu = findViewById(R.id.menu_bar);
 
         openingFragment openingFragment = new openingFragment();
-        searchAccountFragment searchAccountFragment = new searchAccountFragment();
-        menuFragment menuFragment = new menuFragment();
         if (dataManager==null)
         {
             dataManager = CentralBarkApp.getInstance().getDataManager();
@@ -34,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
                     beginTransaction().
                     replace(screen.getId(), openingFragment).
                     addToBackStack(null).
-                    replace(menu.getId(), menuFragment).
                     commit();
         }
 

@@ -182,6 +182,7 @@ public class signUpFragment extends Fragment {
                                     appInstance.getDataManager().updateSp(newUser.getId());
                                     appInstance.getDataManager().addToUsers(newUser);
                                     Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
+                                    Utils.moveBetweenFragments(R.id.menu_bar, new menuFragment(), getActivity(), "menu");
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -191,6 +192,7 @@ public class signUpFragment extends Fragment {
                                     appInstance.getDataManager().updateSp(newUser.getId());
                                     appInstance.getDataManager().addToUsers(newUser);
                                     Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
+                                    Utils.moveBetweenFragments(R.id.menu_bar, new menuFragment(), getActivity(), "menu");
                                 }
                             });
                         }

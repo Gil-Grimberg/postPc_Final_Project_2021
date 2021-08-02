@@ -30,7 +30,7 @@ public class signInFragment extends Fragment {
 
     public signInFragment() {
         super(R.layout.fragment_sign_in);
-        if(appInstance==null){
+        if(appInstance == null){
             appInstance = CentralBarkApp.getInstance();
         }
     }
@@ -46,6 +46,13 @@ public class signInFragment extends Fragment {
 
         incorrectLoginInfo.setVisibility(View.INVISIBLE); // make the incorrect login warning invisible
         rememberMe.setChecked(true); // make thr remember me value true as default
+
+        String[] userInfo = appInstance.getDataManager().getInfoForSignIn();
+        if (userInfo != null)
+        {
+            mail.setText(userInfo[0]);
+            password.setText(userInfo[1]);
+        }
 
         logIn.setOnClickListener(v->{
             String enteredMail = mail.getText().toString();
@@ -73,8 +80,17 @@ public class signInFragment extends Fragment {
                     }
                     else{
                         enteredUser.setRememberMe(rememberMe.isChecked());
-                        appInstance.getDataManager().updateSp(enteredUser.getId());
+                        if (rememberMe.isChecked())
+                        {
+                            appInstance.getDataManager().updateSpForSignIn(enteredUser.getId(), enteredMail, enteredPassword);
+                        }
+                        else
+                        {
+                            appInstance.getDataManager().updateSp(enteredUser.getId());
+                            appInstance.getDataManager().deleteSignInInfoFromSp();
+                        }
                         Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
+                        Utils.moveBetweenFragments(R.id.menu_bar, new menuFragment(), getActivity(), "menu");
                     }
         }}).addOnFailureListener(new OnFailureListener() {
                 @Override
