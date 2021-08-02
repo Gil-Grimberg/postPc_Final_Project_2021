@@ -2,6 +2,7 @@ package com.example.centralbark_PostPc_2021;
 
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
@@ -98,10 +99,26 @@ public class Post implements Serializable {
     }
 }
 
-//class SortPosts implements Comparator<Post> {
-//    public int compare(Post post1, Post post2){
-//        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-//        Date post1date = format.parse(post1.getTimePosted());
-//        if(post1.getTimePosted()) //todo: filter by time need to parse
-//    }
-//}
+class SortPosts implements Comparator<Post> {
+    public int compare(Post post1, Post post2){
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        Date post1date;
+        Date post2date;
+        try {
+            post1date = format.parse(post1.getTimePosted());
+            post2date = format.parse(post2.getTimePosted());
+            if(post1date.before(post2date)){
+                return -1;
+            }
+            if(post1date.after(post2date)){
+                return 1;
+            }
+            else{
+                return 0;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0; // default value for a case we cant parse the date
+    }
+}

@@ -38,9 +38,9 @@ public class DataManager {
         this.context = context;
         this.sp = context.getSharedPreferences("local_db", Context.MODE_PRIVATE);
         this.userId = initializeFromSp();
-        if (this.userId.equals("noId")) {
-            //todo: go to main sign Up/In screen!
-        }
+//        if (this.userId.equals("noId")) {
+//            //todo: go to main sign Up/In screen!
+//        }
         app = FirebaseApp.initializeApp(this.context);
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -125,74 +125,74 @@ public class DataManager {
 
 
 
-    public ArrayList<Post> getPostsById(String idToFindPostsFor) {
-        ArrayList<Post> myPosts = new ArrayList<>();
-        this.db.collection("Users").document(idToFindPostsFor).collection("myPosts").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                        Post obj = document.toObject(Post.class);
-                        myPosts.add(obj);
-                    }
-                }
-            }
-        });
-        return myPosts;
-    }
+//    public ArrayList<Post> getPostsById(String idToFindPostsFor) {
+//        ArrayList<Post> myPosts = new ArrayList<>();
+//        this.db.collection("Users").document(idToFindPostsFor).collection("myPosts").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+//                        Post obj = document.toObject(Post.class);
+//                        myPosts.add(obj);
+//                    }
+//                }
+//            }
+//        });
+//        return myPosts;
+//    }
 
-    public User getUserById(String idToFind) { // todo: check if works
-        User[] user = new User[1];
-        this.db.collection("Users").document(idToFind).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                user[0] = documentSnapshot.toObject(User.class);
-            }
-        });
-        return user[0];
-    }
-
-
-
-    public ArrayList<User> getAllUsers()
-            //todo: we can't use this function probably :( need to wait for Reem's response
-    {
-        ArrayList<User> myUsers = new ArrayList<>();
-        Task<QuerySnapshot> result = this.db.collection("Users").get();
-        result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot documentSnapshots) {
-                if (!documentSnapshots.isEmpty())
-                {
-                    myUsers.addAll(documentSnapshots.toObjects(User.class));
-                }
-            }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(Exception e) {
-                Toast.makeText(context, "Failed to read from db", Toast.LENGTH_LONG).show();
-            }
-        });
-        return myUsers;
-    }
+//    public User getUserById(String idToFind) { // todo: check if works
+//        User[] user = new User[1];
+//        this.db.collection("Users").document(idToFind).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                user[0] = documentSnapshot.toObject(User.class);
+//            }
+//        });
+//        return user[0];
+//    }
 
 
-    public ArrayList<Notification> getNotifications() {
-        ArrayList<Notification> myNotifications = new ArrayList<>();
-        this.db.collection("Users").document(this.userId).collection("myNotifications").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                        myNotifications.add(document.toObject(Notification.class));
-                    }
-                }
-            }
-        });
 
-        return myNotifications;
-    }
+//    public ArrayList<User> getAllUsers()
+//            //todo: we can't use this function probably :( need to wait for Reem's response
+//    {
+//        ArrayList<User> myUsers = new ArrayList<>();
+//        Task<QuerySnapshot> result = this.db.collection("Users").get();
+//        result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//            @Override
+//            public void onSuccess(QuerySnapshot documentSnapshots) {
+//                if (!documentSnapshots.isEmpty())
+//                {
+//                    myUsers.addAll(documentSnapshots.toObjects(User.class));
+//                }
+//            }
+//        })
+//        .addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(Exception e) {
+//                Toast.makeText(context, "Failed to read from db", Toast.LENGTH_LONG).show();
+//            }
+//        });
+//        return myUsers;
+//    }
+
+
+//    public ArrayList<Notification> getNotifications() {
+//        ArrayList<Notification> myNotifications = new ArrayList<>();
+//        this.db.collection("Users").document(this.userId).collection("myNotifications").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+//                        myNotifications.add(document.toObject(Notification.class));
+//                    }
+//                }
+//            }
+//        });
+//
+//        return myNotifications;
+//    }
     /**
      * @param post
      * @return a string representing the post with $ as seperators
