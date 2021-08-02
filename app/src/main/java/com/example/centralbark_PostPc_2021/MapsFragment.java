@@ -46,6 +46,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
             };
+
+    final LatLng[] DOG_PARKS =
+            {
+                    new LatLng(31.781896, 35.20541), // Sacher park
+                    new LatLng(31.772408, 35.190774) // Ramat Beit Hakerem Park
+            };
+
     ActivityResultContracts.RequestMultiplePermissions requestMultiplePermissionsContract;
     ActivityResultLauncher<String[]> multiplePermissionActivityResultLauncher;
     SupportMapFragment supportMapFragment;
