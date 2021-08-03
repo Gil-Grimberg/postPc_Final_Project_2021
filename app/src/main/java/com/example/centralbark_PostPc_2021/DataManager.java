@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -58,7 +59,49 @@ public class DataManager {
         this.userId = initializeFromSp();
     }
 
-    //todo: delete from sp? from db?
+    public void updateSpForSignIn(String updatedUserId, String userMail, String userPassword)
+    {
+        SharedPreferences.Editor editor = this.sp.edit();
+        editor.putString("userId", updatedUserId);
+        editor.putString("userMail", userMail);
+        editor.putString("userPassword", userPassword);
+        editor.apply();
+        this.userId = initializeFromSp();
+    }
+
+    public String[] getInfoForSignIn()
+            // notice - if no info, returns null
+    {
+        String mail = sp.getString("userMail", null);
+        String password = sp.getString("userPassword", null);
+        if (mail == null || password == null)
+        {
+            return null;
+        }
+
+        else return new String[]{
+                mail,
+                password
+        };
+
+    }
+
+    public void deleteSignInInfoFromSp()
+    {
+        SharedPreferences.Editor editor = this.sp.edit();
+        editor.remove("userMail");
+        editor.remove("userPassword");
+        editor.apply();
+    }
+
+    public void updateUserLocation(String userId, GeoPoint location)
+    {
+        this.db.collection("Users")
+                .document(userId)
+                .update("location", location);
+    }
+
+
 
     public String uploadImgToStorageAndGetImgPath(String localImgPath, String RemoteImageName)
     {

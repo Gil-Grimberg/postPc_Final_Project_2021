@@ -1,5 +1,7 @@
 package com.example.centralbark_PostPc_2021;
 
+import com.google.firebase.firestore.GeoPoint;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +26,7 @@ public class User implements Serializable {
     private ArrayList<String> dislikeUsers;
     private ArrayList<String> pendingRequests;
     private String selfSummary = "";
+    private GeoPoint location;
 
     public User()
     {
@@ -32,11 +35,12 @@ public class User implements Serializable {
         this.likedUsers = new ArrayList<>();
         this.dislikeUsers = new ArrayList<>();
         this.pendingRequests = new ArrayList<>();
+        this.location = null;
     }
 
     public User(String username, String password, String mail,
                 String photo, String birthday, String breed, String city,
-                boolean rememberMe, String selfSummary)
+                boolean rememberMe, String selfSummary, GeoPoint location)
     {
         this.id = UUID.randomUUID().toString();
         this.friendList = new ArrayList<>();
@@ -52,6 +56,7 @@ public class User implements Serializable {
         this.city = Utils.parseCity(city);
         this.rememberMe = rememberMe;
         this.selfSummary = selfSummary;
+        this.location = location;
     }
 
     public void setAllowLocation(Boolean allowLocation) {
@@ -115,6 +120,14 @@ public class User implements Serializable {
     }
 
     public void setPendingRequests(ArrayList<String> pendingRequests) { this.pendingRequests = pendingRequests; }
+
+    public void setLocation(GeoPoint location) {
+        this.location = location;
+    }
+
+    public GeoPoint getLocation() {
+        return location;
+    }
 
     public ArrayList<String> getDislikeUsers() {
         return dislikeUsers;

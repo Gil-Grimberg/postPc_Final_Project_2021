@@ -41,7 +41,7 @@ public class signUpFragment extends Fragment {
     EditText selfSummary;
     Button uploadPhotoButton;
     Button signUpButton;
-    String imagePath;
+    String imagePath = "";
     TextView imageName;
 
 
@@ -160,13 +160,16 @@ public class signUpFragment extends Fragment {
                                 breed.getText().toString(),
                                 city.getText().toString(),
                                 true,
-                                selfSummary.getText().toString());
+                                selfSummary.getText().toString(),
+                                null);
                         if (imagePath.equals(""))
                         {
                             newUser.setPhoto("default");
                             appInstance.getDataManager().updateSp(newUser.getId());
+                            appInstance.getDataManager().deleteSignInInfoFromSp();
                             appInstance.getDataManager().addToUsers(newUser);
                             Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
+                            Utils.moveBetweenFragments(R.id.menu_bar, new menuFragment(), getActivity(), "menu");
                         }
                         else
                         {
@@ -180,8 +183,10 @@ public class signUpFragment extends Fragment {
                                     String downloadUrl = taskSnapshot.getStorage().getDownloadUrl().toString();
                                     newUser.setPhoto(downloadUrl);
                                     appInstance.getDataManager().updateSp(newUser.getId());
+                                    appInstance.getDataManager().deleteSignInInfoFromSp();
                                     appInstance.getDataManager().addToUsers(newUser);
                                     Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
+                                    Utils.moveBetweenFragments(R.id.menu_bar, new menuFragment(), getActivity(), "menu");
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -189,8 +194,10 @@ public class signUpFragment extends Fragment {
                                 public void onFailure(Exception e) {
                                     newUser.setPhoto("default");
                                     appInstance.getDataManager().updateSp(newUser.getId());
+                                    appInstance.getDataManager().deleteSignInInfoFromSp();
                                     appInstance.getDataManager().addToUsers(newUser);
                                     Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
+                                    Utils.moveBetweenFragments(R.id.menu_bar, new menuFragment(), getActivity(), "menu");
                                 }
                             });
                         }
