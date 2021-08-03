@@ -231,13 +231,16 @@ public class matchAFriendFragment extends Fragment {
                                     return;
                                 }
                             }
-                            Toast.makeText(getContext(), "passed over all users, there isn't any new friend to present", Toast.LENGTH_LONG).show();
-                            // todo: if there are no new friends to offer, change to blank page with appropriate message
+                            // if there are no new friends to offer, change to blank page with appropriate message
+                            Utils.moveBetweenFragments(R.id.the_screen, new matchAFriendFragmentNoFriendsFragment(), getActivity(), "match_a_friend_no_friends");
+
 
                         }
                     } else {
-                        Toast.makeText(getContext(), "There are no users at all! there isn't any new friend to present", Toast.LENGTH_LONG).show();
-                        // todo: if there are no new friends to offer, change to blank page with appropriate message
+//                        Toast.makeText(getContext(), "There are no users at all! there isn't any new friend to present", Toast.LENGTH_LONG).show();
+                        // if there are no new friends to offer, change to blank page with appropriate message
+                        Utils.moveBetweenFragments(R.id.the_screen, new matchAFriendFragmentNoFriendsFragment(), getActivity(), "match_a_friend_no_friends");
+
 
                     }
                 }
