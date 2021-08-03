@@ -89,7 +89,7 @@ public class matchAFriendFragmentNoFriendsFragment extends Fragment {
                                 if (me.getLikedUsers().contains(recommended.getId()) || me.getDislikeUsers().contains(recommended.getId()) || me.getId().equals(recommended.getId())) {
 
                                 } else {
-                                    // todo: switch back to matchAFriendFragment
+                                    // switch back to matchAFriendFragment
                                     Utils.moveBetweenFragments(R.id.the_screen, new matchAFriendFragment(), getActivity(), "match_a_friend");
                                 }
                             }
