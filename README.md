@@ -36,18 +36,25 @@ after we uploaded it successfully, we an get the download url (although we can a
 
 ## in order to download the image to a local file:
 ```
-StorageReference profileImag = "profile_photos/" + user.getId();
-File localFile = File.createTempFile("images", "jpg");
-profileImag.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+String postImName = "post_photos/" + postId + ".jpeg";
+StorageReference postImag = dataManager.storage.getReference().child(postImName);
+File localPostImFile = null;
+try {
+    localPostImFile = File.createTempFile("post_photos", "jpeg");
+} catch (IOException e) {
+    e.printStackTrace();
+}
+File finalLocalPostImFile = localPostImFile;
+postImag.getFile(localPostImFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
     @Override
     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-       // Local temp file has been created
+        holder.postIm.setImageURI(Uri.fromFile(finalLocalPostImFile));
     }
 }).addOnFailureListener(new OnFailureListener() {
-   @Override
-   public void onFailure(@NonNull Exception exception) {
-       // Handle any errors
-   }
+    @Override
+    public void onFailure(@NonNull Exception exception) {
+        // todo: something todo?
+    }
 });
 ```
 

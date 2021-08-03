@@ -2,43 +2,45 @@ package com.example.centralbark_PostPc_2021;
 
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Locale;
 import java.util.UUID;
 
 public class Post implements Serializable {
 
     private String userId;
     private String postId;
-    private String username;
-    private String userProfilePhoto;
+    private String userName;
     private String uploadedPhoto;
     private String content;
     private Integer numOfLikes;
+    private ArrayList<String> usersLikesLst;
     private String timePosted;
+    private ArrayList<String> friendList;
 
     public Post(){}
 
-    public Post(String userId, String username, String userProfilePhoto, String uploadedPhoto,String content, Integer numOfLikes, String timePosted){
+    public Post(String userId, String userName, String userProfilePhoto, String uploadedPhoto, String content, Integer numOfLikes, String timePosted){
         this.userId = userId;
         this.postId = UUID.randomUUID().toString();
-        this.username = username;
-        this.userProfilePhoto = userProfilePhoto;
+        this.userName = userName;
         this.uploadedPhoto = uploadedPhoto;
         this.content = content;
         this.numOfLikes = numOfLikes;
-        this.timePosted = timePosted; // todo: when creating new post need to send SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-
+        this.usersLikesLst = new ArrayList<>();
+        this.timePosted = timePosted; // todo: when creating new post need to send SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.friendList = new ArrayList<>();
     }
 
     public String getContent() {
         return content;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
     public String getTimePosted() {
@@ -53,10 +55,6 @@ public class Post implements Serializable {
         return uploadedPhoto;
     }
 
-    public String getUserProfilePhoto() {
-        return userProfilePhoto;
-    }
-
     public String getPostId() {
         return postId;
     }
@@ -65,12 +63,20 @@ public class Post implements Serializable {
         return userId;
     }
 
+    public ArrayList<String> getFriendList() {
+        return friendList;
+    }
+
+    public ArrayList<String> getUsersLikesLst() {
+        return usersLikesLst;
+    }
+
     public void setContent(String content) {
         this.content = content;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public void setNumOfLikes(Integer numOfLikes) {
@@ -93,15 +99,61 @@ public class Post implements Serializable {
         this.userId = userId;
     }
 
-    public void setUserProfilePhoto(String userProfilePhoto) {
-        this.userProfilePhoto = userProfilePhoto;
+    public void setUsersLikesLst(ArrayList<String> usersLikesLst) {
+        this.usersLikesLst = usersLikesLst;
+    }
+
+    public void setFriendList(ArrayList<String> friendList) {
+        this.friendList = friendList;
+    }
+
+    public boolean isUserLikesPost(String userId){
+        if(this.usersLikesLst==null){ // todo: maybe delete, created this patch because i created a post throw the db
+            this.usersLikesLst = new ArrayList<>();
+            return false;
+        }
+
+        for(String id: this.usersLikesLst){
+            if (id.equals(userId)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addLike(String userId){
+        this.numOfLikes+=1;
+        this.usersLikesLst.add(userId);
+    }
+
+    public void removeLike(String userId){
+        this.numOfLikes-=1;
+        this.usersLikesLst.remove(userId);
+    }
+    public Date parseStringToDate() throws ParseException {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.parse(this.timePosted);
     }
 }
 
-//class SortPosts implements Comparator<Post> {
-//    public int compare(Post post1, Post post2){
-//        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-//        Date post1date = format.parse(post1.getTimePosted());
-//        if(post1.getTimePosted()) //todo: filter by time need to parse
-//    }
-//}
+class SortPosts implements Comparator<Post> {
+    public int compare(Post post1, Post post2){
+        try {
+            Date post1date = post1.parseStringToDate();
+            Date post2date = post2.parseStringToDate();
+            if(post1date.before(post2date)){
+                return -1;
+            }
+            if(post1date.after(post2date)){
+                return 1;
+            }
+            else{
+                return 0;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0; // default value for a case we cant parse the date
+
+    }
+}

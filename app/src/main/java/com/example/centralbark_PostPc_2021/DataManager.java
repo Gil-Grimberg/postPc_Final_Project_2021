@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,9 +37,9 @@ public class DataManager {
         this.context = context;
         this.sp = context.getSharedPreferences("local_db", Context.MODE_PRIVATE);
         this.userId = initializeFromSp();
-        if (this.userId.equals("noId")) {
-            //todo: go to main sign Up/In screen!
-        }
+//        if (this.userId.equals("noId")) {
+//            //todo: go to main sign Up/In screen!
+//        }
         app = FirebaseApp.initializeApp(this.context);
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -205,8 +203,8 @@ public class DataManager {
      * @return a string representing the post with $ as seperators
      */
     public String convertPostToString(Post post) { //todo: probably unnecessary
-        return post.getUserId() + separator + post.getPostId() + separator + post.getUsername() + separator +
-                post.getUserProfilePhoto() + separator + post.getUploadedPhoto() + separator +
+        return post.getUserId() + separator + post.getPostId() + separator + post.getUserName() + separator +
+                post.getFriendList()+ post.getUsersLikesLst() + separator + post.getUploadedPhoto() + separator +
                 post.getContent() + separator + post.getNumOfLikes().toString() + separator + post.getTimePosted().toString();
     }
 
