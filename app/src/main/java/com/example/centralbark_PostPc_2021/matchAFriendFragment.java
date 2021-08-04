@@ -1,5 +1,6 @@
 package com.example.centralbark_PostPc_2021;
 
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -21,7 +22,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,6 +44,7 @@ public class matchAFriendFragment extends Fragment {
     TextView myName;
     TextView myDetailsDots;
     TextView aboutMe;
+    ImageView profileImg;
     ImageView dislike;
     ImageView like;
     String otherId;
@@ -63,7 +69,7 @@ public class matchAFriendFragment extends Fragment {
         aboutMe = view.findViewById(R.id.about_me_tinder);
         dislike = view.findViewById(R.id.x_view_tinder);
         like = view.findViewById(R.id.v_view_tinder);
-
+        profileImg = view.findViewById(R.id.dog_image_tinder);
         String myId = appInstance.getDataManager().getMyId();
 
 //        ArrayList<User> users = new ArrayList<>();
@@ -174,6 +180,33 @@ public class matchAFriendFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void renderUI(User user) {
+
+        // download and show profile image
+
+        String photoAddress = "profile_photos/" + user.getId() + ".jpeg";
+
+            StorageReference profileImag = appInstance.getDataManager().storage.getReference().child(photoAddress);
+            File localProfileImFile = null;
+            try {
+                localProfileImFile = File.createTempFile("profile_photos", "jpeg");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            File finalLocalProfileImFile = localProfileImFile;
+            profileImag.getFile(localProfileImFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    profileImg.setImageURI(Uri.fromFile(finalLocalProfileImFile));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    profileImg.setImageResource(R.drawable.default_dog);
+                }
+            });
+
+
+
         myName.setText(user.getUsername());
         String breed = user.getBreed();
         String city = user.getCity();
@@ -211,10 +244,8 @@ public class matchAFriendFragment extends Fragment {
 //                        User recommended = users.get(randomIndex);
                         User me = new User();
                         boolean foundMe = false;
-                        for (User user:users)
-                        {
-                            if (user.getId().equals(appInstance.getDataManager().getMyId()))
-                            {
+                        for (User user : users) {
+                            if (user.getId().equals(appInstance.getDataManager().getMyId())) {
                                 me = user;
                                 foundMe = true;
                                 break;
