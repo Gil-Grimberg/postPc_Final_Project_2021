@@ -132,7 +132,6 @@ public class DataManager {
     }
 
 
-
     public ArrayList<Post> getPostsById(String idToFindPostsFor) {
         ArrayList<Post> myPosts = new ArrayList<>();
         this.db.collection("Users").document(idToFindPostsFor).collection("myPosts").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
