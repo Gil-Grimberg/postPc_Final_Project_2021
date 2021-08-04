@@ -16,4 +16,6 @@
     <string name="log_me_in">Log Me In !</string>
     <string name="remember_me">Remember Me</string>
     <string name="bullet"> \u2022 </string>
+    <string name="new_post">New Post</string>
+    <string name="write_cation_here">Write Cation Here...</string>
 </resources>
