@@ -192,5 +192,14 @@ public class User implements Serializable {
     }
 
     public ArrayList<String> getPendingRequests() { return pendingRequests; }
+
+    public void addToLikedList(String otherId)
+    {
+        this.likedUsers.add(otherId);
+    }
+    public void addToDislikedList(String otherId)
+    {
+        this.dislikeUsers.add(otherId);
+    }
 }
 
