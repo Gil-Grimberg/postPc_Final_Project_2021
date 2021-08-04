@@ -84,21 +84,10 @@ public class AddPostFragment extends Fragment {
                             picturePath = cursor.getString(columnIndex);
                             String[] picturePathSplit = picturePath.split("\\.");
                             fileType = picturePathSplit[picturePathSplit.length-1];
-//                            Picasso.get().load("file://"+picturePath).into(uploadIm);
-//                            image = new File(picturePath);
-//                            if(image.exists()){
-//                                uploadIm.setImageURI(Uri.fromFile(image));
-//                            }
-//                            Glide
-//                                    .with(getActivity())
-//                                    .load(picturePath)
-//                                    .centerCrop()
-//                                    .into(uploadIm);
-                            Bitmap bm = BitmapFactory.decodeFile(picturePath);
-
-                            uploadIm.setImageBitmap(bm);
-                            uploadIm.invalidate();
-
+                            image = new File(picturePath);
+                            if(image.exists()){
+                                uploadIm.setImageURI(Uri.fromFile(image));
+                            }
                             cursor.close();
                         }
                     }
@@ -112,23 +101,7 @@ public class AddPostFragment extends Fragment {
             upLoadLauncher.launch(uploadIntent);
 
         });
-//        this.caption.bringToFront();
-//        this.caption.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
+
 
         // upload post button
         this.uploadPostButton.setOnClickListener(v -> {
