@@ -15,4 +15,6 @@
     <string name="sign_up">Sign Up</string>
     <string name="log_me_in">Log Me In !</string>
     <string name="remember_me">Remember Me</string>
+    <string name="new_post">New Post</string>
+    <string name="write_cation_here">Write Cation Here...</string>
 </resources>

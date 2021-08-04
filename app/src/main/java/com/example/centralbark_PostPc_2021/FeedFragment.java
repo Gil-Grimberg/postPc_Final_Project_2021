@@ -148,11 +148,10 @@ public class FeedFragment extends Fragment {
                 }
 
                 // set users profile image
-                String profilrImName = "profile_photos/" + model.getUserId() + ".jpeg";
-                StorageReference profileImag = dataManager.storage.getReference().child(profilrImName);
+                StorageReference profileImag = dataManager.storage.getReference().child(model.getUserProfilePhoto());
                 File localProfileImFile = null;
                 try {
-                    localProfileImFile = File.createTempFile("profile_photos", "jpeg");
+                    localProfileImFile = File.createTempFile("profile_photos", "g");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -170,11 +169,10 @@ public class FeedFragment extends Fragment {
                 });
 
                 // set users post image
-                String postImName = "post_photos/" + model.getPostId() + ".jpeg";
-                StorageReference postImag = dataManager.storage.getReference().child(postImName);
+                StorageReference postImag = dataManager.storage.getReference().child(model.getUploadedPhoto());
                 File localPostImFile = null;
                 try {
-                    localPostImFile = File.createTempFile("post_photos", "jpeg");
+                    localPostImFile = File.createTempFile("post_photos", "g");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -195,6 +193,11 @@ public class FeedFragment extends Fragment {
 
         this.recyclerViewPosts.setLayoutManager(new LinearLayoutManager(this.getContext(),RecyclerView.VERTICAL,false));
         this.recyclerViewPosts.setAdapter(postsAdapter);
+
+        // move to add post screen
+        this.addPostButton.setOnClickListener(v -> {
+            Utils.moveBetweenFragments(R.id.the_screen, new AddPostFragment(), getActivity(), "add_post");
+        });
     }
 
 //    public List<Post> findAllRelevantPosts(){

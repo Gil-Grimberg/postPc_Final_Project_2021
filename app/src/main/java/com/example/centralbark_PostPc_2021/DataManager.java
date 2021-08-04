@@ -118,10 +118,12 @@ public class DataManager {
     }
 
     public void addToPost(Post post) {
-        this.db.collection("Users").document(this.userId).collection("myPosts").document(post.getPostId()).set(post);
+        // update or add post to firebase
+        this.db.collection("Posts").document(post.getPostId()).set(post);
     }
 
     public void addToUsers(User user) {
+        // update or add user to firebase
         this.db.collection("Users").document(user.getId()).set(user);
     }
 
@@ -215,7 +217,7 @@ public class DataManager {
      * the second is for friendsList, third for liked and fourth for dislike
      */
     public String[] convertUserToString(User user) { //todo: probably unnecessary
-        String fields = user.getId() + separator + user.getUsername() + separator + user.getPassword() + separator + user.getBreed() + separator + user.getMail() + separator + user.getPhoto() + separator + user.getBirthday().toString() + separator + user.getCity() + separator + user.getRememberMe().toString() + separator + user.getAllowNotifications().toString() + separator + user.getAllowLocation().toString() + separator + user.getSelfSummary();
+        String fields = user.getId() + separator + user.getUsername() + separator + user.getPassword() + separator + user.getBreed() + separator + user.getMail() + separator + user.getProfilePhoto() + separator + user.getBirthday().toString() + separator + user.getCity() + separator + user.getRememberMe().toString() + separator + user.getAllowNotifications().toString() + separator + user.getAllowLocation().toString() + separator + user.getSelfSummary();
         String friendsListStr = friendsListToStr(user.getFriendList());
         String likedUsersStr = likedAndDislikedUsersToStr(user.getLikedUsers());
         String dislikeUsersStr = likedAndDislikedUsersToStr(user.getDislikeUsers());
