@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,10 +24,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageReference;
 
@@ -38,10 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class FeedFragment extends Fragment {
@@ -50,7 +43,6 @@ public class FeedFragment extends Fragment {
     private ImageView addPostButton;
     private RecyclerView recyclerViewPosts; // todo: recycler on menu bar
     private FirestoreRecyclerAdapter postsAdapter;
-    final private int maxPostsInFeed = 10;
 
     ActivityResultContracts.RequestMultiplePermissions requestMultiplePermissionsContract;
     ActivityResultLauncher<String[]> multiplePermissionActivityResultLauncher;
@@ -103,7 +95,7 @@ public class FeedFragment extends Fragment {
             @Override
             public RecyclerPostsHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.row_one_post, parent, false);
+                        .inflate(R.layout.row_one_post_for_feed, parent, false);
                 return new RecyclerPostsHolder(view);
             }
 
@@ -268,7 +260,7 @@ public class FeedFragment extends Fragment {
         this.postsAdapter.stopListening();
     }
 
-    // the view holder for the adapter class
+    // the view holder for the adapter
     private class RecyclerPostsHolder extends RecyclerView.ViewHolder {
         private ImageView profileIm;
         private TextView userNameTitle;
@@ -281,14 +273,14 @@ public class FeedFragment extends Fragment {
 
         public RecyclerPostsHolder(View view) {
             super(view);
-            this.profileIm = view.findViewById(R.id.profile_image_one_post_screen);
-            this.userNameTitle = view.findViewById(R.id.user_name_title_textview_one_post_screen);
-            this.postIm = view.findViewById(R.id.post_image_one_post_screen);
-            this.likeButton = view.findViewById(R.id.like_button_one_post_screen);
-            this.numOfLikes = view.findViewById(R.id.num_of_likes_textview_one_post_screen);
-            this.postTime = view.findViewById(R.id.post_time_textview_one_post_screen);
-            this.userNameContent = view.findViewById(R.id.user_name_content_textview_one_post_screen);
-            this.postContent = view.findViewById(R.id.content_textview_one_post_screen);
+            this.profileIm = view.findViewById(R.id.profile_image_one_post_feed_screen);
+            this.userNameTitle = view.findViewById(R.id.user_name_title_textview_one_post_feed_screen);
+            this.postIm = view.findViewById(R.id.post_image_one_post_feed_screen);
+            this.likeButton = view.findViewById(R.id.like_button_one_post_feed_screen);
+            this.numOfLikes = view.findViewById(R.id.num_of_likes_textview_one_post_feed_screen);
+            this.postTime = view.findViewById(R.id.post_time_textview_one_post_feed_screen);
+            this.userNameContent = view.findViewById(R.id.user_name_content_textview_one_post_feed_screen);
+            this.postContent = view.findViewById(R.id.content_textview_one_post_feed_screen);
         }
     }
 }
