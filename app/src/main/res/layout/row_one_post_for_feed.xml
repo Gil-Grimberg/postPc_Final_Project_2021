@@ -7,9 +7,9 @@
     android:layout_height="wrap_content">
 
     <com.mikhaellopez.circularimageview.CircularImageView
-        android:id="@+id/profile_image_one_post_screen"
+        android:id="@+id/profile_image_one_post_feed_screen"
         android:layout_width="80dp"
-        android:layout_height="800dp"
+        android:layout_height="80dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:src="@drawable/default_dog"
@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/user_name_title_textview_one_post_screen"
+        android:id="@+id/user_name_title_textview_one_post_feed_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="User name"
@@ -29,31 +29,31 @@
         android:textSize="17sp"
         android:layout_marginTop="36dp"
         android:layout_marginStart="5dp"
-        app:layout_constraintStart_toEndOf="@+id/profile_image_one_post_screen"
+        app:layout_constraintStart_toEndOf="@+id/profile_image_one_post_feed_screen"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/post_image_one_post_screen"
+        android:id="@+id/post_image_one_post_feed_screen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image_one_post_screen"
+        app:layout_constraintTop_toBottomOf="@+id/profile_image_one_post_feed_screen"
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <ImageView
-        android:id="@+id/like_button_one_post_screen"
+        android:id="@+id/like_button_one_post_feed_screen"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="13dp"
         android:layout_marginTop="5dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/post_image_one_post_screen"
+        app:layout_constraintTop_toBottomOf="@+id/post_image_one_post_feed_screen"
         app:srcCompat="@drawable/like_icon" />
 
     <TextView
-        android:id="@+id/num_of_likes_textview_one_post_screen"
+        android:id="@+id/num_of_likes_textview_one_post_feed_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -62,11 +62,11 @@
         android:textColor="@color/black"
         android:textSize="12sp"
         android:layout_marginTop="7dp"
-        app:layout_constraintStart_toEndOf="@+id/like_button_one_post_screen"
-        app:layout_constraintTop_toBottomOf="@+id/post_image_one_post_screen" />
+        app:layout_constraintStart_toEndOf="@+id/like_button_one_post_feed_screen"
+        app:layout_constraintTop_toBottomOf="@+id/post_image_one_post_feed_screen" />
 
     <TextView
-        android:id="@+id/post_time_textview_one_post_screen"
+        android:id="@+id/post_time_textview_one_post_feed_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -75,10 +75,10 @@
         android:textSize="10sp"
         android:layout_marginStart="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_name_content_textview_one_post_screen" />
+        app:layout_constraintTop_toBottomOf="@+id/user_name_content_textview_one_post_feed_screen" />
 
     <TextView
-        android:id="@+id/user_name_content_textview_one_post_screen"
+        android:id="@+id/user_name_content_textview_one_post_feed_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="User name"
@@ -89,11 +89,11 @@
         android:textStyle="bold"
         android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/like_button_one_post_screen"
+        app:layout_constraintTop_toBottomOf="@+id/like_button_one_post_feed_screen"
         tools:layout_editor_absoluteY="220dp" />
 
     <TextView
-        android:id="@+id/content_textview_one_post_screen"
+        android:id="@+id/content_textview_one_post_feed_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
@@ -101,9 +101,9 @@
         android:textColor="@color/black"
         android:textSize="12sp"
         android:layout_marginStart="4dp"
-        app:layout_constraintStart_toEndOf="@+id/user_name_content_textview_one_post_screen"
+        app:layout_constraintStart_toEndOf="@+id/user_name_content_textview_one_post_feed_screen"
         tools:layout_editor_absoluteY="228dp"
-        app:layout_constraintTop_toBottomOf="@+id/like_button_one_post_screen"
+        app:layout_constraintTop_toBottomOf="@+id/like_button_one_post_feed_screen"
         android:layout_marginTop="4dp"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

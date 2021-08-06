@@ -15,24 +15,29 @@ public class Post implements Serializable {
     private String postId;
     private String userName;
     private String uploadedPhoto;
+    private String userProfilePhoto;
     private String content;
     private Integer numOfLikes;
     private ArrayList<String> usersLikesLst;
     private String timePosted;
     private ArrayList<String> friendList;
+    private DataManager dataManager;
 
     public Post(){}
 
-    public Post(String userId, String userName, String userProfilePhoto, String uploadedPhoto, String content, Integer numOfLikes, String timePosted){
+    public Post(String userId, String postId, String userName, String userProfilePhoto, String uploadedPhoto, String content, Integer numOfLikes, String timePosted){
         this.userId = userId;
-        this.postId = UUID.randomUUID().toString();
+        this.postId = postId;
         this.userName = userName;
         this.uploadedPhoto = uploadedPhoto;
+        this.userProfilePhoto = userProfilePhoto;
         this.content = content;
         this.numOfLikes = numOfLikes;
         this.usersLikesLst = new ArrayList<>();
         this.timePosted = timePosted; // todo: when creating new post need to send SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.friendList = new ArrayList<>();
+        this.friendList.add(this.userId);
+        this.dataManager = CentralBarkApp.getInstance().getDataManager();
     }
 
     public String getContent() {
@@ -71,6 +76,10 @@ public class Post implements Serializable {
         return usersLikesLst;
     }
 
+    public String getUserProfilePhoto() {
+        return userProfilePhoto;
+    }
+
     public void setContent(String content) {
         this.content = content;
     }
@@ -107,6 +116,10 @@ public class Post implements Serializable {
         this.friendList = friendList;
     }
 
+    public void setUserProfilePhoto(String userProfilePhoto) {
+        this.userProfilePhoto = userProfilePhoto;
+    }
+
     public boolean isUserLikesPost(String userId){
         if(this.usersLikesLst==null){ // todo: maybe delete, created this patch because i created a post throw the db
             this.usersLikesLst = new ArrayList<>();
@@ -124,11 +137,13 @@ public class Post implements Serializable {
     public void addLike(String userId){
         this.numOfLikes+=1;
         this.usersLikesLst.add(userId);
+        this.dataManager.addToPost(this);
     }
 
     public void removeLike(String userId){
         this.numOfLikes-=1;
         this.usersLikesLst.remove(userId);
+        this.dataManager.addToPost(this);
     }
     public Date parseStringToDate() throws ParseException {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

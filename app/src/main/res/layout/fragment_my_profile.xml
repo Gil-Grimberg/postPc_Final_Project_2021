@@ -1,14 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".myProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/settings_button_profile_screen"
+        android:layout_width="39dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/settings_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/profile_image_profile_screen"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="35dp"
+        android:src="@drawable/default_dog"
+        app:civ_shadow="true"
+        app:civ_shadow_color="@color/gray"
+        app:civ_shadow_radius="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/user_name_textview_profile_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:text="User name"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_image_profile_screen" />
+
+    <View
+        android:id="@+id/separator1_profile_screen"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_name_textview_profile_screen"
+        android:background="@color/gray"/>
+
+    <TextView
+        android:id="@+id/lives_in_title_profile_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lives_in"
+        android:fontFamily="casual"
+        android:textSize="13sp"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/separator1_profile_screen" />
+
+    <TextView
+        android:id="@+id/lives_in_profile_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="2dp"
+        android:fontFamily="casual"
+        android:textSize="13sp"
+        android:text="city"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/lives_in_title_profile_screen"
+        app:layout_constraintTop_toBottomOf="@+id/separator1_profile_screen" />
+
+    <TextView
+        android:id="@+id/breed_title_profile_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:textSize="13sp"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="14dp"
+        android:text="@string/breed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lives_in_title_profile_screen" />
+
+    <TextView
+        android:id="@+id/breed_profile_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:textSize="13sp"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="2dp"
+        android:textColor="@color/black"
+        android:text="Mixed"
+        app:layout_constraintStart_toEndOf="@+id/breed_title_profile_screen"
+        app:layout_constraintTop_toBottomOf="@+id/lives_in_profile_screen" />
+
+    <TextView
+        android:id="@+id/age_title_profile_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:textSize="13sp"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="14dp"
+        android:text="@string/age"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/breed_title_profile_screen" />
+
+    <TextView
+        android:id="@+id/age_profile_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:textSize="13sp"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="2dp"
+        android:textColor="@color/black"
+        android:text="1"
+        app:layout_constraintStart_toEndOf="@+id/age_title_profile_screen"
+        app:layout_constraintTop_toBottomOf="@+id/breed_profile_screen" />
+
+    <View
+        android:id="@+id/separator2_profile_screen"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/age_profile_screen"
+        android:background="@color/gray"/>
+
+    <TextView
+        android:id="@+id/friends_list_title_profile_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:fontFamily="casual"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        android:layout_marginTop="4dp"
+        android:text="@string/friends"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/separator2_profile_screen"
+         />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/friends_list_recycler_profile_screen"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/friends_list_title_profile_screen" />
+
+    <View
+        android:id="@+id/separator3_profile_screen"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/friends_list_recycler_profile_screen"
+        android:background="@color/gray"/>
+
+    <TextView
+        android:id="@+id/posts_list_title_profile_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:fontFamily="casual"
+        android:textColor="@color/black"
+        android:layout_marginTop="4dp"
+        android:textSize="17sp"
+        android:text="@string/posts"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/separator3_profile_screen"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/post_list_recycler_profile_screen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/posts_list_title_profile_screen" />
+</androidx.constraintlayout.widget.ConstraintLayout>

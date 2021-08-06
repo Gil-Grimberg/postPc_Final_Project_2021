@@ -36,26 +36,26 @@ after we uploaded it successfully, we an get the download url (although we can a
 
 ## in order to download the image to a local file:
 ```
-String postImName = "post_photos/" + postId + ".jpeg";
-StorageReference postImag = dataManager.storage.getReference().child(postImName);
-File localPostImFile = null;
-try {
-    localPostImFile = File.createTempFile("post_photos", "jpeg");
-} catch (IOException e) {
-    e.printStackTrace();
-}
-File finalLocalPostImFile = localPostImFile;
-postImag.getFile(localPostImFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-    @Override
-    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-        holder.postIm.setImageURI(Uri.fromFile(finalLocalPostImFile));
+// set users profile image
+    StorageReference profileImag = dataManager.storage.getReference().child(model.getUserProfilePhoto());
+    File localProfileImFile = null;
+    try {
+        localProfileImFile = File.createTempFile("profile_photos", "g");
+    } catch (IOException e) {
+        e.printStackTrace();
     }
-}).addOnFailureListener(new OnFailureListener() {
-    @Override
-    public void onFailure(@NonNull Exception exception) {
-        // todo: something todo?
-    }
-});
+    File profileImFile = localProfileImFile;
+    profileImag.getFile(profileImFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+        @Override
+        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+            holder.profileIm.setImageURI(Uri.fromFile(profileImFile));
+        }
+    }).addOnFailureListener(new OnFailureListener() {
+        @Override
+        public void onFailure(@NonNull Exception exception) {
+            // keeps the default profile image
+        }
+    });
 ```
 
 here we created a reference to the image by the image path, we created a local file and downloaded

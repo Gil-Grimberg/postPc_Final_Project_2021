@@ -4,9 +4,6 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Set;
 import java.util.UUID;
 
 public class User implements Serializable {
@@ -15,7 +12,7 @@ public class User implements Serializable {
     private String password;
     private String breed;
     private String mail;
-    private String photo = null;
+    private String profilePhoto = null;
     private String birthday;
     private String city;
     private Boolean rememberMe = true;
@@ -40,7 +37,7 @@ public class User implements Serializable {
     }
 
     public User(String username, String password, String mail,
-                String photo, String birthday, String breed, String city,
+                String profilePhoto, String birthday, String breed, String city,
                 boolean rememberMe, String selfSummary, GeoPoint location)
     {
         this.id = UUID.randomUUID().toString();
@@ -52,7 +49,7 @@ public class User implements Serializable {
         this.username = username;
         this.password = password;
         this.mail = mail;
-        this.photo = photo;
+        this.profilePhoto = profilePhoto;
         this.birthday = birthday;
         this.breed = Utils.parseBreed(breed);
         this.city = Utils.parseCity(city);
@@ -105,8 +102,8 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 
     public void setRememberMe(Boolean rememberMe) {
@@ -175,8 +172,8 @@ public class User implements Serializable {
         return password;
     }
 
-    public String getPhoto() {
-        return photo;
+    public String getProfilePhoto() {
+        return profilePhoto;
     }
 
     public String getSelfSummary() {
