@@ -183,8 +183,13 @@ public class matchAFriendFragment extends Fragment {
 
         // download and show profile image
 
-        String photoAddress = "profile_photos/" + user.getId() + ".jpeg";
-
+//        String photoAddress = "profile_photos/" + user.getId() + ".jpeg";
+          String photoAddress = user.getProfilePhoto();
+          if (photoAddress==null)
+          {
+              Toast.makeText(getContext(), "Error: couldn't upload profile image", Toast.LENGTH_LONG).show();
+              return;
+          }
             StorageReference profileImag = appInstance.getDataManager().storage.getReference().child(photoAddress);
             File localProfileImFile = null;
             try {
