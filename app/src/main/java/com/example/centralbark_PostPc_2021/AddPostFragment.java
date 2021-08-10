@@ -126,7 +126,7 @@ public class AddPostFragment extends Fragment {
                         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                Post curPost = new Post(myId,postId,myUser.getUsername(),myUser.getProfilePhoto(),postPath, content, 0, curDateString);
+                                Post curPost = new Post(myId,postId,myUser.getUsername(),myUser.getProfilePhoto(),postPath, content, 0, curDateString, myUser.getFriendList());
                                 dataManager.addToPost(curPost);
                                 Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
 

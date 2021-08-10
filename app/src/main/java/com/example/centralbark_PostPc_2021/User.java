@@ -29,7 +29,7 @@ public class User implements Serializable {
     {
         this.id = UUID.randomUUID().toString();
         this.friendList = new ArrayList<>();
-        this.friendList.add(this.id); // friends with himself
+//        this.friendList.add(this.id); // friends with himself
         this.likedUsers = new ArrayList<>();
         this.dislikeUsers = new ArrayList<>();
         this.pendingRequests = new ArrayList<>();
@@ -42,7 +42,7 @@ public class User implements Serializable {
     {
         this.id = UUID.randomUUID().toString();
         this.friendList = new ArrayList<>();
-        this.friendList.add(this.id); // friends with himself
+//        this.friendList.add(this.id); // friends with himself
         this.likedUsers = new ArrayList<>();
         this.dislikeUsers = new ArrayList<>();
         this.pendingRequests = new ArrayList<>();

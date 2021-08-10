@@ -84,7 +84,8 @@ public class FeedFragment extends Fragment {
         // query relevant posts:
         Query query = this.dataManager.db.collection("Posts")
                 .whereArrayContains("friendList",this.dataManager.getMyId())
-               .limit(10);
+                .orderBy("timePosted", Query.Direction.DESCENDING)
+                .limit(10);
         FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
                 .setQuery(query,Post.class).build();
 
