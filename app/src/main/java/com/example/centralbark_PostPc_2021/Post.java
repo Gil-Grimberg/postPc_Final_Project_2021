@@ -25,7 +25,7 @@ public class Post implements Serializable {
 
     public Post(){}
 
-    public Post(String userId, String postId, String userName, String userProfilePhoto, String uploadedPhoto, String content, Integer numOfLikes, String timePosted){
+    public Post(String userId, String postId, String userName, String userProfilePhoto, String uploadedPhoto, String content, Integer numOfLikes, String timePosted, ArrayList<String> friendList){
         this.userId = userId;
         this.postId = postId;
         this.userName = userName;
@@ -36,6 +36,7 @@ public class Post implements Serializable {
         this.usersLikesLst = new ArrayList<>();
         this.timePosted = timePosted; // todo: when creating new post need to send SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.friendList = new ArrayList<>();
+        this.friendList.addAll(friendList);
         this.friendList.add(this.userId);
         this.dataManager = CentralBarkApp.getInstance().getDataManager();
     }
