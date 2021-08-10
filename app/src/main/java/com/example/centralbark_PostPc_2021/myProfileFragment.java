@@ -173,7 +173,9 @@ public class myProfileFragment extends Fragment {
                 ////////////////////////// Posts Recycler //////////////////////////
 
                 // query relevant posts- only my posts:
-                Query postsQuery = dataManager.db.collection("Posts").whereEqualTo("userId", myUser.getId()); //todo: maybe limit
+                Query postsQuery = dataManager.db.collection("Posts")
+                        .whereEqualTo("userId", myUser.getId())
+                        .orderBy("timePosted", Query.Direction.DESCENDING); //todo: maybe limit
 
                 FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
                         .setQuery(postsQuery,Post.class).build();
