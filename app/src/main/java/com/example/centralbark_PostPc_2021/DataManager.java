@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,9 +37,9 @@ public class DataManager {
         this.context = context;
         this.sp = context.getSharedPreferences("local_db", Context.MODE_PRIVATE);
         this.userId = initializeFromSp();
-        if (this.userId.equals("noId")) {
-            //todo: go to main sign Up/In screen!
-        }
+//        if (this.userId.equals("noId")) {
+//            //todo: go to main sign Up/In screen!
+//        }
         app = FirebaseApp.initializeApp(this.context);
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -120,17 +118,18 @@ public class DataManager {
     }
 
     public void addToPost(Post post) {
-        this.db.collection("Users").document(this.userId).collection("myPosts").document(post.getPostId()).set(post);
+        // update or add post to firebase
+        this.db.collection("Posts").document(post.getPostId()).set(post);
     }
 
     public void addToUsers(User user) {
+        // update or add user to firebase
         this.db.collection("Users").document(user.getId()).set(user);
     }
 
     public void addToNotifications(Notification notification) {
         this.db.collection("Users").document(notification.getUserId()).collection("myNotifications").document(notification.getNotificationId()).set(notification);
     }
-
 
 
     public ArrayList<Post> getPostsById(String idToFindPostsFor) {
@@ -206,8 +205,8 @@ public class DataManager {
      * @return a string representing the post with $ as seperators
      */
     public String convertPostToString(Post post) { //todo: probably unnecessary
-        return post.getUserId() + separator + post.getPostId() + separator + post.getUsername() + separator +
-                post.getUserProfilePhoto() + separator + post.getUploadedPhoto() + separator +
+        return post.getUserId() + separator + post.getPostId() + separator + post.getUserName() + separator +
+                post.getFriendList()+ post.getUsersLikesLst() + separator + post.getUploadedPhoto() + separator +
                 post.getContent() + separator + post.getNumOfLikes().toString() + separator + post.getTimePosted().toString();
     }
 
@@ -217,7 +216,7 @@ public class DataManager {
      * the second is for friendsList, third for liked and fourth for dislike
      */
     public String[] convertUserToString(User user) { //todo: probably unnecessary
-        String fields = user.getId() + separator + user.getUsername() + separator + user.getPassword() + separator + user.getBreed() + separator + user.getMail() + separator + user.getPhoto() + separator + user.getBirthday().toString() + separator + user.getCity() + separator + user.getRememberMe().toString() + separator + user.getAllowNotifications().toString() + separator + user.getAllowLocation().toString() + separator + user.getSelfSummary();
+        String fields = user.getId() + separator + user.getUsername() + separator + user.getPassword() + separator + user.getBreed() + separator + user.getMail() + separator + user.getProfilePhoto() + separator + user.getBirthday().toString() + separator + user.getCity() + separator + user.getRememberMe().toString() + separator + user.getAllowNotifications().toString() + separator + user.getAllowLocation().toString() + separator + user.getSelfSummary();
         String friendsListStr = friendsListToStr(user.getFriendList());
         String likedUsersStr = likedAndDislikedUsersToStr(user.getLikedUsers());
         String dislikeUsersStr = likedAndDislikedUsersToStr(user.getDislikeUsers());

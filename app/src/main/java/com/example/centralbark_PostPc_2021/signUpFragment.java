@@ -43,6 +43,7 @@ public class signUpFragment extends Fragment {
     Button signUpButton;
     String imagePath = "";
     TextView imageName;
+    String fileType;
 
 
     public signUpFragment() {
@@ -88,8 +89,9 @@ public class signUpFragment extends Fragment {
                                 cursor.moveToFirst();
                                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                                 String picturePath = cursor.getString(columnIndex);
-                                String[] picturePathSplit = picturePath.split("/");
-                                imageName.setText(picturePathSplit[picturePathSplit.length - 1]);
+                                String[] picturePathSplit = picturePath.split("\\.");
+                                fileType = picturePathSplit[picturePathSplit.length-1];
+                                imageName.setText("Uploaded successfully");
                                 imagePath = picturePath;
                                 cursor.close();
                             }
@@ -164,7 +166,7 @@ public class signUpFragment extends Fragment {
                                 null);
                         if (imagePath.equals(""))
                         {
-                            newUser.setPhoto("default");
+                            newUser.setProfilePhoto("default");
                             appInstance.getDataManager().updateSp(newUser.getId());
                             appInstance.getDataManager().deleteSignInInfoFromSp();
                             appInstance.getDataManager().addToUsers(newUser);
@@ -173,15 +175,14 @@ public class signUpFragment extends Fragment {
                         }
                         else
                         {
-                            String remoteImgName = "profile_photos/" + newUser.getId();
+                            String remoteImgName = "profile_photos/" + newUser.getId()+"."+fileType;
                             StorageReference storageReference = appInstance.getDataManager().storage.getReference();
                             StorageReference imgRef = storageReference.child(remoteImgName);
                             UploadTask uploadTask = imgRef.putFile(Uri.fromFile(new File(imagePath)));
                             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    String downloadUrl = taskSnapshot.getStorage().getDownloadUrl().toString();
-                                    newUser.setPhoto(downloadUrl);
+                                    newUser.setProfilePhoto(remoteImgName);
                                     appInstance.getDataManager().updateSp(newUser.getId());
                                     appInstance.getDataManager().deleteSignInInfoFromSp();
                                     appInstance.getDataManager().addToUsers(newUser);
@@ -192,7 +193,7 @@ public class signUpFragment extends Fragment {
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(Exception e) {
-                                    newUser.setPhoto("default");
+                                    newUser.setProfilePhoto("default");
                                     appInstance.getDataManager().updateSp(newUser.getId());
                                     appInstance.getDataManager().deleteSignInInfoFromSp();
                                     appInstance.getDataManager().addToUsers(newUser);
@@ -201,7 +202,6 @@ public class signUpFragment extends Fragment {
                                 }
                             });
                         }
-
                 }
             }});
         });

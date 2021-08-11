@@ -39,8 +39,8 @@ public class adapterSearchAccounts extends RecyclerView.Adapter<adapterSearchAcc
         // changing userInRow name
         holder.userName.setText(userInRow.getUsername());
         // changing profile photo
-        if(!userInRow.getPhoto().equals("default")){
-            holder.profilePhoto.setImageURI(Uri.parse(userInRow.getPhoto()));
+        if(!userInRow.getProfilePhoto().equals("default")){
+            holder.profilePhoto.setImageURI(Uri.parse(userInRow.getProfilePhoto()));
         }
 
         // make friend was pressed

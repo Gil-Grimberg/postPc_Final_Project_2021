@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout5"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".matchAFriendFragment">
+
+    <TextView
+        android:id="@+id/title_tinder_no_friends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:text="Recommended friends\n        just for you"
+        android:textSize="28dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/dog_no_friends"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/no_friends_to_offer"
+        app:layout_constraintTop_toBottomOf="@id/title_tinder_no_friends"
+        app:layout_constraintBottom_toTopOf="@id/text_no_friends"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/text_no_friends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:text="Sorry, we have no \n new friends to offer"
+        android:textSize="28dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dog_no_friends"
+        android:layout_marginTop="40dp"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

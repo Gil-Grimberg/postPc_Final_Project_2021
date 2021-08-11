@@ -36,19 +36,26 @@ after we uploaded it successfully, we an get the download url (although we can a
 
 ## in order to download the image to a local file:
 ```
-StorageReference profileImag = "profile_photos/" + user.getId();
-File localFile = File.createTempFile("images", "jpg");
-profileImag.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-    @Override
-    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-       // Local temp file has been created
+// set users profile image
+    StorageReference profileImag = dataManager.storage.getReference().child(model.getUserProfilePhoto());
+    File localProfileImFile = null;
+    try {
+        localProfileImFile = File.createTempFile("profile_photos", "g");
+    } catch (IOException e) {
+        e.printStackTrace();
     }
-}).addOnFailureListener(new OnFailureListener() {
-   @Override
-   public void onFailure(@NonNull Exception exception) {
-       // Handle any errors
-   }
-});
+    File profileImFile = localProfileImFile;
+    profileImag.getFile(profileImFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+        @Override
+        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+            holder.profileIm.setImageURI(Uri.fromFile(profileImFile));
+        }
+    }).addOnFailureListener(new OnFailureListener() {
+        @Override
+        public void onFailure(@NonNull Exception exception) {
+            // keeps the default profile image
+        }
+    });
 ```
 
 here we created a reference to the image by the image path, we created a local file and downloaded
