@@ -1,5 +1,8 @@
 package com.example.centralbark_PostPc_2021;
 
+import android.location.Location;
+
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.io.Serializable;
@@ -33,7 +36,6 @@ public class User implements Serializable {
         this.likedUsers = new ArrayList<>();
         this.dislikeUsers = new ArrayList<>();
         this.pendingRequests = new ArrayList<>();
-        this.location = null;
     }
 
     public User(String username, String password, String mail,
@@ -128,6 +130,10 @@ public class User implements Serializable {
         return location;
     }
 
+    public GeoPoint getLocationAsGeoPoint() {
+        return location;
+    }
+
     public ArrayList<String> getDislikeUsers() {
         return dislikeUsers;
     }
@@ -189,6 +195,33 @@ public class User implements Serializable {
     }
 
     public ArrayList<String> getPendingRequests() { return pendingRequests; }
+
+    public Location getLocationAsLocation()
+    {
+        if (this.location == null)
+        {
+            return null;
+        }
+
+        Location userLocation = new Location("");
+        userLocation.setLatitude(this.getLocationAsGeoPoint().getLatitude());
+        userLocation.setLongitude(this.getLocationAsGeoPoint().getLongitude());
+        return userLocation;
+    }
+
+    public LatLng getLocationAsLatLng()
+    {
+        if (this.getLocationAsGeoPoint() == null)
+        {
+            return null;
+        }
+
+        return new LatLng(this.getLocationAsGeoPoint().getLatitude(), this.getLocationAsGeoPoint().getLongitude());
+    }
+
+
+
+
 
     public void addToLikedList(String otherId)
     {

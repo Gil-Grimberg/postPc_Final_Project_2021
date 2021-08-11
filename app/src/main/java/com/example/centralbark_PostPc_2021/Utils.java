@@ -2,6 +2,7 @@ package com.example.centralbark_PostPc_2021;
 
 import android.Manifest;
 import android.app.Activity;
+import android.location.Location;
 import android.view.View;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,9 @@ import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -62,5 +66,27 @@ public class Utils {
         fragmentTransaction.replace(fragmentContainerViewId, fragment, fragmentTag);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    public static float calculateDistanceBetweenPoints(LatLng point1, LatLng point2)
+    /***
+     * returns the distance in Meters between two points
+     */
+    {
+        Location location1 = new Location("");
+        Location location2 = new Location("");
+
+        location1.setLatitude(point1.latitude);
+        location1.setLongitude(point1.longitude);
+
+        location2.setLatitude(point2.latitude);
+        location2.setLongitude(point2.longitude);
+
+        return location1.distanceTo(location2);
+    }
+
+    public static boolean isCloseToDogPark(LatLng dogPark, LatLng point, int threshold)
+    {
+        return (calculateDistanceBetweenPoints(dogPark, point) <= threshold);
     }
 }
