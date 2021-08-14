@@ -219,10 +219,6 @@ public class User implements Serializable {
         return new LatLng(this.getLocationAsGeoPoint().getLatitude(), this.getLocationAsGeoPoint().getLongitude());
     }
 
-
-
-
-
     public void addToLikedList(String otherId)
     {
         this.likedUsers.add(otherId);
@@ -231,5 +227,13 @@ public class User implements Serializable {
     {
         this.dislikeUsers.add(otherId);
     }
+
+    public void addToFriendList(String otherId){this.friendList.add(otherId);}
+    public void removeFromFriendList(String otherId) { this.friendList.remove(otherId);}
+    public boolean isFriend(String otherId) {
+        return friendList.contains(otherId);
+    }
+
+    public void addToPendingList(String otherId) { this.pendingRequests.add(otherId);}
 }
 
