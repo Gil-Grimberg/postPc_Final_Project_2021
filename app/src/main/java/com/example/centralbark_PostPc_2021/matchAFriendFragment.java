@@ -72,6 +72,7 @@ public class matchAFriendFragment extends Fragment {
         profileImg = view.findViewById(R.id.dog_image_tinder);
         String myId = appInstance.getDataManager().getMyId();
 
+
 //        ArrayList<User> users = new ArrayList<>();
 //        Task<QuerySnapshot> result = appInstance.getDataManager().db.collection("Users").get();
 //        result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
