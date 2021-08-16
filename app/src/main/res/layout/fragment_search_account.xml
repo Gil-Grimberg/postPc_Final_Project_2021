@@ -10,6 +10,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/searchAccounts_Button"
         android:text="Accounts"
         android:fontFamily="casual"
         android:background="@android:color/transparent"
@@ -22,6 +23,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/searchPlaces_Button"
         android:text="Places"
         android:fontFamily="casual"
         android:background="@android:color/transparent"
@@ -32,7 +34,7 @@
         />
 
     <EditText
-        android:id="@+id/editText_EditText"
+        android:id="@+id/searchAccounts_EditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="search"
@@ -51,15 +53,15 @@
         android:src="@drawable/search_icon"
         android:background="@null"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/editText_EditText"
-        app:layout_constraintBottom_toBottomOf="@id/editText_EditText"
+        app:layout_constraintRight_toLeftOf="@id/searchAccounts_EditText"
+        app:layout_constraintBottom_toBottomOf="@id/searchAccounts_EditText"
         />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_SearchAccounts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/editText_EditText"
+        app:layout_constraintTop_toBottomOf="@id/searchAccounts_EditText"
         />
 
 

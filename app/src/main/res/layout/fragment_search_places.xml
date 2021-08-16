@@ -1,14 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".searchPlacesFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".searchAccountFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchAccounts_Button_searchPlaces"
+        android:text="Accounts"
+        android:fontFamily="casual"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="28dp"
+        android:layout_marginLeft="70dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
-</FrameLayout>
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchPlaces_Button_searchPlaces"
+        android:text="Places"
+        android:fontFamily="casual"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="28dp"
+        android:layout_marginRight="70dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <EditText
+        android:id="@+id/searchPlaces_EditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="search"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="90dp"
+        android:ems="10"
+        android:layout_marginLeft="15dp"
+        app:layout_constraintLeft_toRightOf="@id/searchImage_ImageView_searchPlaces"
+        />
+
+    <ImageView
+        android:id="@+id/searchImage_ImageView_searchPlaces"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="70dp"
+        android:src="@drawable/search_icon"
+        android:background="@null"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/searchPlaces_EditText"
+        app:layout_constraintBottom_toBottomOf="@id/searchPlaces_EditText"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_SearchPlaces"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/searchPlaces_EditText"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
