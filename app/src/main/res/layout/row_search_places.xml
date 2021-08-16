@@ -35,9 +35,9 @@
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/locationPhoto_ImageView"
-        android:layout_width="80dp"
-        android:layout_height="800dp"
-        android:src="@drawable/location_icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/location_search_places"
         app:civ_shadow="true"
         app:civ_shadow_radius="2dp"
         app:civ_shadow_color="@color/gray"
