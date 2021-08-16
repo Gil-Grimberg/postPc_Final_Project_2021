@@ -33,7 +33,7 @@ public class NotificationsWorker extends ListenableWorker {
         // 1. a user is in a dog park
         // 2. a user ask for a friend request
         // 3. a user has a match in tinder
-        // 4. a user likes your post
+        // 4. a user likes your postt
         return (ListenableFuture<Result>) Result.success();
 
 
