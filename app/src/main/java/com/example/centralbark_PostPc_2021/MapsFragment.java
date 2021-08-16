@@ -9,8 +9,6 @@ import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -18,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -30,15 +29,19 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
-public class MapsFragment extends Fragment implements OnMapReadyCallback {
+import java.util.ArrayList;
 
+public class MapsFragment extends Fragment implements OnMapReadyCallback {
+    CentralBarkApp appInstance;
     FusedLocationProviderClient fusedLocationProviderClient;
 
     final String[] PERMISSIONS =
@@ -64,6 +67,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
+        if (appInstance == null)
+        {
+            appInstance = CentralBarkApp.getInstance();
+        }
+
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
@@ -105,7 +113,78 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         {
             multiplePermissionActivityResultLauncher.launch(PERMISSIONS);
         }
+
+        addFriendsToMap();
         return view;
+    }
+
+    private void addFriendsToMap() {
+        ArrayList<User> friendsList = new ArrayList<>();
+        String userId = appInstance.getDataManager().getMyId();
+        Task<DocumentSnapshot> result = appInstance.getDataManager().db.collection("Users").document(userId).get();
+        result.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                ArrayList<String> friendsIds = (ArrayList<String>) documentSnapshot.get("friendList");
+                if (friendsIds != null && friendsIds.size() > 0)
+                {
+                    Task<QuerySnapshot> result = appInstance.getDataManager()
+                                                            .db.collection("Users")
+                                                            .whereIn("id", friendsIds).get();
+                    result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot documentSnapshots) {
+                            if (documentSnapshots != null && !documentSnapshots.isEmpty())
+                            {
+                                friendsList.addAll(documentSnapshots.toObjects(User.class));
+                                addMarkers(friendsList);
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull @NotNull Exception e) {
+                            Toast.makeText(getContext(), "Error: db error", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Toast.makeText(getContext(), "Error: db error", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void addMarkers(ArrayList<User> friendsList)
+    {
+        if (friendsList == null || friendsList.size() == 0)
+        {
+            return;
+        }
+        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                for (User user : friendsList)
+                {
+                    LatLng curUserLocation = user.getLocationAsLatLng();
+                    if (curUserLocation != null)
+                    {
+                        for (LatLng park: DOG_PARKS)
+                        {
+                            if (Utils.isCloseToDogPark(park, curUserLocation, 200))
+                            {
+                                MarkerOptions options = new MarkerOptions().position(curUserLocation).title(user.getUsername());
+                                googleMap.addMarker(options);
+                                break;
+                            }
+                        }
+                    }
+
+                }
+            }
+        });
+
     }
 
     private void getCurrentLocation() {
