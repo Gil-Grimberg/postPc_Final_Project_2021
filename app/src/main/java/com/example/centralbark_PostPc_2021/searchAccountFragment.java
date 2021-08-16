@@ -115,42 +115,34 @@ public class searchAccountFragment extends Fragment {
                         model.addToPendingList(dataManager.getMyId());
                     }
                 });
+            }
+        };
 
-                //edit text was changed
-                searchAccountsEditText.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        //edit text was changed
+        searchAccountsEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-//                        CollectionReference usersRef = rootRef.collection("Users");
-//                        usersRef.orderBy(model.getUsername()).startAt(s.toString()).limitToLast(5);
-//                                .endAt(model.getUsername() + "\uf8ff");
-
-//                        if(s.toString().length() != 0) {
-//                            Query newQuery = query.orderBy(model.getUsername())
-//                                    .whereEqualTo(s.toString(), false)
-//                                    .limitToLast(5);
-//                            FirestoreRecyclerOptions<User> newOptions = new FirestoreRecyclerOptions.Builder<User>()
-//                                    .setQuery(newQuery, User.class).build();
-//                            accountsAdapter.updateOptions(newOptions);
-//                        }
-//
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-//                        if(s.toString().length() != 0) {
-//                            query.orderBy(model.getUsername()).startAt(s.toString());
-//                        }
-                    }
-                });
             }
 
-        };
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Query newQuery = dataManager.db.collection("Users");
+
+                if(s.toString().length() != 0) {
+                    newQuery.orderBy("username").startAt(s.toString());
+                }
+
+//
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
         this.accountsRecycler.setLayoutManager(new LinearLayoutManager(this.getContext(),RecyclerView.VERTICAL,false));
         this.accountsRecycler.setAdapter(accountsAdapter);
 
