@@ -23,7 +23,9 @@ public class Post implements Serializable {
     private ArrayList<String> friendList;
     private DataManager dataManager;
 
-    public Post(){}
+    public Post(){
+        this.dataManager = CentralBarkApp.getInstance().getDataManager();
+    }
 
     public Post(String userId, String postId, String userName, String userProfilePhoto, String uploadedPhoto, String content, Integer numOfLikes, String timePosted, ArrayList<String> friendList){
         this.userId = userId;
