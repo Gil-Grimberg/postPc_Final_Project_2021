@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.common.collect.ImmutableMap;
+import com.google.firebase.Timestamp;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -26,8 +27,16 @@ public class Utils {
 
     final static Map<LatLng, String> locationToNameMapping = ImmutableMap.of(
             new LatLng(31.781896, 35.20541), "Sacher park",
-            new LatLng(31.772408, 35.190774), "Ramat Beit Hakerem Park"
+            new LatLng(31.772408, 35.190774), "Ramat Beit Hakerem Park",
+            new LatLng(37.4219983, -122.084), "test" //todo remove this pair after testing
     );
+
+    final static LatLng[] DOG_PARKS =
+            {
+                    new LatLng(31.781896, 35.20541), // Sacher park
+                    new LatLng(31.772408, 35.190774), // Ramat Beit Hakerem Park
+                    new LatLng(37.4219983, -122.084) // test
+            };
 
     static final String[] PERMISSIONS =
             {
@@ -123,4 +132,14 @@ public class Utils {
                 return null;
         }
     };
+
+    public static float getTimestampsDifferenceInMinutes(Timestamp timestamp1, Timestamp timestamp2)
+    {
+        long seconds1 = timestamp1.getSeconds();
+        long seconds2 = timestamp2.getSeconds();
+
+        long diff = java.lang.Math.abs(seconds1 - seconds2);
+
+        return (float) diff / 60;
+    }
 }

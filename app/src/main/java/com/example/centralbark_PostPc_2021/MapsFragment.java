@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import com.google.common.collect.ImmutableMap;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -32,6 +33,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -39,6 +41,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
     CentralBarkApp appInstance;
@@ -53,13 +58,15 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     final LatLng[] DOG_PARKS =
             {
                     new LatLng(31.781896, 35.20541), // Sacher park
-                    new LatLng(31.772408, 35.190774) // Ramat Beit Hakerem Park
+                    new LatLng(31.772408, 35.190774), // Ramat Beit Hakerem Park
+                    new LatLng(37.4219983, -122.084) // test
             };
 
     final String[] DOG_PARKS_NAMES =
             {
                     "Sacher park", "Ramat Beit Hakerem Park"
             };
+
 
     ActivityResultContracts.RequestMultiplePermissions requestMultiplePermissionsContract;
     ActivityResultLauncher<String[]> multiplePermissionActivityResultLauncher;
@@ -76,7 +83,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         {
             appInstance = CentralBarkApp.getInstance();
         }
-
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
@@ -199,10 +205,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             public void onSuccess(Location location) {
                  if (location != null)
                  {
+                     LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                      supportMapFragment.getMapAsync(new OnMapReadyCallback() {
                          @Override
                          public void onMapReady(GoogleMap googleMap) {
-                             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                              MarkerOptions options = new MarkerOptions().position(latLng).title("I am Here");
                              googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                              googleMap.addMarker(options);
@@ -211,8 +217,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                  }
             }
         });
-
     }
+
 
     private void askPermissions() {
         if (!hasPermissions(PERMISSIONS))

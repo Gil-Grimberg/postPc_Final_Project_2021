@@ -164,6 +164,7 @@ public class signUpFragment extends Fragment {
                                 true,
                                 selfSummary.getText().toString(),
                                 null);
+                        appInstance.getDataManager().updateSpWithUsername(newUser.getUsername());
                         if (imagePath.equals(""))
                         {
                             newUser.setProfilePhoto("default");
