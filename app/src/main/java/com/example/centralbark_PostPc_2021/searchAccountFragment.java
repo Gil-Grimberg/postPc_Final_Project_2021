@@ -61,6 +61,7 @@ public class searchAccountFragment extends Fragment {
         this.searchAccountsEditText = view.findViewById(R.id.searchAccounts_EditText);
 
         Query query = this.dataManager.db.collection("Users");
+
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(query, User.class).build();
 
@@ -127,18 +128,16 @@ public class searchAccountFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Query newQuery = dataManager.db.collection("Users");
-
                 if(s.toString().length() != 0) {
-                    newQuery.orderBy("username").startAt(s.toString());
+                    Query newQuery = dataManager.db.collection("Users").orderBy("username").orderBy("username").startAt(s.toString()).endAt(s.toString()+"\uf8ff");
+                    FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
+                            .setQuery(newQuery, User.class).build();
+                    accountsAdapter.updateOptions(options);
                 }
-
-//
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 

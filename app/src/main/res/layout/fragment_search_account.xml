@@ -37,7 +37,7 @@
         android:id="@+id/searchAccounts_EditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="search"
+        android:hint="Search"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="90dp"
         android:ems="10"
