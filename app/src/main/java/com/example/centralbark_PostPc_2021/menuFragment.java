@@ -31,7 +31,7 @@ public class menuFragment extends Fragment {
         profileButton = view.findViewById(R.id.profileButton_ImageButton_fragmentMyProfile);
 
         searchButton.setOnClickListener(v->
-                Utils.moveBetweenFragments(R.id.the_screen, new searchAccountFragment(), getActivity(), "search"));
+                Utils.moveBetweenFragments(R.id.the_screen, new searchAccountFragment(), getActivity(), "search_accounts"));
         tinderButton.setOnClickListener(v->
                 Utils.moveBetweenFragments(R.id.the_screen, new matchAFriendFragment(), getActivity(), "match_a_friend"));
         homeButton.setOnClickListener(v->

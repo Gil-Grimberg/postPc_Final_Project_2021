@@ -56,6 +56,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     new LatLng(31.772408, 35.190774) // Ramat Beit Hakerem Park
             };
 
+    final String[] DOG_PARKS_NAMES =
+            {
+                    "Sacher park", "Ramat Beit Hakerem Park"
+            };
+
     ActivityResultContracts.RequestMultiplePermissions requestMultiplePermissionsContract;
     ActivityResultLauncher<String[]> multiplePermissionActivityResultLauncher;
     SupportMapFragment supportMapFragment;
