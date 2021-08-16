@@ -8,10 +8,14 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -19,7 +23,18 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 public class LocationService extends Service {
 
@@ -28,16 +43,116 @@ public class LocationService extends Service {
         public void onLocationResult(LocationResult locationResult) {
             super.onLocationResult(locationResult);
             if (locationResult != null && locationResult.getLastLocation() != null) {
-                GeoPoint geoPoint = new GeoPoint(locationResult.getLastLocation().getLatitude(),
-                        locationResult.getLastLocation().getLongitude());
+                Location myLocation = locationResult.getLastLocation();
+
+                GeoPoint geoPoint = new GeoPoint(myLocation.getLatitude(), myLocation.getLongitude());
                 Log.d("LOCATION_UPDATE", geoPoint.toString());
 
                 String userId = CentralBarkApp.getInstance().getDataManager().getMyId();
 
                 CentralBarkApp.getInstance().getDataManager().updateUserLocation(userId, geoPoint);
+                LatLng latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+                for (LatLng park: Utils.DOG_PARKS)
+                {
+                    if (Utils.isCloseToDogPark(park, latLng, 200))
+                    {
+                        sendNotifications(latLng, park);
+                    }
+                }
+
+
             }
         }
     };
+
+    private void sendNotifications(LatLng userLocation, LatLng park)
+    {
+        ArrayList<User> friendsList = new ArrayList<>();
+        String userId = CentralBarkApp.getInstance().getDataManager().getMyId();
+        Task<DocumentSnapshot> result = CentralBarkApp.getInstance().getDataManager().db.collection("Users").document(userId).get();
+        result.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                ArrayList<String> friendsIds = (ArrayList<String>) documentSnapshot.get("friendList");
+                if (friendsIds != null && friendsIds.size() > 0)
+                {
+                    Task<QuerySnapshot> result = CentralBarkApp.getInstance().getDataManager()
+                            .db.collection("Users")
+                            .whereIn("id", friendsIds).get();
+                    result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot documentSnapshots) {
+                            if (documentSnapshots != null && !documentSnapshots.isEmpty())
+                            {
+                                friendsList.addAll(documentSnapshots.toObjects(User.class));
+                                String notificationContent =  Utils.getNotificationContent(
+                                        NotificationTypes.USER_AT_THE_DOG_PARK_NOTIFICATION,
+                                        CentralBarkApp.getInstance().getDataManager().getUsernameFromSp(),
+                                        Utils.locationToNameMapping.get(park));
+                                Notification newNotification = new Notification(
+                                        CentralBarkApp.getInstance().getDataManager().getMyId(),
+                                        NotificationTypes.USER_AT_THE_DOG_PARK_NOTIFICATION,
+                                        notificationContent,
+                                        false,
+                                        Timestamp.now());
+                                for (User user: friendsList)
+                                {
+                                    ArrayList<Notification> friendNotifications = new ArrayList<>();
+                                    Task<QuerySnapshot> result = CentralBarkApp.getInstance().getDataManager().db.collection("Users").document(user.getId()).collection("Notifications").get();
+                                    result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot documentSnapshots)
+                                        {
+                                            boolean sent = false;
+                                            if (documentSnapshots != null && !documentSnapshots.isEmpty()) {
+                                                friendNotifications.addAll(documentSnapshots.toObjects(Notification.class));
+                                                for (Notification notification : friendNotifications) {
+                                                    float timeDiffInMinutes = Utils.getTimestampsDifferenceInMinutes(notification.getTimestamp(), newNotification.getTimestamp());
+                                                    if (notification.getNotificationType() == NotificationTypes.USER_AT_THE_DOG_PARK_NOTIFICATION &&
+                                                            notification.getUserId().equals(CentralBarkApp.getInstance().getDataManager().getMyId()) &&
+                                                            timeDiffInMinutes > 60) {
+                                                        sent = true;
+                                                        break;
+                                                    }
+                                                }
+                                                if (!sent)
+                                                {
+                                                    CentralBarkApp.getInstance().getDataManager().addNotification(user.getId(), newNotification);
+                                                    //todo: send notification to device id
+                                                }
+                                            }
+                                            else
+                                            {
+                                                CentralBarkApp.getInstance().getDataManager().addNotification(user.getId(), newNotification);
+                                                //todo: send notification to device id
+                                            }
+
+                                        };
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull @NotNull Exception e) {
+                                            Toast.makeText(getApplicationContext(), "Error: db error", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
+                                }
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull @NotNull Exception e) {
+                            Toast.makeText(getApplicationContext(), "Error: db error", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Toast.makeText(getApplicationContext(), "Error: db error", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
     @Nullable
     @Override
