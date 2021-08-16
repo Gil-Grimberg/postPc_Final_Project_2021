@@ -46,6 +46,7 @@ public class myProfileFragment extends Fragment {
     private RecyclerView postsRecycler;
     private FirestoreRecyclerAdapter postsAdapter;
     private FirestoreRecyclerAdapter friendsAdapter;
+    private ImageView settingsButton;
 
     public myProfileFragment() {
         super(R.layout.fragment_my_profile);
@@ -67,7 +68,15 @@ public class myProfileFragment extends Fragment {
         this.age = view.findViewById(R.id.age_profile_screen);
         this.friendsRecycler = view.findViewById(R.id.friends_list_recycler_profile_screen);
         this.postsRecycler = view.findViewById(R.id.post_list_recycler_profile_screen);
+        this.settingsButton = view.findViewById(R.id.settings_button_profile_screen);
 
+
+        // Move to settings
+        this.settingsButton.setOnClickListener(v->{
+            Utils.moveBetweenFragments(R.id.the_screen, new settingsFragment(), getActivity(), "settings");
+        });
+
+        // Access user
         this.dataManager.db.collection("Users").document(this.dataManager.getMyId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {

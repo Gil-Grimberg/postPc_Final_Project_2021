@@ -77,6 +77,23 @@ public class Utils {
         fragmentTransaction.commit();
     }
 
+    public static boolean isBirthdayValid(String birthday)
+    {
+        String[] dateParts = birthday.split("/");
+        if (dateParts.length != 3)
+        {
+            return false;
+        }
+        for (String datePart : dateParts)
+        {
+            if (!datePart.matches("[0-9]+"))
+            {
+                return false;
+            }
+        }
+        return dateParts[0].length() == 2 && dateParts[1].length() == 2 && dateParts[2].length() == 4;
+    }
+
     public static float calculateDistanceBetweenPoints(LatLng point1, LatLng point2)
     /***
      * returns the distance in Meters between two points
@@ -99,28 +116,28 @@ public class Utils {
         return (calculateDistanceBetweenPoints(dogPark, point) <= threshold);
     }
 
-    @Nullable
-    public static String getNotificationContent(int notificationType, String username, String dogPark)
-    {
-        switch (notificationType)
-        {
-            case NotificationTypes.USER_AT_THE_DOG_PARK_NOTIFICATION:
-                return String.format("%s has entered %s", username, dogPark);
-
-            case NotificationTypes.USER_LIKED_YOUR_POST_NOTIFICATION:
-                return String.format("%s liked your post!", username);
-
-            case NotificationTypes.TINDER_MATCH_NOTIFICATION:
-                return String.format("You have a match with %s!", username);
-
-            case NotificationTypes.FRIEND_REQUEST_ACCEPTED_NOTIFICATION:
-                return String.format("%s has accepted your friend request :)", username);
-
-            case NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION:
-                return String.format("%s wants to be your friend!", username);
-
-            default:
-                return null;
-        }
-    };
+//    @Nullable
+//    public static String getNotificationContent(int notificationType, String username, String dogPark)
+//    {
+//        switch (notificationType)
+//        {
+//            case NotificationTypes.USER_AT_THE_DOG_PARK_NOTIFICATION:
+//                return String.format("%s has entered %s", username, dogPark);
+//
+//            case NotificationTypes.USER_LIKED_YOUR_POST_NOTIFICATION:
+//                return String.format("%s liked your post!", username);
+//
+//            case NotificationTypes.TINDER_MATCH_NOTIFICATION:
+//                return String.format("You have a match with %s!", username);
+//
+//            case NotificationTypes.FRIEND_REQUEST_ACCEPTED_NOTIFICATION:
+//                return String.format("%s has accepted your friend request :)", username);
+//
+//            case NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION:
+//                return String.format("%s wants to be your friend!", username);
+//
+//            default:
+//                return null;
+//        }
+//    };
 }
