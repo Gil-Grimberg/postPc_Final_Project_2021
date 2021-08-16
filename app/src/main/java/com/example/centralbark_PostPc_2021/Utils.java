@@ -12,13 +12,22 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.common.collect.ImmutableMap;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class Utils {
 
+
+    final static Map<LatLng, String> locationToNameMapping = ImmutableMap.of(
+            new LatLng(31.781896, 35.20541), "Sacher park",
+            new LatLng(31.772408, 35.190774), "Ramat Beit Hakerem Park"
+    );
 
     static final String[] PERMISSIONS =
             {
@@ -89,4 +98,29 @@ public class Utils {
     {
         return (calculateDistanceBetweenPoints(dogPark, point) <= threshold);
     }
+
+    @Nullable
+    public static String getNotificationContent(int notificationType, String username, String dogPark)
+    {
+        switch (notificationType)
+        {
+            case NotificationTypes.USER_AT_THE_DOG_PARK_NOTIFICATION:
+                return String.format("%s has entered %s", username, dogPark);
+
+            case NotificationTypes.USER_LIKED_YOUR_POST_NOTIFICATION:
+                return String.format("%s liked your post!", username);
+
+            case NotificationTypes.TINDER_MATCH_NOTIFICATION:
+                return String.format("You have a match with %s!", username);
+
+            case NotificationTypes.FRIEND_REQUEST_ACCEPTED_NOTIFICATION:
+                return String.format("%s has accepted your friend request :)", username);
+
+            case NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION:
+                return String.format("%s wants to be your friend!", username);
+
+            default:
+                return null;
+        }
+    };
 }
