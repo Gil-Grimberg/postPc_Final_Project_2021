@@ -48,7 +48,9 @@ public class searchPlacesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        this.searchPlacesButton.setOnClickListener(v->{
-//            Utils.moveBetweenFragments(R.id.the_screen, new searchPlacesFragment(), getActivity(), "search_places");
+
+
+
+
     }
 }

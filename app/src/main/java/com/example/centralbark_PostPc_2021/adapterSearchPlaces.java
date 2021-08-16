@@ -35,11 +35,12 @@ public class adapterSearchPlaces extends RecyclerView.Adapter<adapterSearchPlace
     @Override
     public void onBindViewHolder(@NonNull @NotNull rowSearchPlacesHolder holder, int position) {
 
+
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return 2;
     }
 
     public class rowSearchPlacesHolder extends RecyclerView.ViewHolder{
