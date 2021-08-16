@@ -47,7 +47,6 @@ public class DataManager {
 
     private String initializeFromSp() {
         return this.sp.getString("userId", "noId");
-
     }
 
     public void updateSp(String updatedUserId) {
@@ -67,6 +66,25 @@ public class DataManager {
         this.userId = initializeFromSp();
     }
 
+    public void updateSpWithUsername(String username)
+    {
+        SharedPreferences.Editor editor = this.sp.edit();
+        editor.putString("username", username);
+        editor.apply();
+    }
+
+    public String getUsernameFromSp()
+    {
+        return this.sp.getString("username", "");
+    }
+
+    public void deleteUsernameFromSp()
+    {
+        SharedPreferences.Editor editor = this.sp.edit();
+        editor.remove("username");
+        editor.apply();
+    }
+
     public String[] getInfoForSignIn()
             // notice - if no info, returns null
     {
@@ -81,6 +99,15 @@ public class DataManager {
                 mail,
                 password
         };
+
+    }
+
+    public void addNotification(String userId, Notification notification)
+    {
+        this.db.collection("Users")
+                .document(userId)
+                .collection("Notifications")
+                .add(notification);
 
     }
 
@@ -127,10 +154,6 @@ public class DataManager {
         this.db.collection("Users").document(user.getId()).set(user);
     }
 
-    public void addToNotifications(Notification notification) {
-        this.db.collection("Users").document(notification.getUserId()).collection("myNotifications").document(notification.getNotificationId()).set(notification);
-    }
-
 
     public ArrayList<Post> getPostsById(String idToFindPostsFor) {
         ArrayList<Post> myPosts = new ArrayList<>();
@@ -161,45 +184,7 @@ public class DataManager {
 
 
 
-    public ArrayList<User> getAllUsers()
-            //todo: we can't use this function probably :( need to wait for Reem's response
-    {
-        ArrayList<User> myUsers = new ArrayList<>();
-        Task<QuerySnapshot> result = this.db.collection("Users").get();
-        result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot documentSnapshots) {
-                if (!documentSnapshots.isEmpty())
-                {
-                    myUsers.addAll(documentSnapshots.toObjects(User.class));
-                }
-            }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(Exception e) {
-                Toast.makeText(context, "Failed to read from db", Toast.LENGTH_LONG).show();
-            }
-        });
-        return myUsers;
-    }
 
-
-    public ArrayList<Notification> getNotifications() {
-        ArrayList<Notification> myNotifications = new ArrayList<>();
-        this.db.collection("Users").document(this.userId).collection("myNotifications").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                        myNotifications.add(document.toObject(Notification.class));
-                    }
-                }
-            }
-        });
-
-        return myNotifications;
-    }
     /**
      * @param post
      * @return a string representing the post with $ as seperators

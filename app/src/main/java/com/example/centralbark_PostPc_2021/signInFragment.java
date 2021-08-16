@@ -89,6 +89,7 @@ public class signInFragment extends Fragment {
                             appInstance.getDataManager().updateSp(enteredUser.getId());
                             appInstance.getDataManager().deleteSignInInfoFromSp();
                         }
+                        appInstance.getDataManager().updateSpWithUsername(enteredUser.getUsername());
                         Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
                         Utils.moveBetweenFragments(R.id.menu_bar, new menuFragment(), getActivity(), "menu");
                     }
