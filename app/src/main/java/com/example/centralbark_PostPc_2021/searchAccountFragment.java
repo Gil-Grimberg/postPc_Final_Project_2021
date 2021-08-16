@@ -61,6 +61,7 @@ public class searchAccountFragment extends Fragment {
         this.searchAccountsEditText = view.findViewById(R.id.searchAccounts_EditText);
 
         Query query = this.dataManager.db.collection("Users");
+
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(query, User.class).build();
 
@@ -115,42 +116,32 @@ public class searchAccountFragment extends Fragment {
                         model.addToPendingList(dataManager.getMyId());
                     }
                 });
+            }
+        };
 
-                //edit text was changed
-                searchAccountsEditText.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        //edit text was changed
+        searchAccountsEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-//                        CollectionReference usersRef = rootRef.collection("Users");
-//                        usersRef.orderBy(model.getUsername()).startAt(s.toString()).limitToLast(5);
-//                                .endAt(model.getUsername() + "\uf8ff");
-
-//                        if(s.toString().length() != 0) {
-//                            Query newQuery = query.orderBy(model.getUsername())
-//                                    .whereEqualTo(s.toString(), false)
-//                                    .limitToLast(5);
-//                            FirestoreRecyclerOptions<User> newOptions = new FirestoreRecyclerOptions.Builder<User>()
-//                                    .setQuery(newQuery, User.class).build();
-//                            accountsAdapter.updateOptions(newOptions);
-//                        }
-//
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-//                        if(s.toString().length() != 0) {
-//                            query.orderBy(model.getUsername()).startAt(s.toString());
-//                        }
-                    }
-                });
             }
 
-        };
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().length() != 0) {
+                    Query newQuery = dataManager.db.collection("Users").orderBy("username").orderBy("username").startAt(s.toString()).endAt(s.toString()+"\uf8ff");
+                    FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
+                            .setQuery(newQuery, User.class).build();
+                    accountsAdapter.updateOptions(options);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+
         this.accountsRecycler.setLayoutManager(new LinearLayoutManager(this.getContext(),RecyclerView.VERTICAL,false));
         this.accountsRecycler.setAdapter(accountsAdapter);
 
