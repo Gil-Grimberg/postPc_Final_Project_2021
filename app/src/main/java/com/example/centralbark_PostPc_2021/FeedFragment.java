@@ -198,8 +198,8 @@ public class FeedFragment extends Fragment {
 //        List<Post> allRelevantPosts = new ArrayList<>();
 //        String myId = this.dataManager.getMyId();
 //        this.dataManager.db.collection("Users").document(myId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//            @Override
-//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+////            @Override
+////            public void onSuccess(DocumentSnapshot documentSnapshot) {
 //                User myUser = documentSnapshot.toObject(User.class);
 //                ArrayList<String> allRelevantIds = new ArrayList<>();
 //                allRelevantIds.add(myId);

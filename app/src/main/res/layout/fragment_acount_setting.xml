@@ -1,14 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".acountSettingFragment">
+    tools:context=".privacySettingsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/profile_image_account_setting_screen"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="35dp"
+        android:src="@drawable/default_dog"
+        app:civ_shadow="true"
+        app:civ_shadow_color="@color/gray"
+        app:civ_shadow_radius="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+        android:id="@+id/user_name_title_account_setting_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/user_name"
+        android:fontFamily="casual"
+        android:layout_marginTop="30dp"
+        android:textSize="12sp"
+        android:layout_marginStart="35dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_image_account_setting_screen" />
+
+    <EditText
+        android:id="@+id/user_name_edit_text_account_setting_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:textSize="12sp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="casual"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toEndOf="@+id/user_name_title_account_setting_screen"
+        app:layout_constraintTop_toBottomOf="@+id/profile_image_account_setting_screen" />
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/mail_title_account_setting_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="26dp"
+        android:fontFamily="casual"
+        android:textSize="12sp"
+        android:text="@string/mail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_name_title_account_setting_screen" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/mail_edit_text_account_setting_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:ems="10"
+        android:fontFamily="casual"
+        android:textSize="12sp"
+        android:layout_marginTop="5dp"
+        android:inputType="textEmailAddress"
+        app:layout_constraintStart_toEndOf="@+id/mail_title_account_setting_screen"
+        app:layout_constraintTop_toBottomOf="@+id/user_name_edit_text_account_setting_screen" />
+
+    <TextView
+        android:id="@+id/password_title_account_setting_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:text="@string/password"
+        android:textSize="12sp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="26dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mail_title_account_setting_screen" />
+
+    <EditText
+        android:id="@+id/password_edit_text_account_setting_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="casual"
+        android:textSize="12sp"
+        android:layout_marginTop="5dp"
+        android:inputType="textPassword"
+        app:layout_constraintStart_toEndOf="@+id/password_title_account_setting_screen"
+        app:layout_constraintTop_toBottomOf="@+id/mail_edit_text_account_setting_screen" />
+
+    <TextView
+        android:id="@+id/birthday_title_account_setting_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/birthday"
+        android:fontFamily="casual"
+        android:textSize="12sp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password_title_account_setting_screen" />
+
+
+    <EditText
+        android:id="@+id/birthday_edit_text_account_setting_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="casual"
+        android:inputType="date"
+        android:layout_marginTop="5dp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/birthday_title_account_setting_screen"
+        app:layout_constraintTop_toBottomOf="@+id/password_edit_text_account_setting_screen"
+        tools:layout_editor_absoluteY="246dp" />
+
+
+    <TextView
+        android:id="@+id/breed_title_account_setting_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/breed"
+        android:fontFamily="casual"
+        android:textSize="12sp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="26dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/birthday_title_account_setting_screen" />
+
+    <EditText
+        android:id="@+id/breed_edit_text_account_setting_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="casual"
+        android:textSize="12sp"
+        android:layout_marginTop="5dp"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toEndOf="@+id/breed_title_account_setting_screen"
+        app:layout_constraintTop_toBottomOf="@+id/birthday_edit_text_account_setting_screen" />
+
+    <TextView
+        android:id="@+id/lives_in_title_account_setting_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="26dp"
+        android:fontFamily="casual"
+        android:text="@string/lives_in"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/breed_title_account_setting_screen" />
+
+    <EditText
+        android:id="@+id/lives_in_edit_text_account_setting_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="casual"
+        android:textSize="12sp"
+        android:layout_marginTop="5dp"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toEndOf="@+id/lives_in_title_account_setting_screen"
+        app:layout_constraintTop_toBottomOf="@+id/breed_edit_text_account_setting_screen" />
+
+    <TextView
+        android:id="@+id/my_self_summery_title_account_setting_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/my_self_summery"
+        android:fontFamily="casual"
+        android:textSize="12sp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="26dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lives_in_title_account_setting_screen" />
+
+
+    <EditText
+        android:id="@+id/my_self_summery_edit_text_account_setting_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="casual"
+        android:inputType="textPersonName"
+        android:textSize="12sp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toEndOf="@+id/my_self_summery_title_account_setting_screen"
+        app:layout_constraintTop_toBottomOf="@+id/lives_in_edit_text_account_setting_screen" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/save_changes_button_account_setting_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:background="@drawable/my_button"
+        android:fontFamily="casual"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:text="@string/save_changes"
+        android:textColor="@color/gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_self_summery_edit_text_account_setting_screen" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

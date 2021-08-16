@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FeedFragment">
+    tools:context=".settingsFragment">
 
 
     <TextView
@@ -34,10 +34,10 @@
         android:id="@+id/privacy_option_title_setting_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginStart="10dp"
-        android:text="@string/privacy"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="casual"
+        android:text="@string/privacy"
         app:layout_constraintStart_toEndOf="@+id/privacy_logo_setting_screen"
         app:layout_constraintTop_toBottomOf="@+id/title_setting_screen" />
 
@@ -59,4 +59,50 @@
         android:src="@drawable/account_setting_icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/privacy_logo_setting_screen" />
+
+    <TextView
+        android:id="@+id/account_option_title_setting_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/account"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="casual"
+        app:layout_constraintStart_toEndOf="@+id/account_logo_setting_screen"
+        app:layout_constraintTop_toBottomOf="@+id/privacy_option_title_setting_screen" />
+
+    <ImageView
+        android:id="@+id/enter_to_account_button_setting_screen"
+        android:layout_width="120dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="14dp"
+        android:src="@drawable/enter_to_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enter_to_privacy_button_setting_screen" />
+
+    <View
+        android:id="@+id/separator1_setting_screen"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enter_to_account_button_setting_screen"
+        android:background="@color/gray"/>
+
+    <TextView
+        android:id="@+id/log_out_button_setting_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="casual"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/darkRed"
+        android:text="@string/log_out"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/separator1_setting_screen" />
 </androidx.constraintlayout.widget.ConstraintLayout>
