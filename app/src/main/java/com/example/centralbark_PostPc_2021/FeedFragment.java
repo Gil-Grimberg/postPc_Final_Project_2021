@@ -123,7 +123,10 @@ public class FeedFragment extends Fragment {
                     }
                     else{
                         model.addLike(dataManager.getMyId());
-                        dataManager.sendNotification(NotificationTypes.USER_LIKED_YOUR_POST_NOTIFICATION, model.getUserId(), model.getPostId(), "");
+                        if (!dataManager.getMyId().equals(model.getUserId()))
+                        {
+                            dataManager.sendNotification(NotificationTypes.USER_LIKED_YOUR_POST_NOTIFICATION, model.getUserId(), model.getPostId(), "");
+                        }
                     }
                     holder.numOfLikes.setText(String.valueOf(model.getNumOfLikes()));
                 });
@@ -136,13 +139,24 @@ public class FeedFragment extends Fragment {
                     Date postTime = model.parseStringToDate();
                     long diffInMilli = curTime.getTime() - postTime.getTime();
                     long diffInHours = TimeUnit.HOURS.convert(diffInMilli, TimeUnit.MILLISECONDS);
-                    if (diffInHours >= 1){
-                        holder.postTime.setText(diffInHours + " hours ago");
-                    }
-                    else{
+
+                    if (diffInHours < 1)
+                    {
                         long diffInMin = TimeUnit.MINUTES.convert(diffInMilli, TimeUnit.MILLISECONDS);
                         holder.postTime.setText(diffInMin + " minutes ago");
                     }
+
+                    else if (diffInHours < 24)
+                    {
+                        holder.postTime.setText(diffInHours + " hours ago");
+                    }
+
+                    else
+                    {
+                        long diffInDays = TimeUnit.DAYS.convert(diffInMilli, TimeUnit.MILLISECONDS);
+                        holder.postTime.setText(diffInDays + " days ago");
+                    }
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
