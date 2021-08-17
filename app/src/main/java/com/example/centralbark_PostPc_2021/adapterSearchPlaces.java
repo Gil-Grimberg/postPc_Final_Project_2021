@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -20,14 +21,14 @@ import java.util.Map;
 public class adapterSearchPlaces extends RecyclerView.Adapter<adapterSearchPlaces.rowSearchPlacesHolder> {
     Context context;
     Map<LatLng, String> parks;
-    static ArrayList<LatLng> locations = new ArrayList<>();
-    static ArrayList<String> parksNames = new ArrayList<>();
+    ArrayList<LatLng> locations = new ArrayList<>();
+    ArrayList<String> parksNames = new ArrayList<>();
 
 
     public adapterSearchPlaces(Context context,  Map<LatLng, String> parksList){
         this.context = context;
         this.parks = parksList;
-        for (LatLng location: parks.keySet()){
+            for (LatLng location: parks.keySet()){
             String name = parks.get(location);
             locations.add(location);
             parksNames.add(name);
@@ -46,16 +47,14 @@ public class adapterSearchPlaces extends RecyclerView.Adapter<adapterSearchPlace
     @Override
     public void onBindViewHolder(@NonNull @NotNull rowSearchPlacesHolder holder, int position) {
         holder.dogParkName.setText(parksNames.get(position));
+        holder.goNowButton.setOnClickListener(v->{
+            Utils.moveBetweenFragments(R.id.the_screen, new MapsFragment(locations.get(position)), (FragmentActivity) context, "maps_fragment");
+        });
     }
 
     @Override
     public int getItemCount() {
         return parks.size();
-    }
-
-    public static void filterParks(ArrayList<LatLng> locs, ArrayList<String> parks){
-        locations = locs;
-        parksNames = parks;
     }
 
 

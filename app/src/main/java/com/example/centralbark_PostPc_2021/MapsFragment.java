@@ -71,7 +71,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     ActivityResultContracts.RequestMultiplePermissions requestMultiplePermissionsContract;
     ActivityResultLauncher<String[]> multiplePermissionActivityResultLauncher;
     SupportMapFragment supportMapFragment;
+    LatLng locationToZoomIn = null;
 
+    public MapsFragment(){};
+
+    public MapsFragment(LatLng location){
+            locationToZoomIn = location;
+
+    }
 
     @Nullable
     @Override
@@ -118,7 +125,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             LocationServices.getFusedLocationProviderClient(getContext()).requestLocationUpdates(mLocationRequest, mLocationCallback, null);
-            getCurrentLocation();
+            getCurrentLocation(locationToZoomIn);
         }
         else
         {
@@ -198,7 +205,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    private void getCurrentLocation() {
+    private void getCurrentLocation(LatLng locationToZoomIn) {
         @SuppressLint("MissingPermission") Task<Location> task = fusedLocationProviderClient.getLastLocation();
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
@@ -210,7 +217,17 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                          @Override
                          public void onMapReady(GoogleMap googleMap) {
                              MarkerOptions options = new MarkerOptions().position(latLng).title("I am Here");
-                             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+
+                             if (locationToZoomIn == null)
+                             {
+                                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+                             }
+                             else
+                             {
+                                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(locationToZoomIn, 18));
+                                 options.position(locationToZoomIn).title(Utils.locationToNameMapping.get(locationToZoomIn));
+                             }
+
                              googleMap.addMarker(options);
                          }
                      });
