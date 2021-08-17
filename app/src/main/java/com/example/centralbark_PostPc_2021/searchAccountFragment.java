@@ -23,8 +23,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageReference;
@@ -33,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class searchAccountFragment extends Fragment {
@@ -60,7 +58,7 @@ public class searchAccountFragment extends Fragment {
         this.searchPlacesButton = view.findViewById(R.id.searchPlaces_Button);
         this.searchAccountsEditText = view.findViewById(R.id.searchAccounts_EditText);
 
-        Query query = this.dataManager.db.collection("Users");
+        Query query = this.dataManager.db.collection("Users").whereNotIn("id", Collections.singletonList(dataManager.getMyId()));
 
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(query, User.class).build();
@@ -103,17 +101,25 @@ public class searchAccountFragment extends Fragment {
                 });
 
                 if(model.isFriend(dataManager.getMyId())){
-                    holder.makeFriend.setText("Pending request");
+                    holder.sendFriendRequest.setVisibility(View.GONE);
                 }
+
+                if(model.isPendingRequest(dataManager.getMyId()) || dataManager.getMyId().equals(model.getId())){
+                    holder.sendFriendRequest.setText("Pending request");
+                }
+
                 // make friend was pressed
-                holder.makeFriend.setOnClickListener(v->{
-                    if(model.isFriend(dataManager.getMyId())){
-                        holder.makeFriend.setText("Make Friend");
-                        model.removeFromFriendList(dataManager.getMyId());
+                holder.sendFriendRequest.setOnClickListener(v->{
+                    if(model.isPendingRequest(dataManager.getMyId())){
+                        holder.sendFriendRequest.setText("Make Friend");
+                        model.removeFromPendingList(dataManager.getMyId());
+                        dataManager.addToUsers(model);
+
                     }
                     else{
-                        holder.makeFriend.setText("Pending request");
+                        holder.sendFriendRequest.setText("Pending request");
                         model.addToPendingList(dataManager.getMyId());
+                        dataManager.addToUsers(model);
                     }
                 });
             }
@@ -129,9 +135,16 @@ public class searchAccountFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.toString().length() != 0) {
-                    Query newQuery = dataManager.db.collection("Users").orderBy("username").orderBy("username").startAt(s.toString()).endAt(s.toString()+"\uf8ff");
+                    Query newQuery = dataManager.db.collection("Users")
+                            .orderBy("username").startAt(s.toString()).endAt(s.toString()+"\uf8ff");
                     FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                             .setQuery(newQuery, User.class).build();
+                    accountsAdapter.updateOptions(options);
+                }
+                else{
+                    Query query = dataManager.db.collection("Users").whereNotIn("id", Collections.singletonList(dataManager.getMyId()));;
+                    FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
+                            .setQuery(query, User.class).build();
                     accountsAdapter.updateOptions(options);
                 }
             }
@@ -163,25 +176,16 @@ public class searchAccountFragment extends Fragment {
         this.accountsAdapter.stopListening();
     }
 
-
-    public void addUserToPendingRequestList(User addUser) {
-        User myUser = dataManager.getUserById(dataManager.getMyId());
-        if (myUser != null){
-            myUser.getPendingRequests().add(addUser.getId());
-        }
-    }
-
-
     private class RecyclerAccountsHolder extends RecyclerView.ViewHolder{
         private TextView userName;
-        private Button makeFriend;
+        private Button sendFriendRequest;
         private ImageView profilePhoto;
 
         @SuppressLint("CutPasteId")
         public RecyclerAccountsHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             this.userName = itemView.findViewById(R.id.userName_TextView);
-            this.makeFriend = itemView.findViewById(R.id.makeFriend_Button);
+            this.sendFriendRequest = itemView.findViewById(R.id.makeFriend_Button);
             this.profilePhoto = itemView.findViewById(R.id.profilePhoto_ImageView);
         }
     }
