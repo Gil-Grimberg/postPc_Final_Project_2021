@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageReference;
 
@@ -114,11 +115,11 @@ public class NotificationsFragment extends Fragment {
                             model.getUserId(), null, null);
                     dataManager.addStringToUserArrayField(dataManager.getMyId(), "friendList", model.getUserId());
                     dataManager.addStringToUserArrayField(model.getUserId(), "friendList", dataManager.getMyId());
+                    removeFriendsFromPosts(model.getUserId());
                     dataManager.removeStringFromUserArrayField(dataManager.getMyId(), "pendingRequests", model.getUserId());
                     holder.confirmButton.setVisibility(View.INVISIBLE);
                     String newText =  String.format("%s is now your friend!", model.getUserName());
                     holder.notificationContent.setText(newText);
-                    dataManager.removeStringFromUserArrayField(dataManager.getMyId(), "pendingRequests", model.getUserId());
                     model.setNotificationContent(newText);
                     dataManager.updateNotification(dataManager.getMyId(), model.getId(), model);
                 });
@@ -184,5 +185,25 @@ public class NotificationsFragment extends Fragment {
         int daysDiff = (int) Utils.getTimeDifferenceInDays(timestamp1, timestamp2);
         return String.format("%s days ago", daysDiff);
 
+    }
+
+    protected void removeFriendsFromPosts(String curUserId){
+        // Access Posts in order to update the friends list
+        Task<QuerySnapshot> result = dataManager.db.collection("Posts").get();
+        result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot documentSnapshots) {
+                if (!documentSnapshots.isEmpty()) {
+                    for(Post post: documentSnapshots.toObjects(Post.class)){
+                        if(post.getUserId().equals(curUserId)){ // if it is his post, delete me from friend list
+                            dataManager.addStringFromPostArrayField(post.getPostId(),"friendList",dataManager.getMyId());
+                        }
+                        else if(post.getUserId().equals(dataManager.getMyId())){ // if it is my post, delete him from my friend list
+                            dataManager.addStringFromPostArrayField(post.getPostId(),"friendList",curUserId);
+                        }
+                    }
+                }
+            }
+        });
     }
 }

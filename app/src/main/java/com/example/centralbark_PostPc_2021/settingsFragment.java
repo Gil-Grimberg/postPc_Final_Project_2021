@@ -22,6 +22,7 @@ public class settingsFragment extends Fragment {
             this.dataManager = CentralBarkApp.getInstance().getDataManager();
         }
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment

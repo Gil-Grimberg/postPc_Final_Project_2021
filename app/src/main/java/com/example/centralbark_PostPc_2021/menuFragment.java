@@ -17,6 +17,7 @@ public class menuFragment extends Fragment {
     ImageButton homeButton;
     ImageButton locationButton;
     ImageButton profileButton;
+    String myUserId;
 
     public menuFragment() {
         super(R.layout.fragment_menu);
@@ -39,8 +40,10 @@ public class menuFragment extends Fragment {
                 Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed"));
         locationButton.setOnClickListener(v->
                 Utils.moveBetweenFragments(R.id.the_screen, new MapsFragment(), getActivity(), "maps"));
-        profileButton.setOnClickListener(v->
-                Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(), getActivity(), "myProfile"));
+        profileButton.setOnClickListener(v->{
+                myUserId = CentralBarkApp.getInstance().getDataManager().getMyId();
+                Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(myUserId), getActivity(), "myProfile");
+            });
     }
 
 }

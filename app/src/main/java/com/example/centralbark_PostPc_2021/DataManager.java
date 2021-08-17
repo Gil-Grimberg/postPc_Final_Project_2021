@@ -120,9 +120,19 @@ public class DataManager {
         this.db.collection("Users").document(userId).update(fieldName, FieldValue.arrayUnion(newValue));
     }
 
-    public void removeStringFromUserArrayField(String userId, String fieldName, String newValue)
+    public void removeStringFromUserArrayField(String userId, String fieldName, String valToRemove)
     {
-        this.db.collection("Users").document(userId).update(fieldName, FieldValue.arrayRemove(newValue));
+        this.db.collection("Users").document(userId).update(fieldName, FieldValue.arrayRemove(valToRemove));
+    }
+
+    public void addStringFromPostArrayField(String postId, String fieldName, String valToRemove)
+    {
+        this.db.collection("Posts").document(postId).update(fieldName, FieldValue.arrayUnion(valToRemove));
+    }
+
+    public void removeStringFromPostArrayField(String postId, String fieldName, String valToRemove)
+    {
+        this.db.collection("Posts").document(postId).update(fieldName, FieldValue.arrayRemove(valToRemove));
     }
 
     public void updateNotification(String userId, String notificationId, Notification notification)

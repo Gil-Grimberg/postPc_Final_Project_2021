@@ -203,4 +203,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/posts_list_title_profile_screen" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/makeFriend_Button_profile_screen"
+        android:layout_width="90dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/my_button"
+        android:fontFamily="casual"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="@color/gray"
+        app:layout_constraintEnd_toEndOf="@+id/settings_button_profile_screen"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/unFriend_Button_profile_screen"
+        android:layout_width="90dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/my_button"
+        android:fontFamily="casual"
+        android:text="@string/unfriend"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="@color/gray"
+        app:layout_constraintEnd_toEndOf="@+id/settings_button_profile_screen"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
