@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -101,8 +102,6 @@ public class DataManager {
 
     }
 
-
-
     public void deleteSignInInfoFromSp() {
         SharedPreferences.Editor editor = this.sp.edit();
         editor.remove("userMail");
@@ -114,6 +113,16 @@ public class DataManager {
         this.db.collection("Users")
                 .document(userId)
                 .update("location", location);
+    }
+
+    public void addStringToUserArrayField(String userId, String fieldName, String newValue)
+    {
+        this.db.collection("Users").document(userId).update(fieldName, FieldValue.arrayUnion(newValue));
+    }
+
+    public void removeStringFromUserArrayField(String userId, String fieldName, String newValue)
+    {
+        this.db.collection("Users").document(userId).update(fieldName, FieldValue.arrayRemove(newValue));
     }
 
 

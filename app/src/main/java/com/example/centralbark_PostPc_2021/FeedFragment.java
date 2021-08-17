@@ -196,6 +196,11 @@ public class FeedFragment extends Fragment {
         this.addPostButton.setOnClickListener(v -> {
             Utils.moveBetweenFragments(R.id.the_screen, new AddPostFragment(), getActivity(), "add_post");
         });
+
+        this.notificationButton.setOnClickListener(v ->
+        {
+            Utils.moveBetweenFragments(R.id.the_screen, new NotificationsFragment(), getActivity(), "notification_activity");
+        });
     }
 
 //    public List<Post> findAllRelevantPosts(){
