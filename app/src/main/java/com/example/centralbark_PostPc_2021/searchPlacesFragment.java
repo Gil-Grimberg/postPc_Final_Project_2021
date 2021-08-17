@@ -66,23 +66,28 @@ public class searchPlacesFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                Map<LatLng, String> filteredMap = new HashMap<>();
-                Map<LatLng, String> parks = Utils.locationToNameMapping;
-                for (LatLng location : parks.keySet()) {
-                    String parkName = parks.get(location);
-                    //if(s.toString().toLowerCase().startsWith(parkName)){
-                    if (parkName.toLowerCase().startsWith(s.toString().toLowerCase())) {
-                        filteredMap.put(location, parkName);
+                if(s.toString().length() != 0) {
+                    Map<LatLng, String> filteredMap = new HashMap<>();
+                    Map<LatLng, String> parks = Utils.locationToNameMapping;
+                    for (LatLng location : parks.keySet()) {
+                        String parkName = parks.get(location);
+                        //if(s.toString().toLowerCase().startsWith(parkName)){
+                        if (parkName.toLowerCase().startsWith(s.toString().toLowerCase())) {
+                            filteredMap.put(location, parkName);
+                        }
                     }
+                    adapter = new adapterSearchPlaces(getContext(), filteredMap);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                    placesRecycler.setLayoutManager(linearLayoutManager);
+                    placesRecycler.setAdapter(adapter);
                 }
-                adapter = new adapterSearchPlaces(getContext(), filteredMap);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                placesRecycler.setLayoutManager(linearLayoutManager);
-                placesRecycler.setAdapter(adapter);
+                else{
+                    adapter = new adapterSearchPlaces(getContext(), Utils.locationToNameMapping);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                    placesRecycler.setLayoutManager(linearLayoutManager);
+                    placesRecycler.setAdapter(adapter);
+                }
             }
         });
-
-
     }
-
 }

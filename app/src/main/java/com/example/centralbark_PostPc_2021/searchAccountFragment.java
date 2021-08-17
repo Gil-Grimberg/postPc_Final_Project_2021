@@ -141,6 +141,12 @@ public class searchAccountFragment extends Fragment {
                             .setQuery(newQuery, User.class).build();
                     accountsAdapter.updateOptions(options);
                 }
+                else{
+                    Query query = dataManager.db.collection("Users").whereNotIn("id", Collections.singletonList(dataManager.getMyId()));;
+                    FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
+                            .setQuery(query, User.class).build();
+                    accountsAdapter.updateOptions(options);
+                }
             }
 
             @Override
