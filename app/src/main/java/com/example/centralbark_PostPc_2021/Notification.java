@@ -18,32 +18,36 @@ final class NotificationTypes {
 public class Notification implements Serializable {
 
     private String userId; // the user that creates the notification
-    private String notificationId;
+    private String id;
     private String notificationContent;
     private int notificationType;
-    private boolean isFriendRequest;
     private boolean hasUserSeen;
     private Timestamp timestamp;
+    private String postId;
 
     public Notification(){}
 
     public Notification(String userId, int notificationType, String notificationContent,
-                        boolean isFriendRequest, Timestamp timestamp) {
+                        Timestamp timestamp, String postId) {
         this.userId = userId;
-        this.notificationId = UUID.randomUUID().toString();
+        this.id = UUID.randomUUID().toString();
         this.notificationContent = notificationContent;
-        this.isFriendRequest = isFriendRequest;
         this.notificationType = notificationType;
         this.hasUserSeen = false;
         this.timestamp = timestamp;
+        this.postId = postId;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public void setFriendRequest(boolean friendRequest) {
-        this.isFriendRequest = friendRequest;
     }
 
     public void setUserId(String userId) {
@@ -62,13 +66,18 @@ public class Notification implements Serializable {
         this.notificationContent = notificationContent;
     }
 
-    public void setNotificationId(String notificationId) {
-        this.notificationId = notificationId;
+    public void setId(String notificationId) {
+        this.id = notificationId;
     }
 
     public Timestamp getTimestamp() {
         return timestamp;
     }
+
+    public boolean isHasUserSeen() {
+        return hasUserSeen;
+    }
+
 
     public String getNotificationContent() {
         return notificationContent;
@@ -78,12 +87,8 @@ public class Notification implements Serializable {
         return userId;
     }
 
-    public String getNotificationId() {
-        return notificationId;
-    }
-
-    public boolean getIsFriendRequest() {
-        return isFriendRequest;
+    public String getId() {
+        return id;
     }
 
     public int getNotificationType() {
