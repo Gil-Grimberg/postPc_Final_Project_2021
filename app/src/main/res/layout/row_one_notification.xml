@@ -40,12 +40,12 @@
         android:id="@+id/profilePhoto_ImageView_one_notification_screen"
         android:layout_width="80dp"
         android:layout_height="800dp"
-        android:src="@drawable/default_dog"
-        app:civ_shadow="true"
-        app:civ_shadow_radius="2dp"
-        app:civ_shadow_color="@color/gray"
         android:layout_marginStart="15dp"
         android:layout_marginTop="5dp"
+        android:src="@drawable/default_dog"
+        app:civ_shadow="true"
+        app:civ_shadow_color="@color/gray"
+        app:civ_shadow_radius="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,6 +58,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/profilePhoto_ImageView_one_notification_screen"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/notification_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/profilePhoto_ImageView_one_notification_screen"
+        app:layout_constraintTop_toBottomOf="@+id/notification_message"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="3dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

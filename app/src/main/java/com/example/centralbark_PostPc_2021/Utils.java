@@ -140,7 +140,7 @@ public class Utils {
                 return String.format("You have a match with %s!", username);
 
             case NotificationTypes.FRIEND_REQUEST_ACCEPTED_NOTIFICATION:
-                return String.format("%s accepted your friend request :)", username);
+                return String.format("%s has accepted your friend request :)", username);
 
             case NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION:
                 return String.format("%s wants to be your friend!", username);
@@ -149,6 +149,26 @@ public class Utils {
                 return null;
         }
     };
+
+    public static float getTimeDifferenceInDays(Timestamp timestamp1, Timestamp timestamp2)
+    {
+        long seconds1 = timestamp1.getSeconds();
+        long seconds2 = timestamp2.getSeconds();
+
+        long diff = java.lang.Math.abs(seconds1 - seconds2);
+
+        return (float) diff / 86400;
+    }
+
+    public static float getTimeDifferenceInHours(Timestamp timestamp1, Timestamp timestamp2)
+    {
+        long seconds1 = timestamp1.getSeconds();
+        long seconds2 = timestamp2.getSeconds();
+
+        long diff = java.lang.Math.abs(seconds1 - seconds2);
+
+        return (float) diff / 3600;
+    }
 
     public static float getTimestampsDifferenceInMinutes(Timestamp timestamp1, Timestamp timestamp2)
     {
