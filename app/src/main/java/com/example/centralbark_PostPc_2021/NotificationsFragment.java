@@ -1,5 +1,6 @@
 package com.example.centralbark_PostPc_2021;
 
+import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -21,6 +22,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageReference;
@@ -81,6 +83,10 @@ public class NotificationsFragment extends Fragment {
                 }
 
                 String profileImgPath = model.getProfilePhoto();
+                if (profileImgPath == null)
+                {
+                    profileImgPath = "";
+                }
                 StorageReference profileImag = dataManager.storage.getReference().child(profileImgPath);
                 File localProfileImFile = null;
                 try {
@@ -117,7 +123,10 @@ public class NotificationsFragment extends Fragment {
                     dataManager.updateNotification(dataManager.getMyId(), model.getId(), model);
                 });
 
+                holder.notificationTime.setText(getTimeDifference(Timestamp.now(), model.getTimestamp()));
+                dataManager.updateNotification(dataManager.getMyId(), model.getId(), model);
             }
+
         };
 
         this.recyclerViewNotifications.setLayoutManager(new LinearLayoutManager(this.getContext(), RecyclerView.VERTICAL, false));
@@ -140,6 +149,7 @@ public class NotificationsFragment extends Fragment {
 
     private class RecyclerNotificationHolder extends RecyclerView.ViewHolder
     {
+        private TextView notificationTime;
         private TextView notificationContent;
         private ImageView profilePhoto;
         private Button confirmButton;
@@ -151,6 +161,28 @@ public class NotificationsFragment extends Fragment {
             this.profilePhoto = view.findViewById(R.id.profilePhoto_ImageView_one_notification_screen);
             this.confirmButton = view.findViewById(R.id.confirm_request_button_notification_screen);
             this.confirmButton.setVisibility(View.INVISIBLE);
+            this.notificationTime = view.findViewById(R.id.notification_time);
         }
+    }
+
+    protected String getTimeDifference(Timestamp timestamp1, Timestamp timestamp2)
+    {
+        float minutesDiff = Utils.getTimestampsDifferenceInMinutes(timestamp1, timestamp2);
+        if (minutesDiff < 60)
+        {
+            int diff = (int) minutesDiff;
+            return String.format("%s minutes ago", diff);
+        }
+
+        float hoursDiff = Utils.getTimeDifferenceInHours(timestamp1, timestamp2);
+        if (hoursDiff < 24)
+        {
+            int diff = (int) hoursDiff;
+            return String.format("%s hours ago", diff);
+        }
+
+        int daysDiff = (int) Utils.getTimeDifferenceInDays(timestamp1, timestamp2);
+        return String.format("%s days ago", daysDiff);
+
     }
 }
