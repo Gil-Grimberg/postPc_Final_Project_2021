@@ -93,8 +93,8 @@ public class LocationService extends Service {
                                         CentralBarkApp.getInstance().getDataManager().getMyId(),
                                         NotificationTypes.USER_AT_THE_DOG_PARK_NOTIFICATION,
                                         notificationContent,
-                                        false,
-                                        Timestamp.now());
+                                        Timestamp.now(),
+                                        null);
                                 for (User user: friendsList)
                                 {
                                     ArrayList<Notification> friendNotifications = new ArrayList<>();

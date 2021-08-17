@@ -248,6 +248,7 @@ public class myProfileFragment extends Fragment {
             super(view);
             this.friendProfileIm = view.findViewById(R.id.friend_profile_image_row_one_friend);
             this.friendsName = view.findViewById(R.id.friend_user_name_row_one_friend);
+            ////
         }
     }
 

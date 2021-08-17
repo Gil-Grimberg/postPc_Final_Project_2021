@@ -227,13 +227,11 @@ public class User implements Serializable {
     {
         this.dislikeUsers.add(otherId);
     }
-
     public void addToFriendList(String otherId){this.friendList.add(otherId);}
     public void removeFromFriendList(String otherId) { this.friendList.remove(otherId);}
-    public boolean isFriend(String otherId) {
-        return friendList.contains(otherId);
-    }
-
+    public boolean isFriend(String otherId) { return friendList.contains(otherId); }
+    public boolean isPendingRequest(String otherId) { return this.pendingRequests.contains(otherId); }
     public void addToPendingList(String otherId) { this.pendingRequests.add(otherId);}
+    public void removeFromPendingList(String otherId) {this.pendingRequests.remove(otherId);}
 }
 
