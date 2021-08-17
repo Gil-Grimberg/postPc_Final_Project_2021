@@ -29,4 +29,7 @@
     <string name="save_changes">Save Changes</string>
     <string name="notifications">Notifications</string>
     <string name="confirm">Confirm</string>
+    <string name="Password">Password</string>
+    <string name="about">About</string>
+    <string name="change_password">Change Password</string>
 </resources>

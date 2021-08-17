@@ -148,7 +148,7 @@ public class signUpFragment extends Fragment {
                         Toast.makeText(getContext(), "Username cannot be empty!", Toast.LENGTH_LONG).show();
                     }
 
-                    else if (!isBirthdayValid(birthday.getText().toString()))
+                    else if (!Utils.isBirthdayValid(birthday.getText().toString()))
                     {
                         Toast.makeText(getContext(), "Error: birthday format is MM/DD/YYYY", Toast.LENGTH_LONG).show();
                     }
@@ -206,23 +206,5 @@ public class signUpFragment extends Fragment {
                 }
             }});
         });
-    }
-
-
-    private boolean isBirthdayValid(String birthday)
-    {
-        String[] dateParts = birthday.split("/");
-        if (dateParts.length != 3)
-        {
-            return false;
-        }
-        for (String datePart : dateParts)
-        {
-            if (!datePart.matches("[0-9]+"))
-            {
-                return false;
-            }
-        }
-        return dateParts[0].length() == 2 && dateParts[1].length() == 2 && dateParts[2].length() == 4;
     }
 }
