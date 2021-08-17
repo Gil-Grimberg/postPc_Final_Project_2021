@@ -38,7 +38,6 @@ public class accountSettingFragment extends Fragment {
     private ImageView profileImage;
     private EditText userName;
     private EditText email;
-    private EditText password;
     private EditText birthday;
     private EditText breed;
     private EditText livesIn;
@@ -61,14 +60,48 @@ public class accountSettingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         this.profileImage = view.findViewById(R.id.profile_image_account_setting_screen);
-        this.userName = view.findViewById(R.id.user_name_title_account_setting_screen);
-        this.email = view.findViewById(R.id.mail_title_account_setting_screen);
-        this.password = view.findViewById(R.id.password_title_account_setting_screen);
-        this.birthday = view.findViewById(R.id.birthday_title_account_setting_screen);
-        this.breed = view.findViewById(R.id.breed_title_account_setting_screen);
-        this.livesIn = view.findViewById(R.id.lives_in_title_account_setting_screen);
+        this.userName = view.findViewById(R.id.user_name_edit_text_account_setting_screen);
+        this.email = view.findViewById(R.id.mail_edit_text_account_setting_screen);
+        this.birthday = view.findViewById(R.id.birthday_edit_text_account_setting_screen);
+        this.breed = view.findViewById(R.id.breed_edit_text_account_setting_screen);
+        this.livesIn = view.findViewById(R.id.lives_in_edit_text_account_setting_screen);
         this.selfSummery = view.findViewById(R.id.my_self_summery_edit_text_account_setting_screen);
         this.saveChanges = view.findViewById(R.id.save_changes_button_account_setting_screen);
+
+        // upload image from phone method:
+        ActivityResultLauncher<Intent> upLoadLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if(result.getResultCode()== Activity.RESULT_OK){
+                            Intent data = result.getData();
+                            Uri selectedImage = data.getData();
+                            if (selectedImage == null)
+                            {
+                                Toast.makeText(getContext(), "Error uploading image", Toast.LENGTH_LONG).show();
+                            }
+                            else
+                            {
+                                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+                                Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                                        filePathColumn, null, null, null);
+                                cursor.moveToFirst();
+                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                                picturePath = cursor.getString(columnIndex);
+                                String[] picturePathSplit = picturePath.split("\\.");
+                                fileType = picturePathSplit[picturePathSplit.length-1];
+                                image = new File(picturePath);
+                                if(image.exists()){
+                                    profileImage.setImageURI(Uri.fromFile(image));
+                                }
+                                cursor.close();
+                            }
+                        }
+                    }
+                }
+        );
 
         // Access user
         this.dataManager.db.collection("Users").document(this.dataManager.getMyId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -112,9 +145,6 @@ public class accountSettingFragment extends Fragment {
                 email.setText(myUser.getMail());
                 email.setClickable(false);
 
-                // set password
-                password.setText(myUser.getPassword());
-
                 // set breed
                 breed.setText(myUser.getBreed());
 
@@ -123,40 +153,6 @@ public class accountSettingFragment extends Fragment {
 
                 // FINISH INITIALIZING ALL FIELDS WITH CURRENT INFO
 
-                // upload image from phone method:
-                ActivityResultLauncher<Intent> upLoadLauncher = registerForActivityResult(
-                        new ActivityResultContracts.StartActivityForResult(),
-                        new ActivityResultCallback<ActivityResult>() {
-                            @Override
-                            public void onActivityResult(ActivityResult result) {
-                                if(result.getResultCode()== Activity.RESULT_OK){
-                                    Intent data = result.getData();
-                                    Uri selectedImage = data.getData();
-                                    if (selectedImage == null)
-                                    {
-                                        Toast.makeText(getContext(), "Error uploading image", Toast.LENGTH_LONG).show();
-                                    }
-                                    else
-                                    {
-                                        String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-                                        Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-                                                filePathColumn, null, null, null);
-                                        cursor.moveToFirst();
-                                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                                        picturePath = cursor.getString(columnIndex);
-                                        String[] picturePathSplit = picturePath.split("\\.");
-                                        fileType = picturePathSplit[picturePathSplit.length-1];
-                                        image = new File(picturePath);
-                                        if(image.exists()){
-                                            profileImage.setImageURI(Uri.fromFile(image));
-                                        }
-                                        cursor.close();
-                                    }
-                                }
-                            }
-                        }
-                );
 
                 // upload new photo if profile image is clicked
                 profileImage.setOnClickListener(v -> {
@@ -166,17 +162,8 @@ public class accountSettingFragment extends Fragment {
 
                 // if save changes clicked - save the changes
                 saveChanges.setOnClickListener(v -> {
-                    if (password.getText().toString().equals(""))
-                    {
-                        Toast.makeText(getContext(), "Password cannot be empty!", Toast.LENGTH_LONG).show();
-                    }
 
-                    else if (password.getText().toString().length() != 8)
-                    {
-                        Toast.makeText(getContext(), "Password must contain 8 chars!", Toast.LENGTH_LONG).show();
-                    }
-
-                    else if (userName.getText().toString().equals(""))
+                    if (userName.getText().toString().equals(""))
                     {
                         Toast.makeText(getContext(), "Username cannot be empty!", Toast.LENGTH_LONG).show();
                     }
@@ -187,7 +174,6 @@ public class accountSettingFragment extends Fragment {
                     }
                     else{
                         myUser.setUsername(userName.getText().toString());
-                        myUser.setPassword(password.getText().toString());
                         myUser.setBirthday(birthday.getText().toString());
                         myUser.setBreed(breed.getText().toString());
                         myUser.setCity(livesIn.getText().toString());
@@ -211,15 +197,13 @@ public class accountSettingFragment extends Fragment {
                                     }
                                 });
                         }
-                        dataManager.updateSpForSignIn(myUser.getId(),myUser.getMail(), myUser.getPassword());
+//                        dataManager.updateSpForSignIn(myUser.getId(),myUser.getMail(), myUser.getPassword());
                         dataManager.updateSpWithUsername(myUser.getUsername());
                         dataManager.addToUsers(myUser);
                         Toast.makeText(getContext(), "Data updated successfully", Toast.LENGTH_LONG).show();
                         Utils.moveBetweenFragments(R.id.the_screen, new settingsFragment(), getActivity(), "settings");
                     }
-
                 });
-
             }
         });
     }

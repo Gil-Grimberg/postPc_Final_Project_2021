@@ -11,8 +11,9 @@ import android.widget.TextView;
 
 public class settingsFragment extends Fragment {
     private DataManager dataManager;
-    private ImageView goToPrivacySettings;
+    private ImageView goToPasswordSettings;
     private ImageView goToAccountSettings;
+    private ImageView goToAboutSettings;
     private TextView logOut;
 
     public settingsFragment() {
@@ -26,18 +27,24 @@ public class settingsFragment extends Fragment {
         // Inflate the layout for this fragment
         super.onViewCreated(view, savedInstanceState);
 
-        this.goToPrivacySettings = view.findViewById(R.id.enter_to_privacy_button_setting_screen);
+        this.goToPasswordSettings = view.findViewById(R.id.enter_to_password_button_setting_screen);
         this.goToAccountSettings = view.findViewById(R.id.enter_to_account_button_setting_screen);
+        this.goToAboutSettings = view.findViewById(R.id.enter_to_about_button_setting_screen);
         this.logOut = view.findViewById(R.id.log_out_button_setting_screen);
 
-        // move to privacy setting fragment
-        this.goToPrivacySettings.setOnClickListener(v -> {
-            Utils.moveBetweenFragments(R.id.the_screen, new privacySettingsFragment(), getActivity(), "privacySettings");
+        // move to password setting fragment
+        this.goToPasswordSettings.setOnClickListener(v -> {
+            Utils.moveBetweenFragments(R.id.the_screen, new passwordSettingsFragment(), getActivity(), "passwordSettings");
         });
 
         // move to account setting fragment
         this.goToAccountSettings.setOnClickListener(v -> {
             Utils.moveBetweenFragments(R.id.the_screen, new accountSettingFragment(), getActivity(), "accountSettings");
+        });
+
+        // move to about setting fragment
+        this.goToAboutSettings.setOnClickListener(v -> {
+            Utils.moveBetweenFragments(R.id.the_screen, new aboutSettingFragment(), getActivity(), "aboutSettings");
         });
 
         // log out button
