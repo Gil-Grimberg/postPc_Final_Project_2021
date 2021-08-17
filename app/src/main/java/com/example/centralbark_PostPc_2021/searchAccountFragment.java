@@ -104,22 +104,30 @@ public class searchAccountFragment extends Fragment {
                     holder.sendFriendRequest.setVisibility(View.GONE);
                 }
 
-                if(model.isPendingRequest(dataManager.getMyId()) || dataManager.getMyId().equals(model.getId())){
+                //if(model.isPendingRequest(dataManager.getMyId()) || dataManager.getMyId().equals(model.getId())){
+                if(model.isPendingRequest(dataManager.getMyId())){
                     holder.sendFriendRequest.setText("Pending request");
+                }
+
+                else
+                {
+                    holder.sendFriendRequest.setText("Make Friend");
                 }
 
                 // make friend was pressed
                 holder.sendFriendRequest.setOnClickListener(v->{
                     if(model.isPendingRequest(dataManager.getMyId())){
-                        holder.sendFriendRequest.setText("Make Friend");
                         model.removeFromPendingList(dataManager.getMyId());
                         dataManager.addToUsers(model);
-
+                        holder.sendFriendRequest.setText("Make Friend");
+                        dataManager.deleteNotification(NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION, model.getId(), null);
                     }
                     else{
-                        holder.sendFriendRequest.setText("Pending request");
                         model.addToPendingList(dataManager.getMyId());
                         dataManager.addToUsers(model);
+                        holder.sendFriendRequest.setText("Pending request");
+                        dataManager.sendNotification(NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION, model.getId(), null,null);
+
                     }
                 });
             }
