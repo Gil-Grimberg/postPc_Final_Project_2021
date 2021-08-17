@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".privacySettingsFragment">
+    tools:context=".accountSettingFragment">
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/profile_image_account_setting_screen"
@@ -69,29 +69,6 @@
         app:layout_constraintStart_toEndOf="@+id/mail_title_account_setting_screen"
         app:layout_constraintTop_toBottomOf="@+id/user_name_edit_text_account_setting_screen" />
 
-    <TextView
-        android:id="@+id/password_title_account_setting_screen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="casual"
-        android:text="@string/password"
-        android:textSize="12sp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="26dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mail_title_account_setting_screen" />
-
-    <EditText
-        android:id="@+id/password_edit_text_account_setting_screen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:fontFamily="casual"
-        android:textSize="12sp"
-        android:layout_marginTop="5dp"
-        android:inputType="textPassword"
-        app:layout_constraintStart_toEndOf="@+id/password_title_account_setting_screen"
-        app:layout_constraintTop_toBottomOf="@+id/mail_edit_text_account_setting_screen" />
 
     <TextView
         android:id="@+id/birthday_title_account_setting_screen"
@@ -103,7 +80,7 @@
         android:layout_marginStart="35dp"
         android:layout_marginTop="28dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_title_account_setting_screen" />
+        app:layout_constraintTop_toBottomOf="@+id/mail_title_account_setting_screen" />
 
 
     <EditText
@@ -116,7 +93,7 @@
         android:layout_marginTop="5dp"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/birthday_title_account_setting_screen"
-        app:layout_constraintTop_toBottomOf="@+id/password_edit_text_account_setting_screen"
+        app:layout_constraintTop_toBottomOf="@+id/mail_edit_text_account_setting_screen"
         tools:layout_editor_absoluteY="246dp" />
 
 

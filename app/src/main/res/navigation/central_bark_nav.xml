@@ -115,7 +115,7 @@
     </fragment>
     <fragment
         android:id="@+id/acountSettingFragment"
-        android:name="com.example.centralbark_PostPc_2021.acountSettingFragment"
+        android:name="com.example.centralbark_PostPc_2021.accountSettingFragment"
         android:label="fragment_acount_setting"
         tools:layout="@layout/fragment_acount_setting" />
     <fragment

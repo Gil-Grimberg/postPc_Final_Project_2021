@@ -21,34 +21,37 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/privacy_logo_setting_screen"
+        android:id="@+id/password_logo_setting_screen"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:src="@drawable/privacy_setting_icon"
+        android:src="@drawable/password_icon"
         android:layout_marginTop="18dp"
         android:layout_marginStart="40dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_setting_screen" />
+        app:layout_constraintTop_toBottomOf="@id/account_logo_setting_screen"
+         />
 
     <TextView
-        android:id="@+id/privacy_option_title_setting_screen"
+        android:id="@+id/password_option_title_setting_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="24dp"
         android:fontFamily="casual"
-        android:text="@string/privacy"
-        app:layout_constraintStart_toEndOf="@+id/privacy_logo_setting_screen"
-        app:layout_constraintTop_toBottomOf="@+id/title_setting_screen" />
+        android:text="@string/Password"
+        app:layout_constraintStart_toEndOf="@+id/password_logo_setting_screen"
+        app:layout_constraintTop_toBottomOf="@id/account_logo_setting_screen"
+         />
 
     <ImageView
-        android:id="@+id/enter_to_privacy_button_setting_screen"
+        android:id="@+id/enter_to_password_button_setting_screen"
         android:layout_width="120dp"
         android:layout_height="35dp"
         android:layout_marginTop="20dp"
         android:src="@drawable/enter_to_icon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_setting_screen" />
+        app:layout_constraintTop_toBottomOf="@id/enter_to_account_button_setting_screen"
+ />
 
     <ImageView
         android:id="@+id/account_logo_setting_screen"
@@ -58,7 +61,7 @@
         android:layout_marginStart="40dp"
         android:src="@drawable/account_setting_icon"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/privacy_logo_setting_screen" />
+        app:layout_constraintTop_toBottomOf="@+id/title_setting_screen" />
 
     <TextView
         android:id="@+id/account_option_title_setting_screen"
@@ -66,10 +69,10 @@
         android:layout_height="wrap_content"
         android:text="@string/account"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="casual"
         app:layout_constraintStart_toEndOf="@+id/account_logo_setting_screen"
-        app:layout_constraintTop_toBottomOf="@+id/privacy_option_title_setting_screen" />
+        app:layout_constraintTop_toBottomOf="@+id/title_setting_screen" />
 
     <ImageView
         android:id="@+id/enter_to_account_button_setting_screen"
@@ -78,7 +81,41 @@
         android:layout_marginTop="14dp"
         android:src="@drawable/enter_to_icon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enter_to_privacy_button_setting_screen" />
+        app:layout_constraintTop_toBottomOf="@+id/title_setting_screen" />
+
+    <ImageView
+        android:id="@+id/about_logo_setting_screen"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/info_icon"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/password_logo_setting_screen"
+        />
+
+    <TextView
+        android:id="@+id/about_option_title_setting_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="casual"
+        android:text="@string/about"
+        app:layout_constraintStart_toEndOf="@+id/about_logo_setting_screen"
+        app:layout_constraintTop_toBottomOf="@id/password_logo_setting_screen"
+        />
+
+    <ImageView
+        android:id="@+id/enter_to_about_button_setting_screen"
+        android:layout_width="120dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/enter_to_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/enter_to_password_button_setting_screen"
+        />
+
 
     <View
         android:id="@+id/separator1_setting_screen"
@@ -89,7 +126,7 @@
         android:layout_marginEnd="12dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enter_to_account_button_setting_screen"
+        app:layout_constraintTop_toBottomOf="@+id/enter_to_about_button_setting_screen"
         android:background="@color/gray"/>
 
     <TextView

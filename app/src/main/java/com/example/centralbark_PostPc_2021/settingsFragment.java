@@ -2,63 +2,56 @@ package com.example.centralbark_PostPc_2021;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link settingsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class settingsFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private DataManager dataManager;
+    private ImageView goToPasswordSettings;
+    private ImageView goToAccountSettings;
+    private ImageView goToAboutSettings;
+    private TextView logOut;
 
     public settingsFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment settingsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static settingsFragment newInstance(String param1, String param2) {
-        settingsFragment fragment = new settingsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        super(R.layout.fragment_settings);
+        if(dataManager ==null){
+            this.dataManager = CentralBarkApp.getInstance().getDataManager();
         }
     }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        super.onViewCreated(view, savedInstanceState);
+
+        this.goToPasswordSettings = view.findViewById(R.id.enter_to_password_button_setting_screen);
+        this.goToAccountSettings = view.findViewById(R.id.enter_to_account_button_setting_screen);
+        this.goToAboutSettings = view.findViewById(R.id.enter_to_about_button_setting_screen);
+        this.logOut = view.findViewById(R.id.log_out_button_setting_screen);
+
+        // move to password setting fragment
+        this.goToPasswordSettings.setOnClickListener(v -> {
+            Utils.moveBetweenFragments(R.id.the_screen, new passwordSettingsFragment(), getActivity(), "passwordSettings");
+        });
+
+        // move to account setting fragment
+        this.goToAccountSettings.setOnClickListener(v -> {
+            Utils.moveBetweenFragments(R.id.the_screen, new accountSettingFragment(), getActivity(), "accountSettings");
+        });
+
+        // move to about setting fragment
+        this.goToAboutSettings.setOnClickListener(v -> {
+            Utils.moveBetweenFragments(R.id.the_screen, new aboutSettingFragment(), getActivity(), "aboutSettings");
+        });
+
+        // log out button
+        this.logOut.setOnClickListener(v->{
+            Utils.moveBetweenFragments(R.id.the_screen, new openingFragment(), getActivity(), "opening");
+        });
     }
+
+
 }
