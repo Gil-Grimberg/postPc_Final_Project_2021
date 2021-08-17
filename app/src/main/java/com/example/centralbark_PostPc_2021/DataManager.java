@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -101,8 +102,6 @@ public class DataManager {
 
     }
 
-
-
     public void deleteSignInInfoFromSp() {
         SharedPreferences.Editor editor = this.sp.edit();
         editor.remove("userMail");
@@ -114,6 +113,25 @@ public class DataManager {
         this.db.collection("Users")
                 .document(userId)
                 .update("location", location);
+    }
+
+    public void addStringToUserArrayField(String userId, String fieldName, String newValue)
+    {
+        this.db.collection("Users").document(userId).update(fieldName, FieldValue.arrayUnion(newValue));
+    }
+
+    public void removeStringFromUserArrayField(String userId, String fieldName, String newValue)
+    {
+        this.db.collection("Users").document(userId).update(fieldName, FieldValue.arrayRemove(newValue));
+    }
+
+    public void updateNotification(String userId, String notificationId, Notification notification)
+    {
+        this.db.collection("Users")
+                .document(userId)
+                .collection("Notifications")
+                .document(notificationId)
+                .set(notification);
     }
 
 
@@ -287,15 +305,33 @@ public class DataManager {
     public void sendNotification(int notificationType, String friendId, String postId, String park)
     {
         String notificationContent = Utils.getNotificationContent(notificationType, getUsernameFromSp(), park);
-        Notification newNotification = new Notification(
-                CentralBarkApp.getInstance().getDataManager().getMyId(),
-                notificationType,
-                notificationContent,
-                Timestamp.now(),
-                postId);
 
-        addNotification(friendId, newNotification);
+        this.db.collection("Users").document(this.getMyId()).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot != null)
+                        {
+                            User myUser = documentSnapshot.toObject(User.class);
+                            String profilePhoto = myUser.getProfilePhoto();
+                            Notification newNotification = new Notification(
+                                    CentralBarkApp.getInstance().getDataManager().getMyId(),
+                                    getUsernameFromSp(),
+                                    notificationType,
+                                    notificationContent,
+                                    Timestamp.now(),
+                                    postId,
+                                    profilePhoto);
+                            addNotification(friendId, newNotification);
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Toast.makeText(app.getApplicationContext(),
+                        "Error: db error. Couldn't send Notification",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
     }
-
-
 }
