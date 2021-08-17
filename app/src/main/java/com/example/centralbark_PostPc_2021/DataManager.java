@@ -5,11 +5,15 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -18,6 +22,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -56,8 +62,7 @@ public class DataManager {
         this.userId = initializeFromSp();
     }
 
-    public void updateSpForSignIn(String updatedUserId, String userMail, String userPassword)
-    {
+    public void updateSpForSignIn(String updatedUserId, String userMail, String userPassword) {
         SharedPreferences.Editor editor = this.sp.edit();
         editor.putString("userId", updatedUserId);
         editor.putString("userMail", userMail);
@@ -66,70 +71,53 @@ public class DataManager {
         this.userId = initializeFromSp();
     }
 
-    public void updateSpWithUsername(String username)
-    {
+    public void updateSpWithUsername(String username) {
         SharedPreferences.Editor editor = this.sp.edit();
         editor.putString("username", username);
         editor.apply();
     }
 
-    public String getUsernameFromSp()
-    {
+    public String getUsernameFromSp() {
         return this.sp.getString("username", "");
     }
 
-    public void deleteUsernameFromSp()
-    {
+    public void deleteUsernameFromSp() {
         SharedPreferences.Editor editor = this.sp.edit();
         editor.remove("username");
         editor.apply();
     }
 
     public String[] getInfoForSignIn()
-            // notice - if no info, returns null
+    // notice - if no info, returns null
     {
         String mail = sp.getString("userMail", null);
         String password = sp.getString("userPassword", null);
-        if (mail == null || password == null)
-        {
+        if (mail == null || password == null) {
             return null;
-        }
-
-        else return new String[]{
+        } else return new String[]{
                 mail,
                 password
         };
 
     }
 
-    public void addNotification(String userId, Notification notification)
-    {
-        this.db.collection("Users")
-                .document(userId)
-                .collection("Notifications")
-                .add(notification);
 
-    }
 
-    public void deleteSignInInfoFromSp()
-    {
+    public void deleteSignInInfoFromSp() {
         SharedPreferences.Editor editor = this.sp.edit();
         editor.remove("userMail");
         editor.remove("userPassword");
         editor.apply();
     }
 
-    public void updateUserLocation(String userId, GeoPoint location)
-    {
+    public void updateUserLocation(String userId, GeoPoint location) {
         this.db.collection("Users")
                 .document(userId)
                 .update("location", location);
     }
 
 
-
-    public String uploadImgToStorageAndGetImgPath(String localImgPath, String RemoteImageName)
-    {
+    public String uploadImgToStorageAndGetImgPath(String localImgPath, String RemoteImageName) {
         StorageReference storageReference = storage.getReference();
         StorageReference imgRef = storageReference.child(RemoteImageName);
         UploadTask uploadTask = imgRef.putFile(Uri.fromFile(new File(localImgPath)));
@@ -183,15 +171,13 @@ public class DataManager {
     }
 
 
-
-
     /**
      * @param post
      * @return a string representing the post with $ as seperators
      */
     public String convertPostToString(Post post) { //todo: probably unnecessary
         return post.getUserId() + separator + post.getPostId() + separator + post.getUserName() + separator +
-                post.getFriendList()+ post.getUsersLikesLst() + separator + post.getUploadedPhoto() + separator +
+                post.getFriendList() + post.getUsersLikesLst() + separator + post.getUploadedPhoto() + separator +
                 post.getContent() + separator + post.getNumOfLikes().toString() + separator + post.getTimePosted().toString();
     }
 
@@ -230,7 +216,86 @@ public class DataManager {
         return res;
     }
 
-    public String getMyId(){
+    public String getMyId() {
         return this.userId;
     }
+
+    public void addNotification(String userId, Notification notification) {
+        this.db.collection("Users")
+                .document(userId)
+                .collection("Notifications")
+                .document(notification.getId())
+                .set(notification);
+
+    }
+
+    private void removeNotification(String userId, String notificationId)
+    {
+        this.db.collection("Users")
+                .document(userId)
+                .collection("Notifications")
+                .document(notificationId).delete();
+    }
+
+
+    public void deleteNotification(int notificationType, String friendId, String postId) {
+        ArrayList<Notification> friendNotifications = new ArrayList<>();
+        Task<QuerySnapshot> result = this.db.collection("Users").document(friendId).collection("Notifications").get();
+        result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot documentSnapshots) {
+                if (documentSnapshots != null && !documentSnapshots.isEmpty())
+                {
+                    friendNotifications.addAll(documentSnapshots.toObjects(Notification.class));
+                    for (Notification notification: friendNotifications)
+                    {
+                        if (notification.getNotificationType() == notificationType &&
+                                notification.getUserId().equals(getMyId()))
+                        {
+                            if (notificationType == NotificationTypes.USER_LIKED_YOUR_POST_NOTIFICATION)
+                            {
+                                if (postId.equals(notification.getPostId()))
+                                    removeNotification(friendId, notification.getId());
+                                    return;
+                            }
+
+                            else if (notificationType == NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION)
+                            {
+                                if (!notification.isHasUserSeen())
+                                {
+                                    removeNotification(friendId, notification.getId());
+                                    return;
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Toast.makeText(app.getApplicationContext(),
+                        "Error: db error. Couldn't send Notification",
+                        Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+    }
+
+    public void sendNotification(int notificationType, String friendId, String postId, String park)
+    {
+        String notificationContent = Utils.getNotificationContent(notificationType, getUsernameFromSp(), park);
+        Notification newNotification = new Notification(
+                CentralBarkApp.getInstance().getDataManager().getMyId(),
+                notificationType,
+                notificationContent,
+                Timestamp.now(),
+                postId);
+
+        addNotification(friendId, newNotification);
+    }
+
+
 }

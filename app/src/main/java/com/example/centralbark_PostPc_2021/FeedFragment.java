@@ -24,7 +24,9 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageReference;
 
@@ -34,6 +36,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -49,7 +52,7 @@ public class FeedFragment extends Fragment {
 
     public FeedFragment() {
         super(R.layout.fragment_feed);
-        if(dataManager ==null){
+        if(dataManager == null){
             this.dataManager = CentralBarkApp.getInstance().getDataManager();
         }
     }
@@ -80,12 +83,12 @@ public class FeedFragment extends Fragment {
         this.recyclerViewPosts = view.findViewById(R.id.post_recyclerview_feed_screen);
         this.addPostButton = view.findViewById(R.id.add_post_button_feed_screen);
 
-
         // query relevant posts:
         Query query = this.dataManager.db.collection("Posts")
                 .whereArrayContains("friendList",this.dataManager.getMyId())
                 .orderBy("timePosted", Query.Direction.DESCENDING)
                 .limit(10);
+
         FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
                 .setQuery(query,Post.class).build();
 
@@ -114,9 +117,11 @@ public class FeedFragment extends Fragment {
                 holder.likeButton.setOnClickListener(v -> {
                     if(model.isUserLikesPost(dataManager.getMyId())){
                         model.removeLike(dataManager.getMyId());
+                        dataManager.deleteNotification(NotificationTypes.USER_LIKED_YOUR_POST_NOTIFICATION, model.getUserId(), model.getPostId());
                     }
                     else{
                         model.addLike(dataManager.getMyId());
+                        dataManager.sendNotification(NotificationTypes.USER_LIKED_YOUR_POST_NOTIFICATION, model.getUserId(), model.getPostId(), "");
                     }
                     holder.numOfLikes.setText(String.valueOf(model.getNumOfLikes()));
                 });
