@@ -22,8 +22,10 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageReference;
 
@@ -131,12 +133,14 @@ public class myProfileFragment extends Fragment {
                         makeFriendButton.setVisibility(View.GONE);
                         unfriendButton.setVisibility(View.VISIBLE);
                     }
-                    if(curUser.isPendingRequest(dataManager.getMyId())){ // case already send friend request
+                    else if(curUser.isPendingRequest(dataManager.getMyId())){ // case already send friend request
                         makeFriendButton.setText("Pending request");
+                        unfriendButton.setVisibility(View.GONE);
                     }
                     else
                     {
                         makeFriendButton.setText("Make Friend");
+                        unfriendButton.setVisibility(View.GONE);
                     }
 
                     // make friend was pressed
@@ -159,10 +163,29 @@ public class myProfileFragment extends Fragment {
                     // unfriend was pressed
                     unfriendButton.setOnClickListener(v->{
                         curUser.removeFromFriendList(dataManager.getMyId());
+                        dataManager.removeStringFromUserArrayField(dataManager.getMyId(),"friendList",curUser.getId());
                         dataManager.addToUsers(curUser);
                         unfriendButton.setVisibility(View.GONE);
                         makeFriendButton.setVisibility(View.VISIBLE);
+                        makeFriendButton.setText("Make Friend");
 
+                        // Access Posts in order to update the friends list
+                        Task<QuerySnapshot> result = dataManager.db.collection("Posts").get();
+                        result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot documentSnapshots) {
+                                if (!documentSnapshots.isEmpty()) {
+                                    for(Post post: documentSnapshots.toObjects(Post.class)){
+                                        if(post.getUserId().equals(curUserId)){ // if it is his post, delete me from friend list
+                                            dataManager.removeStringFromPostArrayField(post.getPostId(),"friendList",dataManager.getMyId());
+                                        }
+                                        else if(post.getUserId().equals(dataManager.getMyId())){ // if it is my post, delete him from my friend list
+                                            dataManager.removeStringFromPostArrayField(post.getPostId(),"friendList",curUser.getId());
+                                        }
+                                    }
+                                }
+                            }
+                        });
                     });
                 }
 
