@@ -77,7 +77,7 @@ public class NotificationsFragment extends Fragment {
                     model.setHasUserSeen(true);
                 }
                 if (model.getNotificationType() == NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION &&
-                    model.getNotificationContent().contains("wants"))
+                    !model.getNotificationContent().contains("is now your friend!"))
                 {
                     holder.confirmButton.setVisibility(View.VISIBLE);
                 }
