@@ -53,7 +53,7 @@ public class DataManager {
     }
 
     private String initializeFromSp() {
-        return this.sp.getString("userId", "noId");
+        return this.sp.getString("userId", null);
     }
 
     public void updateSp(String updatedUserId) {

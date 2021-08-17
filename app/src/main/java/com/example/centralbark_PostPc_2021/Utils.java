@@ -86,6 +86,23 @@ public class Utils {
         fragmentTransaction.commit();
     }
 
+    public static boolean isBirthdayValid(String birthday)
+    {
+        String[] dateParts = birthday.split("/");
+        if (dateParts.length != 3)
+        {
+            return false;
+        }
+        for (String datePart : dateParts)
+        {
+            if (!datePart.matches("[0-9]+"))
+            {
+                return false;
+            }
+        }
+        return dateParts[0].length() == 2 && dateParts[1].length() == 2 && dateParts[2].length() == 4;
+    }
+
     public static float calculateDistanceBetweenPoints(LatLng point1, LatLng point2)
     /***
      * returns the distance in Meters between two points

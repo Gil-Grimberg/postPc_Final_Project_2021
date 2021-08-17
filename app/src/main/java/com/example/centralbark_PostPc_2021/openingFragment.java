@@ -24,6 +24,13 @@ public class openingFragment extends Fragment {
         signInButton = view.findViewById(R.id.sign_in_button_opening_screen);
         signUpButton = view.findViewById(R.id.sign_un_button_opening_screen);
 
+        if(CentralBarkApp.getInstance().getDataManager().getMyId()!=null)
+        {
+            Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
+            Utils.moveBetweenFragments(R.id.menu_bar, new menuFragment(), getActivity(), "menu");
+
+        }
+
         signInButton.setOnClickListener(v ->
         {
             Utils.moveBetweenFragments(R.id.the_screen, new signInFragment(), getActivity(), "sign_in");
