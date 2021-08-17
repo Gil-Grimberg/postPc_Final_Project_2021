@@ -103,9 +103,12 @@ public class searchAccountFragment extends Fragment {
                 });
 
                 holder.profilePhoto.setOnClickListener(v->{
-                    Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(), getActivity(), "myProfile");
+                    Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(model.getId()), getActivity(), "myProfile");
                 });
 
+                holder.userName.setOnClickListener(v->{
+                    Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(model.getId()), getActivity(), "myProfile");
+                });
 
 
                 if(model.isFriend(dataManager.getMyId())){
