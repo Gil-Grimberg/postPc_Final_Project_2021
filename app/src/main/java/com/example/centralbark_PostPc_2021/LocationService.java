@@ -85,18 +85,6 @@ public class LocationService extends Service {
                             if (documentSnapshots != null && !documentSnapshots.isEmpty())
                             {
                                 friendsList.addAll(documentSnapshots.toObjects(User.class));
-                                String notificationContent =  Utils.getNotificationContent(
-                                        NotificationTypes.USER_AT_THE_DOG_PARK_NOTIFICATION,
-                                        CentralBarkApp.getInstance().getDataManager().getUsernameFromSp(),
-                                        Utils.locationToNameMapping.get(park));
-                                Notification newNotification = new Notification(
-                                        CentralBarkApp.getInstance().getDataManager().getMyId(),
-                                        CentralBarkApp.getInstance().getDataManager().getUsernameFromSp(),
-                                        NotificationTypes.USER_AT_THE_DOG_PARK_NOTIFICATION,
-                                        notificationContent,
-                                        Timestamp.now(),
-                                        null,
-                                        null);
                                 for (User user: friendsList)
                                 {
                                     ArrayList<Notification> friendNotifications = new ArrayList<>();
@@ -109,7 +97,7 @@ public class LocationService extends Service {
                                             if (documentSnapshots != null && !documentSnapshots.isEmpty()) {
                                                 friendNotifications.addAll(documentSnapshots.toObjects(Notification.class));
                                                 for (Notification notification : friendNotifications) {
-                                                    float timeDiffInMinutes = Utils.getTimestampsDifferenceInMinutes(notification.getTimestamp(), newNotification.getTimestamp());
+                                                    float timeDiffInMinutes = Utils.getTimestampsDifferenceInMinutes(notification.getTimestamp(), Timestamp.now());
                                                     if (notification.getNotificationType() == NotificationTypes.USER_AT_THE_DOG_PARK_NOTIFICATION &&
                                                             notification.getUserId().equals(CentralBarkApp.getInstance().getDataManager().getMyId()) &&
                                                             timeDiffInMinutes < 60 &&
@@ -120,15 +108,13 @@ public class LocationService extends Service {
                                                 }
                                                 if (!sent)
                                                 {
-                                                    newNotification.setProfilePhoto(user.getProfilePhoto());
-                                                    CentralBarkApp.getInstance().getDataManager().addNotification(user.getId(), newNotification);
+                                                    CentralBarkApp.getInstance().getDataManager().sendNotification(NotificationTypes.USER_AT_THE_DOG_PARK_NOTIFICATION, user.getId(), "", Utils.locationToNameMapping.get(park));
                                                     //todo: send notification to device id
                                                 }
                                             }
                                             else
                                             {
-                                                newNotification.setProfilePhoto(user.getProfilePhoto());
-                                                CentralBarkApp.getInstance().getDataManager().addNotification(user.getId(), newNotification);
+                                                CentralBarkApp.getInstance().getDataManager().sendNotification(NotificationTypes.USER_AT_THE_DOG_PARK_NOTIFICATION, user.getId(), "", Utils.locationToNameMapping.get(park));
                                                 //todo: send notification to device id
                                             }
 

@@ -81,6 +81,10 @@ public class NotificationsFragment extends Fragment {
                 }
 
                 String profileImgPath = model.getProfilePhoto();
+                if (profileImgPath == null)
+                {
+                    profileImgPath = "";
+                }
                 StorageReference profileImag = dataManager.storage.getReference().child(profileImgPath);
                 File localProfileImFile = null;
                 try {
