@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,6 +39,7 @@ public class searchAccountFragment extends Fragment {
     private DataManager dataManager;
     private FirestoreRecyclerAdapter accountsAdapter;
     private RecyclerView accountsRecycler;
+
     Button searchAccountsButton;
     Button searchPlacesButton;
     EditText searchAccountsEditText;
@@ -100,26 +102,40 @@ public class searchAccountFragment extends Fragment {
                     }
                 });
 
+                holder.profilePhoto.setOnClickListener(v->{
+                    Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(), getActivity(), "myProfile");
+                });
+
+
+
                 if(model.isFriend(dataManager.getMyId())){
                     holder.sendFriendRequest.setVisibility(View.GONE);
                 }
 
-                if(model.isPendingRequest(dataManager.getMyId()) || dataManager.getMyId().equals(model.getId())){
+                //if(model.isPendingRequest(dataManager.getMyId()) || dataManager.getMyId().equals(model.getId())){
+                if(model.isPendingRequest(dataManager.getMyId())){
                     holder.sendFriendRequest.setText("Pending request");
+                }
+
+                else
+                {
+                    holder.sendFriendRequest.setText("Make Friend");
                 }
 
                 // make friend was pressed
                 holder.sendFriendRequest.setOnClickListener(v->{
                     if(model.isPendingRequest(dataManager.getMyId())){
-                        holder.sendFriendRequest.setText("Make Friend");
                         model.removeFromPendingList(dataManager.getMyId());
                         dataManager.addToUsers(model);
-
+                        holder.sendFriendRequest.setText("Make Friend");
+                        dataManager.deleteNotification(NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION, model.getId(), null);
                     }
                     else{
-                        holder.sendFriendRequest.setText("Pending request");
                         model.addToPendingList(dataManager.getMyId());
                         dataManager.addToUsers(model);
+                        holder.sendFriendRequest.setText("Pending request");
+                        dataManager.sendNotification(NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION, model.getId(), null,null);
+
                     }
                 });
             }
@@ -154,10 +170,8 @@ public class searchAccountFragment extends Fragment {
             }
         });
 
-
         this.accountsRecycler.setLayoutManager(new LinearLayoutManager(this.getContext(),RecyclerView.VERTICAL,false));
         this.accountsRecycler.setAdapter(accountsAdapter);
-
         this.searchPlacesButton.setOnClickListener(v->{
             Utils.moveBetweenFragments(R.id.the_screen, new searchPlacesFragment(), getActivity(), "search_places");
         });
@@ -189,5 +203,4 @@ public class searchAccountFragment extends Fragment {
             this.profilePhoto = itemView.findViewById(R.id.profilePhoto_ImageView);
         }
     }
-
 }
