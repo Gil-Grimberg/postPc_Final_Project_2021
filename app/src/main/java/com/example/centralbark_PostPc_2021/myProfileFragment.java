@@ -165,27 +165,11 @@ public class myProfileFragment extends Fragment {
                         curUser.removeFromFriendList(dataManager.getMyId());
                         dataManager.removeStringFromUserArrayField(dataManager.getMyId(),"friendList",curUser.getId());
                         dataManager.addToUsers(curUser);
+                        removeFriendsFromPosts();
                         unfriendButton.setVisibility(View.GONE);
                         makeFriendButton.setVisibility(View.VISIBLE);
                         makeFriendButton.setText("Make Friend");
 
-                        // Access Posts in order to update the friends list
-                        Task<QuerySnapshot> result = dataManager.db.collection("Posts").get();
-                        result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                            @Override
-                            public void onSuccess(QuerySnapshot documentSnapshots) {
-                                if (!documentSnapshots.isEmpty()) {
-                                    for(Post post: documentSnapshots.toObjects(Post.class)){
-                                        if(post.getUserId().equals(curUserId)){ // if it is his post, delete me from friend list
-                                            dataManager.removeStringFromPostArrayField(post.getPostId(),"friendList",dataManager.getMyId());
-                                        }
-                                        else if(post.getUserId().equals(dataManager.getMyId())){ // if it is my post, delete him from my friend list
-                                            dataManager.removeStringFromPostArrayField(post.getPostId(),"friendList",curUser.getId());
-                                        }
-                                    }
-                                }
-                            }
-                        });
                     });
                 }
 
@@ -321,6 +305,25 @@ public class myProfileFragment extends Fragment {
         });
     }
 
+    protected void removeFriendsFromPosts(){
+        // Access Posts in order to update the friends list
+        Task<QuerySnapshot> result = dataManager.db.collection("Posts").get();
+        result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot documentSnapshots) {
+                if (!documentSnapshots.isEmpty()) {
+                    for(Post post: documentSnapshots.toObjects(Post.class)){
+                        if(post.getUserId().equals(curUserId)){ // if it is his post, delete me from friend list
+                            dataManager.removeStringFromPostArrayField(post.getPostId(),"friendList",dataManager.getMyId());
+                        }
+                        else if(post.getUserId().equals(dataManager.getMyId())){ // if it is my post, delete him from my friend list
+                            dataManager.removeStringFromPostArrayField(post.getPostId(),"friendList",curUserId);
+                        }
+                    }
+                }
+            }
+        });
+    }
 
     @Override
     public void onStop() {

@@ -125,6 +125,11 @@ public class DataManager {
         this.db.collection("Users").document(userId).update(fieldName, FieldValue.arrayRemove(valToRemove));
     }
 
+    public void addStringFromPostArrayField(String postId, String fieldName, String valToRemove)
+    {
+        this.db.collection("Posts").document(postId).update(fieldName, FieldValue.arrayUnion(valToRemove));
+    }
+
     public void removeStringFromPostArrayField(String postId, String fieldName, String valToRemove)
     {
         this.db.collection("Posts").document(postId).update(fieldName, FieldValue.arrayRemove(valToRemove));
