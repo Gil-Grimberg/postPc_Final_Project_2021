@@ -125,6 +125,15 @@ public class DataManager {
         this.db.collection("Users").document(userId).update(fieldName, FieldValue.arrayRemove(newValue));
     }
 
+    public void updateNotification(String userId, String notificationId, Notification notification)
+    {
+        this.db.collection("Users")
+                .document(userId)
+                .collection("Notifications")
+                .document(notificationId)
+                .set(notification);
+    }
+
 
     public String uploadImgToStorageAndGetImgPath(String localImgPath, String RemoteImageName) {
         StorageReference storageReference = storage.getReference();
@@ -296,15 +305,33 @@ public class DataManager {
     public void sendNotification(int notificationType, String friendId, String postId, String park)
     {
         String notificationContent = Utils.getNotificationContent(notificationType, getUsernameFromSp(), park);
-        Notification newNotification = new Notification(
-                CentralBarkApp.getInstance().getDataManager().getMyId(),
-                notificationType,
-                notificationContent,
-                Timestamp.now(),
-                postId);
 
-        addNotification(friendId, newNotification);
+        this.db.collection("Users").document(this.getMyId()).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot != null)
+                        {
+                            User myUser = documentSnapshot.toObject(User.class);
+                            String profilePhoto = myUser.getProfilePhoto();
+                            Notification newNotification = new Notification(
+                                    CentralBarkApp.getInstance().getDataManager().getMyId(),
+                                    getUsernameFromSp(),
+                                    notificationType,
+                                    notificationContent,
+                                    Timestamp.now(),
+                                    postId,
+                                    profilePhoto);
+                            addNotification(friendId, newNotification);
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Toast.makeText(app.getApplicationContext(),
+                        "Error: db error. Couldn't send Notification",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
     }
-
-
 }

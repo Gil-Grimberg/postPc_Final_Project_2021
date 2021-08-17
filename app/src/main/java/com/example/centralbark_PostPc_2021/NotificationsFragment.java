@@ -70,12 +70,17 @@ public class NotificationsFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull @NotNull RecyclerNotificationHolder holder, int position, @NonNull @NotNull Notification model) {
                 holder.notificationContent.setText(model.getNotificationContent());
-                if (model.getNotificationType() == NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION)
+                if (!model.isHasUserSeen())
+                {
+                    model.setHasUserSeen(true);
+                }
+                if (model.getNotificationType() == NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION &&
+                    model.getNotificationContent().contains("wants"))
                 {
                     holder.confirmButton.setVisibility(View.VISIBLE);
                 }
 
-                String profileImgPath = "profile_photos/" + model.getUserId();
+                String profileImgPath = model.getProfilePhoto();
                 StorageReference profileImag = dataManager.storage.getReference().child(profileImgPath);
                 File localProfileImFile = null;
                 try {
@@ -103,7 +108,13 @@ public class NotificationsFragment extends Fragment {
                             model.getUserId(), null, null);
                     dataManager.addStringToUserArrayField(dataManager.getMyId(), "friendList", model.getUserId());
                     dataManager.addStringToUserArrayField(model.getUserId(), "friendList", dataManager.getMyId());
+                    dataManager.removeStringFromUserArrayField(dataManager.getMyId(), "pendingRequests", model.getUserId());
                     holder.confirmButton.setVisibility(View.INVISIBLE);
+                    String newText =  String.format("%s is now your friend!", model.getUserName());
+                    holder.notificationContent.setText(newText);
+                    dataManager.removeStringFromUserArrayField(dataManager.getMyId(), "pendingRequests", model.getUserId());
+                    model.setNotificationContent(newText);
+                    dataManager.updateNotification(dataManager.getMyId(), model.getId(), model);
                 });
 
             }
@@ -139,6 +150,7 @@ public class NotificationsFragment extends Fragment {
             this.notificationContent = view.findViewById(R.id.notification_message);
             this.profilePhoto = view.findViewById(R.id.profilePhoto_ImageView_one_notification_screen);
             this.confirmButton = view.findViewById(R.id.confirm_request_button_notification_screen);
+            this.confirmButton.setVisibility(View.INVISIBLE);
         }
     }
 }

@@ -123,7 +123,7 @@ public class Utils {
                 return String.format("You have a match with %s!", username);
 
             case NotificationTypes.FRIEND_REQUEST_ACCEPTED_NOTIFICATION:
-                return String.format("%s has accepted your friend request :)", username);
+                return String.format("%s accepted your friend request :)", username);
 
             case NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION:
                 return String.format("%s wants to be your friend!", username);
