@@ -18,6 +18,8 @@ final class NotificationTypes {
 public class Notification implements Serializable {
 
     private String userId; // the user that creates the notification
+    private String userName;
+    private String profilePhoto;
     private String id;
     private String notificationContent;
     private int notificationType;
@@ -27,15 +29,33 @@ public class Notification implements Serializable {
 
     public Notification(){}
 
-    public Notification(String userId, int notificationType, String notificationContent,
-                        Timestamp timestamp, String postId) {
+    public Notification(String userId, String userName, int notificationType, String notificationContent,
+                        Timestamp timestamp, String postId, String profilePhoto) {
         this.userId = userId;
+        this.userName = userName;
         this.id = UUID.randomUUID().toString();
         this.notificationContent = notificationContent;
         this.notificationType = notificationType;
         this.hasUserSeen = false;
         this.timestamp = timestamp;
         this.postId = postId;
+        this.profilePhoto = profilePhoto;
+    }
+
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPostId() {

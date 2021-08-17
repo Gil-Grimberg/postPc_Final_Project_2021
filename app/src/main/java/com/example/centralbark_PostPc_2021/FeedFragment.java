@@ -42,6 +42,7 @@ import java.util.concurrent.TimeUnit;
 
 public class FeedFragment extends Fragment {
     private DataManager dataManager;
+    private TextView notificationCounter;
     private ImageView notificationButton;
     private ImageView addPostButton;
     private RecyclerView recyclerViewPosts; // todo: recycler on menu bar
@@ -82,6 +83,7 @@ public class FeedFragment extends Fragment {
         this.notificationButton = view.findViewById(R.id.notification_button_feed_screen);
         this.recyclerViewPosts = view.findViewById(R.id.post_recyclerview_feed_screen);
         this.addPostButton = view.findViewById(R.id.add_post_button_feed_screen);
+        this.notificationCounter = view.findViewById(R.id.notification_counter);
 
         // query relevant posts:
         Query query = this.dataManager.db.collection("Posts")
@@ -192,9 +194,37 @@ public class FeedFragment extends Fragment {
         this.recyclerViewPosts.setLayoutManager(new LinearLayoutManager(this.getContext(),RecyclerView.VERTICAL,false));
         this.recyclerViewPosts.setAdapter(postsAdapter);
 
+        this.dataManager.db.collection("Users").document(dataManager.getMyId()).collection("Notifications").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot documentSnapshots) {
+                        if (documentSnapshots != null && !documentSnapshots.isEmpty())
+                        {
+                            int numberOfNotifications = 0;
+                            ArrayList<Notification> notificationList = new ArrayList<>(documentSnapshots.toObjects(Notification.class));
+                            for (Notification notification: notificationList)
+                            {
+                                if (!notification.isHasUserSeen())
+                                {
+                                    numberOfNotifications++;
+                                }
+                            }
+                            if (numberOfNotifications > 0)
+                            {
+                                notificationCounter.setText(String.valueOf(numberOfNotifications));
+                            }
+                        }
+                    }
+                });
+
         // move to add post screen
         this.addPostButton.setOnClickListener(v -> {
             Utils.moveBetweenFragments(R.id.the_screen, new AddPostFragment(), getActivity(), "add_post");
+        });
+
+        this.notificationButton.setOnClickListener(v ->
+        {
+            Utils.moveBetweenFragments(R.id.the_screen, new NotificationsFragment(), getActivity(), "notification_activity");
         });
     }
 

@@ -91,9 +91,11 @@ public class LocationService extends Service {
                                         Utils.locationToNameMapping.get(park));
                                 Notification newNotification = new Notification(
                                         CentralBarkApp.getInstance().getDataManager().getMyId(),
+                                        CentralBarkApp.getInstance().getDataManager().getUsernameFromSp(),
                                         NotificationTypes.USER_AT_THE_DOG_PARK_NOTIFICATION,
                                         notificationContent,
                                         Timestamp.now(),
+                                        null,
                                         null);
                                 for (User user: friendsList)
                                 {
@@ -110,19 +112,22 @@ public class LocationService extends Service {
                                                     float timeDiffInMinutes = Utils.getTimestampsDifferenceInMinutes(notification.getTimestamp(), newNotification.getTimestamp());
                                                     if (notification.getNotificationType() == NotificationTypes.USER_AT_THE_DOG_PARK_NOTIFICATION &&
                                                             notification.getUserId().equals(CentralBarkApp.getInstance().getDataManager().getMyId()) &&
-                                                            timeDiffInMinutes > 60) {
+                                                            timeDiffInMinutes < 60 &&
+                                                            notification.getNotificationContent().contains(Utils.locationToNameMapping.get(park))) {
                                                         sent = true;
                                                         break;
                                                     }
                                                 }
                                                 if (!sent)
                                                 {
+                                                    newNotification.setProfilePhoto(user.getProfilePhoto());
                                                     CentralBarkApp.getInstance().getDataManager().addNotification(user.getId(), newNotification);
                                                     //todo: send notification to device id
                                                 }
                                             }
                                             else
                                             {
+                                                newNotification.setProfilePhoto(user.getProfilePhoto());
                                                 CentralBarkApp.getInstance().getDataManager().addNotification(user.getId(), newNotification);
                                                 //todo: send notification to device id
                                             }
