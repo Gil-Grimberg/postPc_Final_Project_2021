@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,6 +39,7 @@ public class searchAccountFragment extends Fragment {
     private DataManager dataManager;
     private FirestoreRecyclerAdapter accountsAdapter;
     private RecyclerView accountsRecycler;
+
     Button searchAccountsButton;
     Button searchPlacesButton;
     EditText searchAccountsEditText;
@@ -99,6 +101,12 @@ public class searchAccountFragment extends Fragment {
                         // keeps the default profile image
                     }
                 });
+
+                holder.profilePhoto.setOnClickListener(v->{
+                    Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(), getActivity(), "myProfile");
+                });
+
+
 
                 if(model.isFriend(dataManager.getMyId())){
                     holder.sendFriendRequest.setVisibility(View.GONE);
@@ -162,10 +170,8 @@ public class searchAccountFragment extends Fragment {
             }
         });
 
-
         this.accountsRecycler.setLayoutManager(new LinearLayoutManager(this.getContext(),RecyclerView.VERTICAL,false));
         this.accountsRecycler.setAdapter(accountsAdapter);
-
         this.searchPlacesButton.setOnClickListener(v->{
             Utils.moveBetweenFragments(R.id.the_screen, new searchPlacesFragment(), getActivity(), "search_places");
         });
@@ -197,5 +203,4 @@ public class searchAccountFragment extends Fragment {
             this.profilePhoto = itemView.findViewById(R.id.profilePhoto_ImageView);
         }
     }
-
 }
