@@ -312,10 +312,24 @@ public class DataManager {
 
     }
 
+    public void sendMatchNotificationToMyself(String friendId, String friendProfilePhoto, String friendUserName)
+    {
+        String notificationContent = Utils.getNotificationContent(NotificationTypes.TINDER_MATCH_NOTIFICATION,
+                friendUserName, null);
+        Notification newNotification = new Notification(
+                friendId,
+                friendUserName,
+                NotificationTypes.TINDER_MATCH_NOTIFICATION,
+                notificationContent,
+                Timestamp.now(),
+                null,
+                friendProfilePhoto);
+        addNotification(this.getMyId(), newNotification);
+    }
+
     public void sendNotification(int notificationType, String friendId, String postId, String park)
     {
         String notificationContent = Utils.getNotificationContent(notificationType, getUsernameFromSp(), park);
-
         this.db.collection("Users").document(this.getMyId()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
