@@ -4,6 +4,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -60,6 +61,18 @@ public class FeedFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+
+        // handle back pressed
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                // Doesn't do anything, because when back button is pressed on feed there is no where to go!!!
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+
+
 
         //first, we activate the location service, so we can update the user location in the db:
         //to do that, we first need to ask location permissions from the user:
@@ -79,7 +92,6 @@ public class FeedFragment extends Fragment {
 
 
         // Inflate the layout for this fragment
-        super.onViewCreated(view, savedInstanceState);
         this.notificationButton = view.findViewById(R.id.notification_button_feed_screen);
         this.recyclerViewPosts = view.findViewById(R.id.post_recyclerview_feed_screen);
         this.addPostButton = view.findViewById(R.id.add_post_button_feed_screen);
@@ -202,6 +214,14 @@ public class FeedFragment extends Fragment {
                         // todo: something todo?
                     }
                 });
+
+                holder.profileIm.setOnClickListener(v -> {
+                    Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(model.getUserId()), getActivity(), "myProfile");
+                });
+
+                holder.userNameTitle.setOnClickListener(v -> {
+                    Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(model.getUserId()), getActivity(), "myProfile");
+                });
             }
         };
 
@@ -309,6 +329,8 @@ public class FeedFragment extends Fragment {
         super.onStop();
         this.postsAdapter.stopListening();
     }
+
+
 
     // the view holder for the adapter
     private class RecyclerPostsHolder extends RecyclerView.ViewHolder {

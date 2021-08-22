@@ -11,12 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="57dp"
         tools:background="@color/black"
         />
 <!--    todo: remeber that it's belong to the bellow two fragments-->
 <!--    class="com.example.centralbark_PostPc_2021.openingFragment"-->
-<!--    class="com.example.centralbark_PostPc_2021.menuFragment"-->
+<!--    class="com.example.centralbark_PostPc_2021.MenuFragment"-->
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/the_screen"

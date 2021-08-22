@@ -2,8 +2,6 @@ package com.example.centralbark_PostPc_2021;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.View;
@@ -91,7 +89,7 @@ public class signInFragment extends Fragment {
                         }
                         appInstance.getDataManager().updateSpWithUsername(enteredUser.getUsername());
                         Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
-                        Utils.moveBetweenFragments(R.id.menu_bar, new menuFragment(), getActivity(), "menu");
+                        Utils.moveBetweenFragments(R.id.menu_bar, new MenuFragment(), getActivity(), "menu");
                     }
         }}).addOnFailureListener(new OnFailureListener() {
                 @Override
