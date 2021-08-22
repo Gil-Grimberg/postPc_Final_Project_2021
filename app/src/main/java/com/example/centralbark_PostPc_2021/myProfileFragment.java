@@ -109,6 +109,9 @@ public class myProfileFragment extends Fragment {
                 // set city
                 city.setText(curUser.getCity());
 
+                // set breed
+                breed.setText(curUser.getBreed());
+
                 //set Age if less than 1 write "Puppy"
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                 String curDateString = sdf.format(new Date());

@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -51,7 +53,7 @@ public class settingsFragment extends Fragment {
         // log out button
         this.logOut.setOnClickListener(v->{
             dataManager.updateSp(null);
-            Utils.moveBetweenFragments(R.id.the_screen, new openingFragment(), getActivity(), "opening");
+            Utils.moveBetweenFragmentsAndHideMenuBar(new openingFragment(), getActivity(), "opening");
         });
     }
 

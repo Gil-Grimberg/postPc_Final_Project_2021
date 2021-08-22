@@ -6,68 +6,64 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".menuFragment">
+    tools:context=".MenuFragment">
 
 
-    <ImageButton
+    <ImageView
         android:id="@+id/searchImage_ImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginLeft="10dp"
-        android:src="@drawable/search_icon"
+        android:layout_marginBottom="5dp"
         android:background="@null"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:src="@drawable/search_icon2"
         app:layout_constraintBottom_toBottomOf="parent"
-         />
+        app:layout_constraintLeft_toLeftOf="parent" />
 
 
-    <ImageButton
+    <ImageView
         android:id="@+id/tinderButton_ImageButton_fragmentMatchAFriend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:background="@null"
-        android:src="@drawable/tinder_logo"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="5dp"
+        android:src="@drawable/tinder_logo2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/searchImage_ImageView"
         app:layout_constraintRight_toLeftOf="@id/homeButton_ImageButton_fragmentFeed" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/homeButton_ImageButton_fragmentFeed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="5dp"
         android:background="@null"
-        android:src="@drawable/home_icon"
+        android:src="@drawable/home_icon2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@id/searchImage_ImageView"
         app:layout_constraintRight_toLeftOf="@id/profileButton_ImageButton_fragmentMyProfile" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/locationButton_ImageButton_fragmentSearchPlaces"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="5dp"
         android:background="@null"
-        android:src="@drawable/location_icon"
+        android:src="@drawable/location_icon2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/homeButton_ImageButton_fragmentFeed"
-        app:layout_constraintRight_toLeftOf="@id/profileButton_ImageButton_fragmentMyProfile"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintRight_toLeftOf="@id/profileButton_ImageButton_fragmentMyProfile" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/profileButton_ImageButton_fragmentMyProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/profile_icon"
-        android:background="@null"
-        android:layout_marginTop="4dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="@null"
+        android:src="@drawable/profile_icon2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-         />
+        app:layout_constraintRight_toRightOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

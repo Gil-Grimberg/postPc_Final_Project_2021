@@ -2,9 +2,10 @@ package com.example.centralbark_PostPc_2021;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +28,7 @@ public class openingFragment extends Fragment {
         if(CentralBarkApp.getInstance().getDataManager().getMyId()!=null)
         {
             Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
-            Utils.moveBetweenFragments(R.id.menu_bar, new menuFragment(), getActivity(), "menu");
+            Utils.moveBetweenFragments(R.id.menu_bar, new MenuFragment(), getActivity(), "menu");
 
         }
 
