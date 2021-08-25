@@ -33,4 +33,9 @@
     <string name="change_password">Change Password</string>
     <string name="make_friend">Make Friend</string>
     <string name="unfriend">Unfriend</string>
+    <string name="repeat_password">Repeat Password:</string>
+    <string name="places">Places</string>
+    <string name="accounts">Accounts</string>
+    <string name="search">Search</string>
+    <string name="go_now">go now</string>
 </resources>

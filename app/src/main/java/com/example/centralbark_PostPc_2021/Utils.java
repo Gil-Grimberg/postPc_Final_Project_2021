@@ -87,6 +87,16 @@ public class Utils {
         fragmentTransaction.commit();
     }
 
+    public static void moveBetweenFragmentsAndHideMenuBar(Fragment fragment, FragmentActivity fragmentActivity, String fragmentTag)
+    {
+        FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.the_screen, fragment, fragmentTag);
+        fragmentTransaction.replace(R.id.menu_bar, new Fragment(), "menu");
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
     public static boolean isBirthdayValid(String birthday)
     {
         String[] dateParts = birthday.split("/");

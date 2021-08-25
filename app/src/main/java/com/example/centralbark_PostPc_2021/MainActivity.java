@@ -1,16 +1,11 @@
 package com.example.centralbark_PostPc_2021;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentContainerView;
 
-import android.Manifest;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -51,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentContainerView screen = findViewById(R.id.the_screen);
         FragmentContainerView menu = findViewById(R.id.menu_bar);
         openingFragment openingFragment = new openingFragment();
+        MenuFragment menuFragment = new MenuFragment();
         if (dataManager==null)
         {
             dataManager = CentralBarkApp.getInstance().getDataManager();
@@ -74,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
                     addToBackStack(null).
                     commit();
         }
-//
-//
+
+
 //        if (dataManager==null)
 //        {
 //            dataManager = CentralBarkApp.getInstance().getDataManager();
