@@ -7,7 +7,32 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.google.firebase.messaging.RemoteMessage;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.UUID;
+
+import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
         FragmentContainerView screen = findViewById(R.id.the_screen);
         FragmentContainerView menu = findViewById(R.id.menu_bar);
         openingFragment openingFragment = new openingFragment();
@@ -99,6 +123,18 @@ public class MainActivity extends AppCompatActivity {
             startService(intent);
             Toast.makeText(this, "location service stopped", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CentralBarkApp.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        CentralBarkApp.activityPaused();
     }
 
 }

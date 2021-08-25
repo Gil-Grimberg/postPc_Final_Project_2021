@@ -288,10 +288,37 @@ public class matchAFriendFragment extends Fragment {
                         {
                             String myId = appInstance.getDataManager().getMyId();
                             User matchUser = documentSnapshot.toObject(User.class);
-                            if (matchUser.getLikedUsers().contains(myId))
+                            if (matchUser != null && matchUser.getLikedUsers().contains(myId))
                             {
+                                appInstance.getDataManager().addStringToUserArrayField(appInstance.getDataManager().getMyId(), "friendList", matchUserId);
+                                appInstance.getDataManager().addStringToUserArrayField(matchUserId, "friendList", appInstance.getDataManager().getMyId());
                                 appInstance.getDataManager().sendNotification(NotificationTypes.TINDER_MATCH_NOTIFICATION, matchUserId, null, null);
                                 appInstance.getDataManager().sendMatchNotificationToMyself(matchUserId, matchUser.getProfilePhoto(), matchUser.getUsername());
+                                appInstance.getDataManager().sendFirebaseNotification("It's a Match!",
+                                        String.format("you have a match with %s", appInstance.getDataManager().getUsernameFromSp()),
+                                        matchUser.getDeviceToken());
+                                appInstance.getDataManager().db.collection("Users").document(myId).get()
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                if (documentSnapshot != null)
+                                                {
+                                                    User myUser = documentSnapshot.toObject(User.class);
+                                                    if (myUser != null && myUser.getDeviceToken() != null)
+                                                    {
+                                                        appInstance.getDataManager().sendFirebaseNotification("It's a Match!",
+                                                                String.format("you have a match with %s", matchUser.getUsername()),
+                                                                myUser.getDeviceToken());
+                                                    }
+                                                }
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull @NotNull Exception e) {
+                                        Toast.makeText(getContext(), "DB Error", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
                             }
                         }
                     }

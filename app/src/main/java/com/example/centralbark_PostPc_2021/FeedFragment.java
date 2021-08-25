@@ -20,12 +20,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FileDownloadTask;
@@ -138,6 +140,29 @@ public class FeedFragment extends Fragment {
                         if (!dataManager.getMyId().equals(model.getUserId()))
                         {
                             dataManager.sendNotification(NotificationTypes.USER_LIKED_YOUR_POST_NOTIFICATION, model.getUserId(), model.getPostId(), "");
+                            dataManager.db.collection("Users").document(model.getUserId()).get()
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            if (documentSnapshot != null)
+                                            {
+                                                User myFriend = documentSnapshot.toObject(User.class);
+                                                if (myFriend != null && myFriend.getDeviceToken() != null)
+                                                {
+                                                    dataManager.sendFirebaseNotification("Someone Liked Your Post!",
+                                                            String.format("%s likes your post", dataManager.getUsernameFromSp()),
+                                                            myFriend.getDeviceToken());
+                                                }
+                                            }
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull @NotNull Exception e) {
+                                    Toast.makeText(getContext(), "DB Error", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+
                         }
                     }
                     holder.numOfLikes.setText(String.valueOf(model.getNumOfLikes()));

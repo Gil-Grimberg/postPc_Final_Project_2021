@@ -107,13 +107,17 @@ public class LocationService extends Service {
                                                 if (!sent)
                                                 {
                                                     CentralBarkApp.getInstance().getDataManager().sendNotification(NotificationTypes.USER_AT_THE_DOG_PARK_NOTIFICATION, user.getId(), "", Utils.locationToNameMapping.get(park));
-                                                    //todo: send notification to device id
+                                                    CentralBarkApp.getInstance().getDataManager().sendFirebaseNotification("A User Entered a Dog Park!",
+                                                            String.format("Your friend %s has entered %s", CentralBarkApp.getInstance().getDataManager().getUsernameFromSp(), Utils.locationToNameMapping.get(park)),
+                                                                    user.getDeviceToken());
                                                 }
                                             }
                                             else
                                             {
                                                 CentralBarkApp.getInstance().getDataManager().sendNotification(NotificationTypes.USER_AT_THE_DOG_PARK_NOTIFICATION, user.getId(), "", Utils.locationToNameMapping.get(park));
-                                                //todo: send notification to device id
+                                                CentralBarkApp.getInstance().getDataManager().sendFirebaseNotification("A User Entered a Dog Park!",
+                                                        String.format("Your friend %s has entered %s", CentralBarkApp.getInstance().getDataManager().getUsernameFromSp(), Utils.locationToNameMapping.get(park)),
+                                                        user.getDeviceToken());
                                             }
 
                                         };
@@ -167,19 +171,21 @@ public class LocationService extends Service {
         builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setContentTitle("Location_Service");
         builder.setDefaults(NotificationCompat.DEFAULT_ALL);
+        builder.setSound(null);
         builder.setContentText("Running");
         builder.setContentIntent(pendingIntent);
         builder.setAutoCancel(false);
-        builder.setPriority(NotificationCompat.PRIORITY_MAX);
+        builder.setPriority(NotificationCompat.PRIORITY_MIN);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (notificationManager != null && notificationManager.getNotificationChannel(channelId) == null) {
                 NotificationChannel notificationChannel = new NotificationChannel(
                         channelId,
                         "Location Service",
-                        NotificationManager.IMPORTANCE_HIGH
+                        NotificationManager.IMPORTANCE_LOW
                 );
                 notificationChannel.setDescription("This channel is used by location service");
+                notificationChannel.setSound(null, null);
                 notificationManager.createNotificationChannel(notificationChannel);
             }
         }

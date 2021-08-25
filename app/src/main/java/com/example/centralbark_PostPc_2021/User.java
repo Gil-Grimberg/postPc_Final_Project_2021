@@ -27,6 +27,7 @@ public class User implements Serializable {
     private ArrayList<String> pendingRequests;
     private String selfSummary = "";
     private GeoPoint location;
+    private String deviceToken;
 
     public User()
     {
@@ -40,7 +41,8 @@ public class User implements Serializable {
 
     public User(String username, String password, String mail,
                 String profilePhoto, String birthday, String breed, String city,
-                boolean rememberMe, String selfSummary, GeoPoint location)
+                boolean rememberMe, String selfSummary, GeoPoint location,
+                String deviceToken)
     {
         this.id = UUID.randomUUID().toString();
         this.friendList = new ArrayList<>();
@@ -58,6 +60,15 @@ public class User implements Serializable {
         this.rememberMe = rememberMe;
         this.selfSummary = selfSummary;
         this.location = location;
+        this.deviceToken = deviceToken;
+    }
+
+    public void setDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
+    }
+
+    public String getDeviceToken() {
+        return deviceToken;
     }
 
     public void setAllowLocation(Boolean allowLocation) {
