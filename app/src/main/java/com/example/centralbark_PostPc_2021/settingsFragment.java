@@ -51,6 +51,8 @@ public class settingsFragment extends Fragment {
         // log out button
         this.logOut.setOnClickListener(v->{
             dataManager.updateSp(null);
+            ((MainActivity) requireActivity()).stopLocationService();
+            dataManager.removeDeviceTokenOnLogOut();
             Utils.moveBetweenFragments(R.id.the_screen, new openingFragment(), getActivity(), "opening");
         });
     }

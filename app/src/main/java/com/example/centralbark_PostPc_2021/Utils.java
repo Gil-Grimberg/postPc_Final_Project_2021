@@ -48,6 +48,7 @@ public class Utils {
     static List<String> cities = Arrays.asList("jerusalem", "rishon letzion", "tel aviv", "street dog");
 
     static final int LOCATION_SERVICE_ID = 175;
+    static final int NOTIFICATION_SERVICE_ID = 176;
     static final String ACTION_START_LOCATION_SERVICE = "startLocationService";
     static final String ACTION_STOP_LOCATION_SERVICE = "stopLocationService";
 
@@ -179,5 +180,7 @@ public class Utils {
 
         return (float) diff / 60;
     }
+
+
 
 }

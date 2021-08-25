@@ -3,6 +3,7 @@ package com.example.centralbark_PostPc_2021;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,8 +26,16 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -50,6 +59,16 @@ public class DataManager {
         app = FirebaseApp.initializeApp(this.context);
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
+    }
+
+    public void removeDeviceTokenOnLogOut()
+    {
+        this.db.collection("Users").document(getMyId()).update("deviceToken", null);
+    }
+
+    public void updateDeviceToken(String token)
+    {
+        this.db.collection("Users").document(getMyId()).update("deviceToken", token);
     }
 
     private String initializeFromSp() {
@@ -357,5 +376,58 @@ public class DataManager {
                         Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void sendFirebaseNotification(String title, String body, String token)
+    {
+        if (token == null)
+        {
+            return;
+        }
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    URL url = new URL ("https://fcm.googleapis.com/fcm/send");
+                    HttpURLConnection con = (HttpURLConnection)url.openConnection();
+                    con.setRequestMethod("POST");
+                    con.setRequestProperty("Content-Type", "application/json; utf-8");
+                    con.setRequestProperty("Authorization", "key=AAAAbzd7iSg:APA91bGPO-iIepBp-Ke-sQXX2AOAABzsXiLEbCfpg84pY39INAZhOoljFNdG5fQU1jm4ztToPYmbXX01Rd28lqD5QCgDFJPxoT4g1o1iasqwnghm1BG5h7WKam2WtPO2D-B4l3TA5F-Z");
+                    con.setRequestProperty("Accept", "application/json");
+                    con.setDoOutput(true);
+                    String content = new JSONObject()
+                            .put("notification", new JSONObject().put("title", title)
+                                    .put("body", body)
+                                    .put("click_action", "OPEN_ACTIVITY_1")
+                            )
+                            .put("to", token)
+                            .toString();
+
+                    try (OutputStream os = con.getOutputStream())
+                    {
+                        byte[] input = content.getBytes("utf-8");
+                        os.write(input, 0 ,input.length);
+                    }
+                    try(BufferedReader br = new BufferedReader(
+                            new InputStreamReader(con.getInputStream(), "utf-8")))
+                    {
+                        StringBuilder response = new StringBuilder();
+                        String responseLine = null;
+                        while ((responseLine = br.readLine()) != null)
+                        {
+                            response.append(responseLine.trim());
+                        }
+                        Log.d("RESPONSE", response.toString());
+                    }
+
+
+                }
+                catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
     }
 }

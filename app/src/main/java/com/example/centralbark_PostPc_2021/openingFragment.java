@@ -9,6 +9,12 @@ import androidx.fragment.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import org.jetbrains.annotations.NotNull;
+
 public class openingFragment extends Fragment {
 
     Button signInButton;
@@ -36,9 +42,28 @@ public class openingFragment extends Fragment {
             Utils.moveBetweenFragments(R.id.the_screen, new signInFragment(), getActivity(), "sign_in");
         });
 
-        signUpButton.setOnClickListener(v ->
-        {
-            Utils.moveBetweenFragments(R.id.the_screen, new signUpFragment(), getActivity(), "sign_up");
+        FirebaseMessaging.getInstance().getToken()
+                .addOnSuccessListener(new OnSuccessListener<String>() {
+                    @Override
+                    public void onSuccess(String token) {
+                        if (token != null)
+                        signUpButton.setOnClickListener(v ->
+                        {
+                            Utils.moveBetweenFragments(R.id.the_screen, new signUpFragment(token), getActivity(), "sign_up");
+                        });
+                        else
+                        {
+                            Utils.moveBetweenFragments(R.id.the_screen, new signUpFragment(null), getActivity(), "sign_up");
+
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+                        Utils.moveBetweenFragments(R.id.the_screen, new signUpFragment(null), getActivity(), "sign_up");
+                    }
         });
+
         }
 }
