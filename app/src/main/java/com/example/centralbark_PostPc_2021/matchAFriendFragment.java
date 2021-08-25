@@ -290,6 +290,8 @@ public class matchAFriendFragment extends Fragment {
                             User matchUser = documentSnapshot.toObject(User.class);
                             if (matchUser != null && matchUser.getLikedUsers().contains(myId))
                             {
+                                appInstance.getDataManager().addStringToUserArrayField(appInstance.getDataManager().getMyId(), "friendList", matchUserId);
+                                appInstance.getDataManager().addStringToUserArrayField(matchUserId, "friendList", appInstance.getDataManager().getMyId());
                                 appInstance.getDataManager().sendNotification(NotificationTypes.TINDER_MATCH_NOTIFICATION, matchUserId, null, null);
                                 appInstance.getDataManager().sendMatchNotificationToMyself(matchUserId, matchUser.getProfilePhoto(), matchUser.getUsername());
                                 appInstance.getDataManager().sendFirebaseNotification("It's a Match!",
