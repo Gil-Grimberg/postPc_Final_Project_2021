@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -159,6 +160,27 @@ public class myProfileFragment extends Fragment {
                             dataManager.addToUsers(curUser);
                             makeFriendButton.setText("Pending request");
                             dataManager.sendNotification(NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION, curUser.getId(), null,null);
+                            dataManager.db.collection("Users").document(dataManager.getMyId()).get()
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            if (documentSnapshot != null)
+                                            {
+                                                User myUser = documentSnapshot.toObject(User.class);
+                                                if (myUser != null && myUser.getDeviceToken() != null)
+                                                {
+                                                    dataManager.sendFirebaseNotification("You Have A New Friend Request!",
+                                                            String.format("%s wants yo be your friend", dataManager.getUsernameFromSp()),
+                                                            myUser.getDeviceToken());
+                                                }
+                                            }
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull @NotNull Exception e) {
+                                    Toast.makeText(getContext(), "DB Error", Toast.LENGTH_SHORT).show();
+                                }
+                            });
 
                         }
                     });

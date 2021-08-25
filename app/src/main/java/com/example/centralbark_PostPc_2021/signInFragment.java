@@ -90,21 +90,28 @@ public class signInFragment extends Fragment {
                             appInstance.getDataManager().updateSp(enteredUser.getId());
                             appInstance.getDataManager().deleteSignInInfoFromSp();
                         }
+                        appInstance.getDataManager().updateSpWithUsername(enteredUser.getUsername());
                         FirebaseMessaging.getInstance().getToken()
                                 .addOnSuccessListener(new OnSuccessListener<String>() {
                                     @Override
-                                    public void onSuccess(String s) {
-                                        appInstance.getDataManager().updateDeviceToken(appInstance.getDataManager().getMyId());
+                                    public void onSuccess(String token) {
+                                        if (token != null)
+                                        {
+                                            appInstance.getDataManager().updateDeviceToken(token);
+                                        }
+                                        Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
+                                        Utils.moveBetweenFragments(R.id.menu_bar, new MenuFragment(), getActivity(), "menu");
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                             @Override
-                            public void onFailure(@NonNull @NotNull Exception e) {
+                            public void onFailure(@NotNull Exception e) {
                                 appInstance.getDataManager().updateDeviceToken(null);
+                                Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
+                                Utils.moveBetweenFragments(R.id.menu_bar, new MenuFragment(), getActivity(), "menu");
                             }
                         });
-                        appInstance.getDataManager().updateSpWithUsername(enteredUser.getUsername());
-                        Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
-                        Utils.moveBetweenFragments(R.id.menu_bar, new MenuFragment(), getActivity(), "menu");
+
+
                     }
         }}).addOnFailureListener(new OnFailureListener() {
                 @Override

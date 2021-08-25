@@ -52,9 +52,9 @@ public class settingsFragment extends Fragment {
 
         // log out button
         this.logOut.setOnClickListener(v->{
+            dataManager.removeDeviceTokenOnLogOut();
             dataManager.updateSp(null);
             ((MainActivity) requireActivity()).stopLocationService();
-            dataManager.removeDeviceTokenOnLogOut();
             Utils.moveBetweenFragmentsAndHideMenuBar(new openingFragment(), getActivity(), "opening");
         });
     }

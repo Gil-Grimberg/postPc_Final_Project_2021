@@ -61,7 +61,7 @@ public class openingFragment extends Fragment {
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onFailure(@NonNull @NotNull Exception e) {
+                    public void onFailure(@NotNull Exception e) {
                         Utils.moveBetweenFragments(R.id.the_screen, new signUpFragment(null), getActivity(), "sign_up");
                     }
         });
