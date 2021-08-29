@@ -38,7 +38,7 @@ public class MenuFragment extends Fragment {
         profileButton = view.findViewById(R.id.profileButton_ImageButton_fragmentMyProfile);
 
         searchButton.setOnClickListener(v->{
-            ArrayList<ImageView> makeSmaller =addToMakeSmallerLst(tinderButton, homeButton, locationButton, profileButton);
+            ArrayList<ImageView> makeSmaller = addToMakeSmallerLst(tinderButton, homeButton, locationButton, profileButton);
             sizeUpIcon(searchButton, makeSmaller);
             Utils.moveBetweenFragments(R.id.the_screen, new searchAccountFragment(), getActivity(), "search_accounts");
         });
