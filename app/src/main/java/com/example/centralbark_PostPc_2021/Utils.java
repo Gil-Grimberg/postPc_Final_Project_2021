@@ -48,6 +48,7 @@ public class Utils {
     static List<String> cities = Arrays.asList("jerusalem", "rishon letzion", "tel aviv", "street dog");
 
     static final int LOCATION_SERVICE_ID = 175;
+    static final int NOTIFICATION_SERVICE_ID = 176;
     static final String ACTION_START_LOCATION_SERVICE = "startLocationService";
     static final String ACTION_STOP_LOCATION_SERVICE = "stopLocationService";
 
@@ -82,6 +83,16 @@ public class Utils {
         FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(fragmentContainerViewId, fragment, fragmentTag);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    public static void moveBetweenFragmentsAndHideMenuBar(Fragment fragment, FragmentActivity fragmentActivity, String fragmentTag)
+    {
+        FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.the_screen, fragment, fragmentTag);
+        fragmentTransaction.replace(R.id.menu_bar, new Fragment(), "menu");
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
@@ -150,6 +161,26 @@ public class Utils {
         }
     };
 
+    public static float getTimeDifferenceInDays(Timestamp timestamp1, Timestamp timestamp2)
+    {
+        long seconds1 = timestamp1.getSeconds();
+        long seconds2 = timestamp2.getSeconds();
+
+        long diff = java.lang.Math.abs(seconds1 - seconds2);
+
+        return (float) diff / 86400;
+    }
+
+    public static float getTimeDifferenceInHours(Timestamp timestamp1, Timestamp timestamp2)
+    {
+        long seconds1 = timestamp1.getSeconds();
+        long seconds2 = timestamp2.getSeconds();
+
+        long diff = java.lang.Math.abs(seconds1 - seconds2);
+
+        return (float) diff / 3600;
+    }
+
     public static float getTimestampsDifferenceInMinutes(Timestamp timestamp1, Timestamp timestamp2)
     {
         long seconds1 = timestamp1.getSeconds();
@@ -159,5 +190,7 @@ public class Utils {
 
         return (float) diff / 60;
     }
+
+
 
 }

@@ -125,7 +125,7 @@
         tools:layout="@layout/fragment_privacy_settings" />
     <fragment
         android:id="@+id/menuFragment"
-        android:name="com.example.centralbark_PostPc_2021.menuFragment"
+        android:name="com.example.centralbark_PostPc_2021.MenuFragment"
         android:label="fragment_menu"
         tools:layout="@layout/fragment_menu" >
         <action

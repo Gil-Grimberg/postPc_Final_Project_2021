@@ -38,7 +38,7 @@
         android:fontFamily="casual"
         android:layout_marginTop="30dp"
         android:textSize="12sp"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Sign_Up_title" />
 
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:textSize="12sp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="17dp"
         android:fontFamily="casual"
         android:inputType="textPersonName"
         app:layout_constraintStart_toEndOf="@+id/user_name_title_sign_up_screen"
@@ -58,7 +58,7 @@
         android:id="@+id/mail_title_sign_up_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="26dp"
         android:fontFamily="casual"
         android:textSize="12sp"
@@ -70,11 +70,10 @@
         android:id="@+id/mail_edit_text_sign_up_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
         android:ems="10"
         android:fontFamily="casual"
         android:textSize="12sp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="4dp"
         android:inputType="textEmailAddress"
         app:layout_constraintStart_toEndOf="@+id/mail_title_sign_up_screen"
         app:layout_constraintTop_toBottomOf="@+id/user_name_edit_text_sign_up_screen" />
@@ -86,7 +85,7 @@
         android:fontFamily="casual"
         android:text="@string/password"
         android:textSize="12sp"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="26dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mail_title_sign_up_screen" />
@@ -98,35 +97,49 @@
         android:ems="10"
         android:fontFamily="casual"
         android:textSize="12sp"
-        android:layout_marginTop="5dp"
-
+        android:layout_marginTop="4dp"
         android:inputType="textPassword"
         app:layout_constraintStart_toEndOf="@+id/password_title_sign_up_screen"
         app:layout_constraintTop_toBottomOf="@+id/mail_edit_text_sign_up_screen" />
+
+
+    <TextView
+        android:id="@+id/repeat_new_password_title_sign_up_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="26dp"
+        android:textSize="12sp"
+        android:fontFamily="casual"
+        android:text="@string/repeat_password"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password_title_sign_up_screen" />
+
+    <EditText
+        android:id="@+id/repeat_new_password_editText_sign_up_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintStart_toEndOf="@+id/repeat_new_password_title_sign_up_screen"
+        app:layout_constraintTop_toBottomOf="@+id/password_edit_text_sign_up" />
+
+
+
+
 
     <TextView
         android:id="@+id/photo_title_sign_up_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="30dp"
         android:fontFamily="casual"
         android:text="@string/profile_photo"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_title_sign_up_screen" />
-
-    <TextView
-        android:id="@+id/birthday_title_sign_up_screen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/birthday"
-        android:fontFamily="casual"
-        android:textSize="12sp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="28dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/photo_title_sign_up_screen" />
+        app:layout_constraintTop_toBottomOf="@+id/repeat_new_password_title_sign_up_screen" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/choose_photo_button_sign_up_screen"
@@ -135,12 +148,25 @@
         android:text="@string/choose_image"
         android:fontFamily="casual"
         android:textSize="10sp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="17dp"
         android:layout_marginStart="5dp"
         android:background="@drawable/my_button"
         app:layout_constraintBottom_toTopOf="@+id/birthday_edit_text_sign_up_screen"
         app:layout_constraintStart_toEndOf="@+id/photo_title_sign_up_screen"
-        app:layout_constraintTop_toBottomOf="@+id/password_edit_text_sign_up" />
+        app:layout_constraintTop_toBottomOf="@+id/repeat_new_password_editText_sign_up_screen" />
+
+    <TextView
+        android:id="@+id/birthday_title_sign_up_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/birthday"
+        android:fontFamily="casual"
+        android:textSize="12sp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/photo_title_sign_up_screen" />
+
 
     <EditText
         android:id="@+id/birthday_edit_text_sign_up_screen"
@@ -149,7 +175,7 @@
         android:ems="10"
         android:fontFamily="casual"
         android:inputType="date"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="13dp"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/birthday_title_sign_up_screen"
         app:layout_constraintTop_toBottomOf="@+id/choose_photo_button_sign_up_screen"
@@ -163,7 +189,7 @@
         android:text="@string/breed"
         android:fontFamily="casual"
         android:textSize="12sp"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="26dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/birthday_title_sign_up_screen" />
@@ -175,7 +201,7 @@
         android:ems="10"
         android:fontFamily="casual"
         android:textSize="12sp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="4dp"
         android:inputType="textPersonName"
         app:layout_constraintStart_toEndOf="@+id/breed_title_sign_up_screen"
         app:layout_constraintTop_toBottomOf="@+id/birthday_edit_text_sign_up_screen" />
@@ -184,7 +210,7 @@
         android:id="@+id/lives_in_title_sign_up_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="26dp"
         android:fontFamily="casual"
         android:text="@string/lives_in"
@@ -199,7 +225,7 @@
         android:ems="10"
         android:fontFamily="casual"
         android:textSize="12sp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="5dp"
         android:inputType="textPersonName"
         app:layout_constraintStart_toEndOf="@+id/lives_in_title_sign_up_screen"
         app:layout_constraintTop_toBottomOf="@+id/breed_edit_text_sign_up_screen" />
@@ -211,7 +237,7 @@
         android:text="@string/my_self_summery"
         android:fontFamily="casual"
         android:textSize="12sp"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="26dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lives_in_title_sign_up_screen" />

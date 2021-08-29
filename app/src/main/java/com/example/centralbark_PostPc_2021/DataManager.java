@@ -3,6 +3,7 @@ package com.example.centralbark_PostPc_2021;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -24,8 +26,16 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -51,8 +61,18 @@ public class DataManager {
         storage = FirebaseStorage.getInstance();
     }
 
+    public void removeDeviceTokenOnLogOut()
+    {
+        this.db.collection("Users").document(getMyId()).update("deviceToken", null);
+    }
+
+    public void updateDeviceToken(String token)
+    {
+        this.db.collection("Users").document(getMyId()).update("deviceToken", token);
+    }
+
     private String initializeFromSp() {
-        return this.sp.getString("userId", "noId");
+        return this.sp.getString("userId", null);
     }
 
     public void updateSp(String updatedUserId) {
@@ -101,8 +121,6 @@ public class DataManager {
 
     }
 
-
-
     public void deleteSignInInfoFromSp() {
         SharedPreferences.Editor editor = this.sp.edit();
         editor.remove("userMail");
@@ -114,6 +132,35 @@ public class DataManager {
         this.db.collection("Users")
                 .document(userId)
                 .update("location", location);
+    }
+
+    public void addStringToUserArrayField(String userId, String fieldName, String newValue)
+    {
+        this.db.collection("Users").document(userId).update(fieldName, FieldValue.arrayUnion(newValue));
+    }
+
+    public void removeStringFromUserArrayField(String userId, String fieldName, String valToRemove)
+    {
+        this.db.collection("Users").document(userId).update(fieldName, FieldValue.arrayRemove(valToRemove));
+    }
+
+    public void addStringFromPostArrayField(String postId, String fieldName, String valToRemove)
+    {
+        this.db.collection("Posts").document(postId).update(fieldName, FieldValue.arrayUnion(valToRemove));
+    }
+
+    public void removeStringFromPostArrayField(String postId, String fieldName, String valToRemove)
+    {
+        this.db.collection("Posts").document(postId).update(fieldName, FieldValue.arrayRemove(valToRemove));
+    }
+
+    public void updateNotification(String userId, String notificationId, Notification notification)
+    {
+        this.db.collection("Users")
+                .document(userId)
+                .collection("Notifications")
+                .document(notificationId)
+                .set(notification);
     }
 
 
@@ -284,18 +331,103 @@ public class DataManager {
 
     }
 
+    public void sendMatchNotificationToMyself(String friendId, String friendProfilePhoto, String friendUserName)
+    {
+        String notificationContent = Utils.getNotificationContent(NotificationTypes.TINDER_MATCH_NOTIFICATION,
+                friendUserName, null);
+        Notification newNotification = new Notification(
+                friendId,
+                friendUserName,
+                NotificationTypes.TINDER_MATCH_NOTIFICATION,
+                notificationContent,
+                Timestamp.now(),
+                null,
+                friendProfilePhoto);
+        addNotification(this.getMyId(), newNotification);
+    }
+
     public void sendNotification(int notificationType, String friendId, String postId, String park)
     {
         String notificationContent = Utils.getNotificationContent(notificationType, getUsernameFromSp(), park);
-        Notification newNotification = new Notification(
-                CentralBarkApp.getInstance().getDataManager().getMyId(),
-                notificationType,
-                notificationContent,
-                Timestamp.now(),
-                postId);
-
-        addNotification(friendId, newNotification);
+        this.db.collection("Users").document(this.getMyId()).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot != null)
+                        {
+                            User myUser = documentSnapshot.toObject(User.class);
+                            String profilePhoto = myUser.getProfilePhoto();
+                            Notification newNotification = new Notification(
+                                    CentralBarkApp.getInstance().getDataManager().getMyId(),
+                                    getUsernameFromSp(),
+                                    notificationType,
+                                    notificationContent,
+                                    Timestamp.now(),
+                                    postId,
+                                    profilePhoto);
+                            addNotification(friendId, newNotification);
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Toast.makeText(app.getApplicationContext(),
+                        "Error: db error. Couldn't send Notification",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
+    public void sendFirebaseNotification(String title, String body, String token)
+    {
+        if (token == null)
+        {
+            return;
+        }
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
 
+                    URL url = new URL ("https://fcm.googleapis.com/fcm/send");
+                    HttpURLConnection con = (HttpURLConnection)url.openConnection();
+                    con.setRequestMethod("POST");
+                    con.setRequestProperty("Content-Type", "application/json; utf-8");
+                    con.setRequestProperty("Authorization", "key=AAAAbzd7iSg:APA91bGPO-iIepBp-Ke-sQXX2AOAABzsXiLEbCfpg84pY39INAZhOoljFNdG5fQU1jm4ztToPYmbXX01Rd28lqD5QCgDFJPxoT4g1o1iasqwnghm1BG5h7WKam2WtPO2D-B4l3TA5F-Z");
+                    con.setRequestProperty("Accept", "application/json");
+                    con.setDoOutput(true);
+                    String content = new JSONObject()
+                            .put("notification", new JSONObject().put("title", title)
+                                    .put("body", body)
+                                    .put("click_action", "OPEN_ACTIVITY_1")
+                            )
+                            .put("to", token)
+                            .toString();
+
+                    try (OutputStream os = con.getOutputStream())
+                    {
+                        byte[] input = content.getBytes("utf-8");
+                        os.write(input, 0 ,input.length);
+                    }
+                    try(BufferedReader br = new BufferedReader(
+                            new InputStreamReader(con.getInputStream(), "utf-8")))
+                    {
+                        StringBuilder response = new StringBuilder();
+                        String responseLine = null;
+                        while ((responseLine = br.readLine()) != null)
+                        {
+                            response.append(responseLine.trim());
+                        }
+                        Log.d("RESPONSE", response.toString());
+                    }
+
+
+                }
+                catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+    }
 }

@@ -2,8 +2,6 @@ package com.example.centralbark_PostPc_2021;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.View;
@@ -17,6 +15,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -68,7 +69,7 @@ public class signInFragment extends Fragment {
                         users.addAll(documentSnapshots.toObjects(User.class));
                         for (User user: users)
                         {
-                            if (user.getMail().equals(enteredMail) && user.getPassword().equals(enteredPassword))
+                            if (!user.getUsername().equals("treeUser") && user.getMail().equals(enteredMail) && user.getPassword().equals(enteredPassword))
                             {
                                 enteredUser = user;
                                 break;
@@ -90,8 +91,27 @@ public class signInFragment extends Fragment {
                             appInstance.getDataManager().deleteSignInInfoFromSp();
                         }
                         appInstance.getDataManager().updateSpWithUsername(enteredUser.getUsername());
-                        Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
-                        Utils.moveBetweenFragments(R.id.menu_bar, new menuFragment(), getActivity(), "menu");
+                        FirebaseMessaging.getInstance().getToken()
+                                .addOnSuccessListener(new OnSuccessListener<String>() {
+                                    @Override
+                                    public void onSuccess(String token) {
+                                        if (token != null)
+                                        {
+                                            appInstance.getDataManager().updateDeviceToken(token);
+                                        }
+                                        Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
+                                        Utils.moveBetweenFragments(R.id.menu_bar, new MenuFragment(), getActivity(), "menu");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NotNull Exception e) {
+                                appInstance.getDataManager().updateDeviceToken(null);
+                                Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
+                                Utils.moveBetweenFragments(R.id.menu_bar, new MenuFragment(), getActivity(), "menu");
+                            }
+                        });
+
+
                     }
         }}).addOnFailureListener(new OnFailureListener() {
                 @Override

@@ -1,6 +1,5 @@
 package com.example.centralbark_PostPc_2021;
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -20,11 +19,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageReference;
@@ -82,10 +83,6 @@ public class searchAccountFragment extends Fragment {
                 // set the user name
                 holder.userName.setText(model.getUsername());
 
-//                holder.userName.setOnClickListener(v->{
-//                    Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(model.getId()), getActivity(), "myProfile");
-//                });
-
                 // set users profile image
                 StorageReference profileImg = dataManager.storage.getReference().child(model.getProfilePhoto());
                 File localProfileImFile = null;
@@ -107,9 +104,14 @@ public class searchAccountFragment extends Fragment {
                     }
                 });
 
-//                holder.profilePhoto.setOnClickListener(v->{
-//                    Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(model.getId()), getActivity(), "myProfile");
-//                });
+                holder.profilePhoto.setOnClickListener(v->{
+                    Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(model.getId()), getActivity(), "myProfile");
+                });
+
+                holder.userName.setOnClickListener(v->{
+                    Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(model.getId()), getActivity(), "myProfile");
+                });
+
 
                 if(model.isFriend(dataManager.getMyId())){
                     holder.sendFriendRequest.setVisibility(View.GONE);
@@ -138,6 +140,9 @@ public class searchAccountFragment extends Fragment {
                         dataManager.addToUsers(model);
                         holder.sendFriendRequest.setText("Pending request");
                         dataManager.sendNotification(NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION, model.getId(), null,null);
+                        dataManager.sendFirebaseNotification("You Have A New Friend Request!",
+                                String.format("%s wants to be your friend!", dataManager.getUsernameFromSp()),
+                                model.getDeviceToken());
 
                     }
                 });

@@ -4,6 +4,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -19,12 +20,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FileDownloadTask;
@@ -42,6 +45,7 @@ import java.util.concurrent.TimeUnit;
 
 public class FeedFragment extends Fragment {
     private DataManager dataManager;
+    private TextView notificationCounter;
     private ImageView notificationButton;
     private ImageView addPostButton;
     private RecyclerView recyclerViewPosts; // todo: recycler on menu bar
@@ -59,6 +63,18 @@ public class FeedFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+
+        // handle back pressed
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                // Doesn't do anything, because when back button is pressed on feed there is no where to go!!!
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+
+
 
         //first, we activate the location service, so we can update the user location in the db:
         //to do that, we first need to ask location permissions from the user:
@@ -78,10 +94,10 @@ public class FeedFragment extends Fragment {
 
 
         // Inflate the layout for this fragment
-        super.onViewCreated(view, savedInstanceState);
         this.notificationButton = view.findViewById(R.id.notification_button_feed_screen);
         this.recyclerViewPosts = view.findViewById(R.id.post_recyclerview_feed_screen);
         this.addPostButton = view.findViewById(R.id.add_post_button_feed_screen);
+        this.notificationCounter = view.findViewById(R.id.notification_counter);
 
         // query relevant posts:
         Query query = this.dataManager.db.collection("Posts")
@@ -121,7 +137,33 @@ public class FeedFragment extends Fragment {
                     }
                     else{
                         model.addLike(dataManager.getMyId());
-                        dataManager.sendNotification(NotificationTypes.USER_LIKED_YOUR_POST_NOTIFICATION, model.getUserId(), model.getPostId(), "");
+                        if (!dataManager.getMyId().equals(model.getUserId()))
+                        {
+                            dataManager.sendNotification(NotificationTypes.USER_LIKED_YOUR_POST_NOTIFICATION, model.getUserId(), model.getPostId(), "");
+                            dataManager.db.collection("Users").document(model.getUserId()).get()
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            if (documentSnapshot != null)
+                                            {
+                                                User myFriend = documentSnapshot.toObject(User.class);
+                                                if (myFriend != null && myFriend.getDeviceToken() != null)
+                                                {
+                                                    dataManager.sendFirebaseNotification("Someone Liked Your Post!",
+                                                            String.format("%s likes your post", dataManager.getUsernameFromSp()),
+                                                            myFriend.getDeviceToken());
+                                                }
+                                            }
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull @NotNull Exception e) {
+                                    Toast.makeText(getContext(), "DB Error", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+
+                        }
                     }
                     holder.numOfLikes.setText(String.valueOf(model.getNumOfLikes()));
                 });
@@ -134,13 +176,24 @@ public class FeedFragment extends Fragment {
                     Date postTime = model.parseStringToDate();
                     long diffInMilli = curTime.getTime() - postTime.getTime();
                     long diffInHours = TimeUnit.HOURS.convert(diffInMilli, TimeUnit.MILLISECONDS);
-                    if (diffInHours >= 1){
-                        holder.postTime.setText(diffInHours + " hours ago");
-                    }
-                    else{
+
+                    if (diffInHours < 1)
+                    {
                         long diffInMin = TimeUnit.MINUTES.convert(diffInMilli, TimeUnit.MILLISECONDS);
                         holder.postTime.setText(diffInMin + " minutes ago");
                     }
+
+                    else if (diffInHours < 24)
+                    {
+                        holder.postTime.setText(diffInHours + " hours ago");
+                    }
+
+                    else
+                    {
+                        long diffInDays = TimeUnit.DAYS.convert(diffInMilli, TimeUnit.MILLISECONDS);
+                        holder.postTime.setText(diffInDays + " days ago");
+                    }
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -186,15 +239,51 @@ public class FeedFragment extends Fragment {
                         // todo: something todo?
                     }
                 });
+
+                holder.profileIm.setOnClickListener(v -> {
+                    Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(model.getUserId()), getActivity(), "myProfile");
+                });
+
+                holder.userNameTitle.setOnClickListener(v -> {
+                    Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(model.getUserId()), getActivity(), "myProfile");
+                });
             }
         };
 
         this.recyclerViewPosts.setLayoutManager(new LinearLayoutManager(this.getContext(),RecyclerView.VERTICAL,false));
         this.recyclerViewPosts.setAdapter(postsAdapter);
 
+        this.dataManager.db.collection("Users").document(dataManager.getMyId()).collection("Notifications").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot documentSnapshots) {
+                        if (documentSnapshots != null && !documentSnapshots.isEmpty())
+                        {
+                            int numberOfNotifications = 0;
+                            ArrayList<Notification> notificationList = new ArrayList<>(documentSnapshots.toObjects(Notification.class));
+                            for (Notification notification: notificationList)
+                            {
+                                if (!notification.isHasUserSeen())
+                                {
+                                    numberOfNotifications++;
+                                }
+                            }
+                            if (numberOfNotifications > 0)
+                            {
+                                notificationCounter.setText(String.valueOf(numberOfNotifications));
+                            }
+                        }
+                    }
+                });
+
         // move to add post screen
         this.addPostButton.setOnClickListener(v -> {
             Utils.moveBetweenFragments(R.id.the_screen, new AddPostFragment(), getActivity(), "add_post");
+        });
+
+        this.notificationButton.setOnClickListener(v ->
+        {
+            Utils.moveBetweenFragments(R.id.the_screen, new NotificationsFragment(), getActivity(), "notification_activity");
         });
     }
 
@@ -265,6 +354,8 @@ public class FeedFragment extends Fragment {
         super.onStop();
         this.postsAdapter.stopListening();
     }
+
+
 
     // the view holder for the adapter
     private class RecyclerPostsHolder extends RecyclerView.ViewHolder {

@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -23,8 +24,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,6 +38,7 @@ public class signUpFragment extends Fragment {
     CentralBarkApp appInstance;
     EditText userName;
     EditText password;
+    EditText repeatPassword;
     EditText mail;
     EditText birthday;
     EditText breed;
@@ -44,13 +49,15 @@ public class signUpFragment extends Fragment {
     String imagePath = "";
     TextView imageName;
     String fileType;
+    String deviceId;
 
 
-    public signUpFragment() {
+    public signUpFragment(String deviceId) {
         super(R.layout.fragment_sign_up);
         if(appInstance==null){
             appInstance = CentralBarkApp.getInstance();
         }
+        this.deviceId = deviceId;
     }
 
 
@@ -59,6 +66,7 @@ public class signUpFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         userName = view.findViewById(R.id.user_name_edit_text_sign_up_screen);
         password =  view.findViewById(R.id.password_edit_text_sign_up);
+        repeatPassword = view.findViewById(R.id.repeat_new_password_editText_sign_up_screen);
         mail = view.findViewById(R.id.mail_edit_text_sign_up_screen);
         birthday = view.findViewById(R.id.birthday_edit_text_sign_up_screen);
         breed = view.findViewById(R.id.breed_edit_text_sign_up_screen);
@@ -122,6 +130,10 @@ public class signUpFragment extends Fragment {
                         users.addAll(documentSnapshots.toObjects(User.class));
                         for (User user: users)
                         {
+                            if (user.getUsername().equals("treeUser"))
+                            {
+                                break;
+                            }
                             if (user.getMail().equals(mail.getText().toString()))
                             {
                                 is_mail_unique = false;
@@ -141,6 +153,10 @@ public class signUpFragment extends Fragment {
                     else if (password.getText().toString().length() != 8)
                     {
                         Toast.makeText(getContext(), "Password must contain 8 chars!", Toast.LENGTH_LONG).show();
+                    }
+                    else if(!password.getText().toString().equals(repeatPassword.getText().toString()))
+                    {
+                        Toast.makeText(getContext(), "Inconsistent passwords", Toast.LENGTH_LONG).show();
                     }
 
                     else if (userName.getText().toString().equals(""))
@@ -163,7 +179,9 @@ public class signUpFragment extends Fragment {
                                 city.getText().toString(),
                                 true,
                                 selfSummary.getText().toString(),
-                                null);
+                                null,
+                                deviceId);
+
                         appInstance.getDataManager().updateSpWithUsername(newUser.getUsername());
                         if (imagePath.equals(""))
                         {
@@ -172,7 +190,7 @@ public class signUpFragment extends Fragment {
                             appInstance.getDataManager().deleteSignInInfoFromSp();
                             appInstance.getDataManager().addToUsers(newUser);
                             Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
-                            Utils.moveBetweenFragments(R.id.menu_bar, new menuFragment(), getActivity(), "menu");
+                            Utils.moveBetweenFragments(R.id.menu_bar, new MenuFragment(), getActivity(), "menu");
                         }
                         else
                         {
@@ -188,7 +206,7 @@ public class signUpFragment extends Fragment {
                                     appInstance.getDataManager().deleteSignInInfoFromSp();
                                     appInstance.getDataManager().addToUsers(newUser);
                                     Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
-                                    Utils.moveBetweenFragments(R.id.menu_bar, new menuFragment(), getActivity(), "menu");
+                                    Utils.moveBetweenFragments(R.id.menu_bar, new MenuFragment(), getActivity(), "menu");
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -199,7 +217,7 @@ public class signUpFragment extends Fragment {
                                     appInstance.getDataManager().deleteSignInInfoFromSp();
                                     appInstance.getDataManager().addToUsers(newUser);
                                     Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
-                                    Utils.moveBetweenFragments(R.id.menu_bar, new menuFragment(), getActivity(), "menu");
+                                    Utils.moveBetweenFragments(R.id.menu_bar, new MenuFragment(), getActivity(), "menu");
                                 }
                             });
                         }

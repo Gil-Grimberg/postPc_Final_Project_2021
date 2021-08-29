@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -22,6 +24,7 @@ public class settingsFragment extends Fragment {
             this.dataManager = CentralBarkApp.getInstance().getDataManager();
         }
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -49,7 +52,10 @@ public class settingsFragment extends Fragment {
 
         // log out button
         this.logOut.setOnClickListener(v->{
-            Utils.moveBetweenFragments(R.id.the_screen, new openingFragment(), getActivity(), "opening");
+            dataManager.removeDeviceTokenOnLogOut();
+            dataManager.updateSp(null);
+            ((MainActivity) requireActivity()).stopLocationService();
+            Utils.moveBetweenFragmentsAndHideMenuBar(new openingFragment(), getActivity(), "opening");
         });
     }
 
