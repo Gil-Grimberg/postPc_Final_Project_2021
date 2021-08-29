@@ -235,7 +235,7 @@ public class matchAFriendFragment extends Fragment {
                         }
                         if (foundMe) {
                             for (User recommended : users) {
-                                if (me.getLikedUsers().contains(recommended.getId()) || me.getDislikeUsers().contains(recommended.getId()) || me.getId().equals(recommended.getId())) {
+                                if (me.getLikedUsers().contains(recommended.getId()) || me.getDislikeUsers().contains(recommended.getId()) || me.getId().equals(recommended.getId())||me.getFriendList().contains(recommended.getId())) {
 
                                 } else {
                                     renderUI(recommended);

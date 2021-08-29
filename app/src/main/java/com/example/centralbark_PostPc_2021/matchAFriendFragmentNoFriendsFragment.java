@@ -57,7 +57,6 @@ public class matchAFriendFragmentNoFriendsFragment extends Fragment {
     }
 
     private void findRecommendedProfile() {
-        // todo: filter the best recommended matches for the user based on ML
 
         ArrayList<User> users = new ArrayList<>();
         Task<QuerySnapshot> result = appInstance.getDataManager().db.collection("Users").get();
@@ -86,7 +85,7 @@ public class matchAFriendFragmentNoFriendsFragment extends Fragment {
                         }
                         if (foundMe) {
                             for (User recommended : users) {
-                                if (me.getLikedUsers().contains(recommended.getId()) || me.getDislikeUsers().contains(recommended.getId()) || me.getId().equals(recommended.getId())) {
+                                if (me.getLikedUsers().contains(recommended.getId()) || me.getDislikeUsers().contains(recommended.getId()) || me.getId().equals(recommended.getId()) || me.getFriendList().contains(recommended.getId())) {
 
                                 } else {
                                     // switch back to matchAFriendFragment

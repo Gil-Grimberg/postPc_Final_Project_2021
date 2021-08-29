@@ -130,10 +130,6 @@ public class signUpFragment extends Fragment {
                         users.addAll(documentSnapshots.toObjects(User.class));
                         for (User user: users)
                         {
-                            if (user.getUsername().equals("treeUser"))
-                            {
-                                break;
-                            }
                             if (user.getMail().equals(mail.getText().toString()))
                             {
                                 is_mail_unique = false;

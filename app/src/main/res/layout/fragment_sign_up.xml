@@ -172,6 +172,7 @@
         android:id="@+id/birthday_edit_text_sign_up_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:hint="MM/DD/YYYY"
         android:ems="10"
         android:fontFamily="casual"
         android:inputType="date"
