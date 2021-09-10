@@ -250,7 +250,7 @@ public class FeedFragment extends Fragment {
             }
         };
 
-        this.recyclerViewPosts.setLayoutManager(new LinearLayoutManager(this.getContext(),RecyclerView.VERTICAL,false));
+        this.recyclerViewPosts.setLayoutManager(new LinearLayoutManagerWrapper(this.getContext(),RecyclerView.VERTICAL,false));
         this.recyclerViewPosts.setAdapter(postsAdapter);
 
         this.dataManager.db.collection("Users").document(dataManager.getMyId()).collection("Notifications").get()

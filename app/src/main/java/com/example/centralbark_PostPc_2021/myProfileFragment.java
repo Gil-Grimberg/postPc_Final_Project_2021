@@ -273,7 +273,7 @@ public class myProfileFragment extends Fragment {
                         });
                     }
                 };
-                friendsRecycler.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
+                friendsRecycler.setLayoutManager(new LinearLayoutManagerWrapper(getContext(),RecyclerView.HORIZONTAL,false));
                 friendsAdapter.startListening();
                 friendsRecycler.setAdapter(friendsAdapter);
 

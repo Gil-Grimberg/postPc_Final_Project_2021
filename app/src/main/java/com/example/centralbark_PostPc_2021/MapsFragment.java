@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+
 import com.google.common.collect.ImmutableMap;
 
 import android.Manifest;
@@ -73,10 +74,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     SupportMapFragment supportMapFragment;
     LatLng locationToZoomIn = null;
 
-    public MapsFragment(){};
+    public MapsFragment() {
+    }
 
-    public MapsFragment(LatLng location){
-            locationToZoomIn = location;
+
+
+    public MapsFragment(LatLng location) {
+        locationToZoomIn = location;
 
     }
 
@@ -86,8 +90,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
-        if (appInstance == null)
-        {
+        if (appInstance == null) {
             appInstance = CentralBarkApp.getInstance();
         }
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -126,9 +129,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             LocationServices.getFusedLocationProviderClient(getContext()).requestLocationUpdates(mLocationRequest, mLocationCallback, null);
             getCurrentLocation(locationToZoomIn);
-        }
-        else
-        {
+        } else {
             multiplePermissionActivityResultLauncher.launch(PERMISSIONS);
         }
 
@@ -144,16 +145,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 ArrayList<String> friendsIds = (ArrayList<String>) documentSnapshot.get("friendList");
-                if (friendsIds != null && friendsIds.size() > 0)
-                {
+                if (friendsIds != null && friendsIds.size() > 0) {
                     Task<QuerySnapshot> result = appInstance.getDataManager()
-                                                            .db.collection("Users")
-                                                            .whereIn("id", friendsIds).get();
+                            .db.collection("Users")
+                            .whereIn("id", friendsIds).get();
                     result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot documentSnapshots) {
-                            if (documentSnapshots != null && !documentSnapshots.isEmpty())
-                            {
+                            if (documentSnapshots != null && !documentSnapshots.isEmpty()) {
                                 friendsList.addAll(documentSnapshots.toObjects(User.class));
                                 addMarkers(friendsList);
                             }
@@ -174,24 +173,18 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
-    private void addMarkers(ArrayList<User> friendsList)
-    {
-        if (friendsList == null || friendsList.size() == 0)
-        {
+    private void addMarkers(ArrayList<User> friendsList) {
+        if (friendsList == null || friendsList.size() == 0) {
             return;
         }
         supportMapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
-                for (User user : friendsList)
-                {
+                for (User user : friendsList) {
                     LatLng curUserLocation = user.getLocationAsLatLng();
-                    if (curUserLocation != null)
-                    {
-                        for (LatLng park: DOG_PARKS)
-                        {
-                            if (Utils.isCloseToDogPark(park, curUserLocation, 200))
-                            {
+                    if (curUserLocation != null) {
+                        for (LatLng park : DOG_PARKS) {
+                            if (Utils.isCloseToDogPark(park, curUserLocation, 200)) {
                                 MarkerOptions options = new MarkerOptions().position(curUserLocation).title(user.getUsername());
                                 googleMap.addMarker(options);
                                 break;
@@ -210,36 +203,37 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                 if (location != null)
-                 {
-                     LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                     supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-                         @Override
-                         public void onMapReady(GoogleMap googleMap) {
-                             MarkerOptions options = new MarkerOptions().position(latLng).title("I am Here");
+                if (location != null) {
+                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    supportMapFragment.getMapAsync(new OnMapReadyCallback() {
+                        @Override
+                        public void onMapReady(GoogleMap googleMap) {
+                            MarkerOptions options = new MarkerOptions().position(latLng);
+//
+                            if (locationToZoomIn == null) {
+                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+                            } else {
+                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(locationToZoomIn, 18));
+//                                options.position(locationToZoomIn).title(Utils.locationToNameMapping.get(locationToZoomIn));
+                            }
+//
+//                            googleMap.addMarker(options);
+                            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                return;
+                            }
+                            googleMap.setMyLocationEnabled(true);
+                            googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-                             if (locationToZoomIn == null)
-                             {
-                                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
-                             }
-                             else
-                             {
-                                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(locationToZoomIn, 18));
-                                 options.position(locationToZoomIn).title(Utils.locationToNameMapping.get(locationToZoomIn));
-                             }
-
-                             googleMap.addMarker(options);
-                         }
-                     });
-                 }
+                        }
+                    });
+                }
             }
         });
     }
 
 
     private void askPermissions() {
-        if (!hasPermissions(PERMISSIONS))
-        {
+        if (!hasPermissions(PERMISSIONS)) {
             multiplePermissionActivityResultLauncher.launch(PERMISSIONS);
         }
     }

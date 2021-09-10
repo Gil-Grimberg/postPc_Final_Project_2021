@@ -3,8 +3,11 @@ package com.example.centralbark_PostPc_2021;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -60,8 +63,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String title = notification.getTitle();
         String body = notification.getBody();
         String channelId = "central_app_notifications";
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        Intent resultIntent = new Intent();
+        Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
+        resultIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        resultIntent.setAction(Intent.ACTION_MAIN);
+        resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 getApplicationContext(),
                 0,
@@ -72,14 +78,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 getApplicationContext(),
                 channelId
         );
-        builder.setSmallIcon(R.mipmap.ic_launcher);  //  TODO: define our logo here
+        builder.setSmallIcon(R.drawable.app_icon);  //  TODO: define our logo here
+        builder.setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.app_icon));
         builder.setContentTitle(title);
         builder.setDefaults(NotificationCompat.DEFAULT_ALL);
         builder.setContentText(body);
         builder.setContentIntent(pendingIntent);
-        builder.setAutoCancel(false);
+        builder.setAutoCancel(true);
         builder.setPriority(NotificationCompat.PRIORITY_MAX);
+        builder.setOngoing(true);
 //        builder.setSound();  TODO: define here the sound that we want
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (notificationManager != null && notificationManager.getNotificationChannel(channelId) == null) {
                 NotificationChannel notificationChannel = new NotificationChannel(
@@ -91,7 +103,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificationManager.createNotificationChannel(notificationChannel);
             }
         }
-        startForeground(Utils.NOTIFICATION_SERVICE_ID, builder.build());
+//        startForeground(Utils.NOTIFICATION_SERVICE_ID, builder.build());
+        notificationManager.notify(Utils.NOTIFICATION_SERVICE_ID, builder.build());
 
     }
 
