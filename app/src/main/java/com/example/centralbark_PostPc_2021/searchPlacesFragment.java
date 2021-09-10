@@ -45,7 +45,7 @@ public class searchPlacesFragment extends Fragment {
         placesRecycler = view.findViewById(R.id.recyclerView_SearchPlaces);
 
         adapter = new adapterSearchPlaces(getContext(), Utils.locationToNameMapping);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManagerWrapper(getContext());
         placesRecycler.setLayoutManager(linearLayoutManager);
         placesRecycler.setAdapter(adapter);
 
@@ -77,13 +77,13 @@ public class searchPlacesFragment extends Fragment {
                         }
                     }
                     adapter = new adapterSearchPlaces(getContext(), filteredMap);
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManagerWrapper(getContext());
                     placesRecycler.setLayoutManager(linearLayoutManager);
                     placesRecycler.setAdapter(adapter);
                 }
                 else{
                     adapter = new adapterSearchPlaces(getContext(), Utils.locationToNameMapping);
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManagerWrapper(getContext());
                     placesRecycler.setLayoutManager(linearLayoutManager);
                     placesRecycler.setAdapter(adapter);
                 }
