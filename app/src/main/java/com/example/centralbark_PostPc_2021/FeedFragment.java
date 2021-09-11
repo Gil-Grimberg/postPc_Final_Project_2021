@@ -46,6 +46,7 @@ import java.util.concurrent.TimeUnit;
 public class FeedFragment extends Fragment {
     private DataManager dataManager;
     private TextView notificationCounter;
+    private View redNotificationCircle;
     private ImageView notificationButton;
     private ImageView addPostButton;
     private RecyclerView recyclerViewPosts; // todo: recycler on menu bar
@@ -98,6 +99,9 @@ public class FeedFragment extends Fragment {
         this.recyclerViewPosts = view.findViewById(R.id.post_recyclerview_feed_screen);
         this.addPostButton = view.findViewById(R.id.add_post_button_feed_screen);
         this.notificationCounter = view.findViewById(R.id.notification_counter);
+        this.redNotificationCircle = view.findViewById(R.id.red_circle_feed_screen);
+
+        this.redNotificationCircle.setVisibility(View.GONE); // don't show the notification circle unless there is a notification
 
         // query relevant posts:
         Query query = this.dataManager.db.collection("Posts")
@@ -271,6 +275,7 @@ public class FeedFragment extends Fragment {
                             if (numberOfNotifications > 0)
                             {
                                 notificationCounter.setText(String.valueOf(numberOfNotifications));
+                                redNotificationCircle.setVisibility(View.VISIBLE); // todo:check if works and maybe disappear
                             }
                         }
                     }
