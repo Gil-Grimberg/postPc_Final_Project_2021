@@ -8,14 +8,24 @@
     tools:context=".aboutSettingFragment">
 
 
-    <TextView
+<!--    <TextView-->
+<!--        android:id="@+id/central_bark_logo_about_settings_screen"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Central Bark"-->
+<!--        android:fontFamily="casual"-->
+<!--        android:textSize="30sp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+    <ImageView
         android:id="@+id/central_bark_logo_about_settings_screen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Central Bark"
-        android:fontFamily="casual"
-        android:textSize="30sp"
-        android:layout_marginTop="10dp"
+        android:layout_width="210dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="18dp"
+        android:src="@drawable/central_bark_title_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

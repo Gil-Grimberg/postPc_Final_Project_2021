@@ -201,7 +201,7 @@ public class matchAFriendFragment extends Fragment {
 
         String name = user.getUsername();
         String about = user.getSelfSummary();
-        String myDetails = age + "\u2022" + city + "\u2022" + breed;
+        String myDetails = age + " \u2022 " + city + " \u2022 " + breed;
         myDetailsDots.setText(myDetails);
         myName.setText(name);
         aboutMe.setText(about);
