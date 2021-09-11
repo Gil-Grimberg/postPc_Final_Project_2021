@@ -25,13 +25,16 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class accountSettingFragment extends Fragment {
     private DataManager dataManager;
@@ -172,36 +175,76 @@ public class accountSettingFragment extends Fragment {
                     {
                         Toast.makeText(getContext(), "Error: birthday format is MM/DD/YYYY", Toast.LENGTH_LONG).show();
                     }
+
                     else{
-                        myUser.setUsername(userName.getText().toString());
-                        myUser.setBirthday(birthday.getText().toString());
-                        myUser.setBreed(breed.getText().toString());
-                        myUser.setCity(livesIn.getText().toString());
-                        myUser.setSelfSummary(selfSummery.getText().toString());
-                        if (!picturePath.equals("") && !picturePath.equals("not changed"))
-                        {
-                            String remoteImgName = "profile_photos/" + myUser.getId()+"."+fileType;
-                            StorageReference storageReference = dataManager.storage.getReference();
-                            StorageReference imgRef = storageReference.child(remoteImgName);
-                            UploadTask uploadTask = imgRef.putFile(Uri.fromFile(new File(picturePath)));
-                            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        if (!email.getText().toString().equals("")){
+                            ArrayList<User> users = new ArrayList<>();
+                            Task<QuerySnapshot> result = dataManager.db.collection("Users").get();
+                            result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                 @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    myUser.setProfilePhoto(remoteImgName);
-                                }
-                            })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(Exception e) {
-                                        myUser.setProfilePhoto("default");
+                                public void onSuccess(QuerySnapshot documentSnapshots) {
+                                    boolean is_mail_unique = true;
+                                    if (!documentSnapshots.isEmpty()) {
+                                        users.addAll(documentSnapshots.toObjects(User.class));
+                                        for (User user : users) {
+                                            if (!user.getId().equals(myUser.getId())) {
+                                                if (user.getMail().equals(email.getText().toString())) {
+                                                    is_mail_unique = false;
+                                                    break;
+                                                }
+                                            }
+                                        }
                                     }
-                                });
+                                    if (!is_mail_unique) {
+                                        Toast.makeText(getContext(), "The mail you chose is already in use!", Toast.LENGTH_LONG).show();
+                                    }
+                                    else{
+                                        if (!picturePath.equals("") && !picturePath.equals("not changed"))
+                                        {
+                                            String remoteImgName = "profile_photos/" + myUser.getId()+"."+fileType;
+                                            StorageReference storageReference = dataManager.storage.getReference();
+                                            StorageReference imgRef = storageReference.child(remoteImgName);
+                                            UploadTask uploadTask = imgRef.putFile(Uri.fromFile(new File(picturePath)));
+                                            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                    myUser.setProfilePhoto(remoteImgName);
+
+
+                                                }
+                                            })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(Exception e) {
+                                                            myUser.setProfilePhoto("default");
+
+                                                        }
+                                                    });
+                                        }
+                                        myUser.setMail(email.getText().toString());
+                                        myUser.setUsername(userName.getText().toString());
+                                        myUser.setBirthday(birthday.getText().toString());
+                                        myUser.setBreed(breed.getText().toString());
+                                        myUser.setCity(livesIn.getText().toString());
+                                        myUser.setSelfSummary(selfSummery.getText().toString());
+
+                                        dataManager.updateSpWithUsername(myUser.getUsername());
+                                        dataManager.addToUsers(myUser);
+                                        Toast.makeText(getContext(), "Data updated successfully", Toast.LENGTH_LONG).show();
+                                        Utils.moveBetweenFragments(R.id.the_screen, new settingsFragment(), getActivity(), "settings");
+
+                                    }
+                                }
+                            });
                         }
-//                        dataManager.updateSpForSignIn(myUser.getId(),myUser.getMail(), myUser.getPassword());
-                        dataManager.updateSpWithUsername(myUser.getUsername());
-                        dataManager.addToUsers(myUser);
-                        Toast.makeText(getContext(), "Data updated successfully", Toast.LENGTH_LONG).show();
-                        Utils.moveBetweenFragments(R.id.the_screen, new settingsFragment(), getActivity(), "settings");
+                        else{
+                            Toast.makeText(getContext(), "Error: Email cannot be empty", Toast.LENGTH_LONG).show();
+
+                        }
+
+
+//                      dataManager.updateSpForSignIn(myUser.getId(),myUser.getMail(), myUser.getPassword());
+
                     }
                 });
             }
