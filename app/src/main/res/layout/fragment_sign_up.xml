@@ -97,6 +97,7 @@
         android:ems="10"
         android:fontFamily="casual"
         android:textSize="12sp"
+        android:hint="Password must contain 8 chars"
         android:layout_marginTop="4dp"
         android:inputType="textPassword"
         app:layout_constraintStart_toEndOf="@+id/password_title_sign_up_screen"

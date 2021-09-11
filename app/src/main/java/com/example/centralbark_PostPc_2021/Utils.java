@@ -62,20 +62,20 @@ public class Utils {
 
     public static String parseBreed(String breedAsString)
     {
-        if (breeds.contains(breedAsString.toLowerCase()))
+        if (breedAsString.equals(""))
         {
-            return breedAsString.toLowerCase();
+            return "mixed";
         }
-        return "mixed";
+        return breedAsString;
     }
 
     public static String parseCity(String cityAsString)
     {
-        if (cities.contains(cityAsString.toLowerCase()))
+        if (cityAsString.equals(""))
         {
-            return cityAsString.toLowerCase();
+            return "street dog";
         }
-        return "street dog";
+        else return cityAsString;
     }
 
     public static void moveBetweenFragments(int fragmentContainerViewId, Fragment fragment, FragmentActivity fragmentActivity, String fragmentTag)
