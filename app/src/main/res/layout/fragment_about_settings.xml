@@ -31,14 +31,26 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="373dp"
-        android:layout_height="414dp"
+        android:id="@+id/about_text"
+        android:layout_width="match_parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Welcome to the Central Bark application, a place for dog owners.\nThe idea for this application came from our deep love for dogs.\nOur vision was to create a meeting platform where dog owners can coordinate sessions where their dogs can play together in dog parks.\nWe are Gil, Yonatan, Shir and Lilach students in HUJI Post PC course - hoping you find it useful and fun."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/central_bark_logo_about_settings_screen" />
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/imageView"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:src="@drawable/app_logo_circle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/about_text" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
