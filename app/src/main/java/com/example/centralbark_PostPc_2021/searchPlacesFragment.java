@@ -31,9 +31,11 @@ public class searchPlacesFragment extends Fragment {
     Button searchPlacesButton;
     EditText searchPlacesEditText;
     adapterSearchPlaces adapter;
+    MenuFragment menuFragment;
 
-    public searchPlacesFragment() {
+    public searchPlacesFragment(MenuFragment menuFragment) {
         super(R.layout.fragment_search_places);
+        this.menuFragment = menuFragment;
     }
 
 
@@ -44,13 +46,13 @@ public class searchPlacesFragment extends Fragment {
         searchPlacesEditText = view.findViewById(R.id.searchPlaces_EditText);
         placesRecycler = view.findViewById(R.id.recyclerView_SearchPlaces);
 
-        adapter = new adapterSearchPlaces(getContext(), Utils.locationToNameMapping);
+        adapter = new adapterSearchPlaces(getContext(), Utils.locationToNameMapping,this.menuFragment);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManagerWrapper(getContext());
         placesRecycler.setLayoutManager(linearLayoutManager);
         placesRecycler.setAdapter(adapter);
 
         searchAccountsButton.setOnClickListener(v -> {
-            Utils.moveBetweenFragments(R.id.the_screen, new searchAccountFragment(), getActivity(), "search_accounts");
+            Utils.moveBetweenFragments(R.id.the_screen, new searchAccountFragment(this.menuFragment), getActivity(), "search_accounts");
         });
 
         searchPlacesEditText.addTextChangedListener(new TextWatcher() {
@@ -76,13 +78,13 @@ public class searchPlacesFragment extends Fragment {
                             filteredMap.put(location, parkName);
                         }
                     }
-                    adapter = new adapterSearchPlaces(getContext(), filteredMap);
+                    adapter = new adapterSearchPlaces(getContext(), filteredMap,menuFragment);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManagerWrapper(getContext());
                     placesRecycler.setLayoutManager(linearLayoutManager);
                     placesRecycler.setAdapter(adapter);
                 }
                 else{
-                    adapter = new adapterSearchPlaces(getContext(), Utils.locationToNameMapping);
+                    adapter = new adapterSearchPlaces(getContext(), Utils.locationToNameMapping,menuFragment);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManagerWrapper(getContext());
                     placesRecycler.setLayoutManager(linearLayoutManager);
                     placesRecycler.setAdapter(adapter);
