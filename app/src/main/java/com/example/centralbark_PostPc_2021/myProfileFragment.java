@@ -1,6 +1,7 @@
 package com.example.centralbark_PostPc_2021;
 
 import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -37,6 +38,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class myProfileFragment extends Fragment {
@@ -62,6 +64,7 @@ public class myProfileFragment extends Fragment {
         if(dataManager ==null){
             this.dataManager = CentralBarkApp.getInstance().getDataManager();
         }
+
         this.curUserId = curUserId;
     }
 
@@ -70,7 +73,7 @@ public class myProfileFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         // Inflate the layout for this fragment
         super.onViewCreated(view, savedInstanceState);
-
+        requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         this.profileIm = view.findViewById(R.id.profile_image_profile_screen);
         this.userName = view.findViewById(R.id.user_name_textview_profile_screen);
         this.city = view.findViewById(R.id.lives_in_profile_screen);

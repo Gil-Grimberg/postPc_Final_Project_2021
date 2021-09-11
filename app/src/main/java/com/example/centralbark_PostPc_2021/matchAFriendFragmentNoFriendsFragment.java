@@ -1,5 +1,6 @@
 package com.example.centralbark_PostPc_2021;
 
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -40,14 +41,13 @@ public class matchAFriendFragmentNoFriendsFragment extends Fragment {
         if (appInstance == null) {
             appInstance = CentralBarkApp.getInstance();
         }
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         String myId = appInstance.getDataManager().getMyId();
 
