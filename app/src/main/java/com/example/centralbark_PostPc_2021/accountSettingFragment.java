@@ -187,9 +187,11 @@ public class accountSettingFragment extends Fragment {
                                     if (!documentSnapshots.isEmpty()) {
                                         users.addAll(documentSnapshots.toObjects(User.class));
                                         for (User user : users) {
-                                            if (user.getMail().equals(email.getText().toString())) {
-                                                is_mail_unique = false;
-                                                break;
+                                            if (!user.getId().equals(myUser.getId())) {
+                                                if (user.getMail().equals(email.getText().toString())) {
+                                                    is_mail_unique = false;
+                                                    break;
+                                                }
                                             }
                                         }
                                     }
