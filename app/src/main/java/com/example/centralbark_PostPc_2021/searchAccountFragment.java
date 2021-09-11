@@ -178,7 +178,7 @@ public class searchAccountFragment extends Fragment {
             }
         });
 
-        this.accountsRecycler.setLayoutManager(new LinearLayoutManager(this.getContext(),RecyclerView.VERTICAL,false));
+        this.accountsRecycler.setLayoutManager(new LinearLayoutManagerWrapper(this.getContext(),RecyclerView.VERTICAL,false));
         this.accountsRecycler.setAdapter(accountsAdapter);
         this.searchPlacesButton.setOnClickListener(v->{
             Utils.moveBetweenFragments(R.id.the_screen, new searchPlacesFragment(), getActivity(), "search_places");

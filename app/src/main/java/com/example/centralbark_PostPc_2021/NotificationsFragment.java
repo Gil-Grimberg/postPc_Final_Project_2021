@@ -153,7 +153,7 @@ public class NotificationsFragment extends Fragment {
 
         };
 
-        this.recyclerViewNotifications.setLayoutManager(new LinearLayoutManager(this.getContext(), RecyclerView.VERTICAL, false));
+        this.recyclerViewNotifications.setLayoutManager(new LinearLayoutManagerWrapper(this.getContext(), RecyclerView.VERTICAL, false));
         this.recyclerViewNotifications.setAdapter(notificationsAdapter);
 
 

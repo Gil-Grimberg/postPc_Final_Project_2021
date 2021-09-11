@@ -26,15 +26,15 @@
         android:layout_width="63dp"
         android:layout_height="25dp"
         android:layout_marginTop="8dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/my_button"
         android:fontFamily="casual"
         android:text="@string/confirm"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.456" />
+        app:layout_constraintVertical_bias="0.912" />
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/profilePhoto_ImageView_one_notification_screen"
@@ -53,11 +53,12 @@
         android:id="@+id/notification_message"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:fontFamily="casual"
         android:layout_marginStart="5dp"
+        android:fontFamily="casual"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/profilePhoto_ImageView_one_notification_screen"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.544" />
 
     <TextView
         android:id="@+id/notification_time"

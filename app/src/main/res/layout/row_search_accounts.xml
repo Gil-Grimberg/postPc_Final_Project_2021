@@ -15,7 +15,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginLeft="20dp"
-        app:layout_constraintLeft_toRightOf="@+id/profilePhoto_ImageView"
+        app:layout_constraintStart_toEndOf="@+id/profilePhoto_ImageView"
+        app:layout_constraintEnd_toStartOf="@+id/makeFriend_Button"
 
         />
 
@@ -29,7 +30,7 @@
         android:background="@drawable/my_button"
         android:fontFamily="casual"
         android:textSize="10sp"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
