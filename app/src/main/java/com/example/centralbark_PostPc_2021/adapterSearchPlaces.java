@@ -1,6 +1,7 @@
 package com.example.centralbark_PostPc_2021;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +25,12 @@ public class adapterSearchPlaces extends RecyclerView.Adapter<adapterSearchPlace
     Map<LatLng, String> parks;
     ArrayList<LatLng> locations = new ArrayList<>();
     ArrayList<String> parksNames = new ArrayList<>();
+    MenuFragment menuFragment;
 
-
-    public adapterSearchPlaces(Context context,  Map<LatLng, String> parksList){
+    public adapterSearchPlaces(Context context,  Map<LatLng, String> parksList, MenuFragment menuFragment){
         this.context = context;
         this.parks = parksList;
+        this.menuFragment = menuFragment;
             for (LatLng location: parks.keySet()){
             String name = parks.get(location);
             locations.add(location);
@@ -50,7 +52,9 @@ public class adapterSearchPlaces extends RecyclerView.Adapter<adapterSearchPlace
         holder.dogParkName.setText(parksNames.get(position));
         holder.goNowButton.setOnClickListener(v->{
             Utils.moveBetweenFragments(R.id.the_screen, new MapsFragment(locations.get(position)), (FragmentActivity) context, "maps_fragment");
-            // todo: if works, change the size of map icon in menu bar
+            Bundle result = new Bundle();
+            result.putString("bundleKey", "result");
+            menuFragment.getParentFragmentManager().setFragmentResult("requestKey", result);
         });
     }
 
