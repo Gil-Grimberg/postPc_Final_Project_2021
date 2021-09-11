@@ -2,8 +2,11 @@ package com.example.centralbark_PostPc_2021;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -13,7 +16,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +28,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.StorageReference;
@@ -99,7 +105,20 @@ public class signUpFragment extends Fragment {
                                 String picturePath = cursor.getString(columnIndex);
                                 String[] picturePathSplit = picturePath.split("\\.");
                                 fileType = picturePathSplit[picturePathSplit.length-1];
-                                imageName.setText("Uploaded successfully");
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                    if (Environment.isExternalStorageManager())
+                                    {
+                                        imageName.setText("Uploaded successfully");
+                                        imageName.setTextColor(Color.GREEN);
+                                    }
+                                    else
+                                    {
+                                        imageName.setText("Permission denied");
+                                        imageName.setTextColor(Color.RED);
+                                    }
+                                }
+
+
                                 imagePath = picturePath;
                                 cursor.close();
                             }
@@ -112,6 +131,21 @@ public class signUpFragment extends Fragment {
         uploadPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    if (!Environment.isExternalStorageManager())
+                    {
+                        try {
+                            Uri uri = Uri.parse("package:" + BuildConfig.APPLICATION_ID);
+                            Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri);
+                            startActivity(intent);
+                        } catch (Exception ex){
+                            Intent intent = new Intent();
+                            intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                            startActivity(intent);
+                        }
+                    }
+                }
+
                 Intent uploadIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 upLoadLauncher.launch(uploadIntent);
             }
