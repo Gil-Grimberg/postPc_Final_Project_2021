@@ -41,14 +41,15 @@ public class searchAccountFragment extends Fragment {
     private DataManager dataManager;
     private FirestoreRecyclerAdapter accountsAdapter;
     private RecyclerView accountsRecycler;
-
+    private MenuFragment menuFragment;
     Button searchAccountsButton;
     Button searchPlacesButton;
     EditText searchAccountsEditText;
 
 
-    public searchAccountFragment() {
+    public searchAccountFragment(MenuFragment menuFragment) {
         super(R.layout.fragment_search_account);
+        this.menuFragment = menuFragment;
         if (dataManager == null){
             dataManager = CentralBarkApp.getInstance().getDataManager();
         }
@@ -181,7 +182,7 @@ public class searchAccountFragment extends Fragment {
         this.accountsRecycler.setLayoutManager(new LinearLayoutManagerWrapper(this.getContext(),RecyclerView.VERTICAL,false));
         this.accountsRecycler.setAdapter(accountsAdapter);
         this.searchPlacesButton.setOnClickListener(v->{
-            Utils.moveBetweenFragments(R.id.the_screen, new searchPlacesFragment(), getActivity(), "search_places");
+            Utils.moveBetweenFragments(R.id.the_screen, new searchPlacesFragment(this.menuFragment), getActivity(), "search_places");
         });
 
     }
