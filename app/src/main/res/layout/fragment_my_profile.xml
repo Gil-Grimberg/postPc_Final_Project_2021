@@ -73,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:layout_marginStart="2dp"
+        android:layout_marginStart="4dp"
         android:fontFamily="casual"
         android:textSize="13sp"
         android:text="city"
@@ -100,7 +100,7 @@
         android:fontFamily="casual"
         android:textSize="13sp"
         android:layout_marginTop="4dp"
-        android:layout_marginStart="2dp"
+        android:layout_marginStart="4dp"
         android:textColor="@color/black"
         android:text="Mixed"
         app:layout_constraintStart_toEndOf="@+id/breed_title_profile_screen"
@@ -125,7 +125,7 @@
         android:fontFamily="casual"
         android:textSize="13sp"
         android:layout_marginTop="4dp"
-        android:layout_marginStart="2dp"
+        android:layout_marginStart="4dp"
         android:textColor="@color/black"
         android:text="1"
         app:layout_constraintStart_toEndOf="@+id/age_title_profile_screen"
@@ -138,10 +138,11 @@
         android:layout_marginTop="5dp"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
+        android:background="@color/gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/age_profile_screen"
-        android:background="@color/gray"/>
+        />
 
     <TextView
         android:id="@+id/friends_list_title_profile_screen"

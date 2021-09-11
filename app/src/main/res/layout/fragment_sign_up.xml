@@ -5,16 +5,16 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/logo_background"
     tools:context=".signUpFragment">
 
 
-    <TextView
+    <ImageView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:fontFamily="casual"
-        android:text="Central Bark"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/central_bark_title_not_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -23,7 +23,7 @@
     <ImageView
         android:id="@+id/upload_im_add_post_screen"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="320dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_add_post_screen"
@@ -32,7 +32,7 @@
     <ImageView
         android:id="@+id/caption_background_add_post_screen"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="150dp"
         android:clickable="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +45,7 @@
         android:layout_height="135dp"
         android:hint="@string/write_cation_here"
         android:paddingStart="12dp"
-        android:paddingEnd="20dp"
+        android:paddingEnd="12dp"
         android:clickable="true"
         android:textSize="15sp"
         android:layout_alignParentTop="true"
@@ -68,6 +68,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/caption_text_add_post_screen" />
+        app:layout_constraintTop_toBottomOf="@+id/caption_background_add_post_screen" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
