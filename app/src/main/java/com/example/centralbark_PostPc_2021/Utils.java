@@ -12,8 +12,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.common.collect.ImmutableMap;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -189,6 +192,25 @@ public class Utils {
         long diff = java.lang.Math.abs(seconds1 - seconds2);
 
         return (float) diff / 60;
+    }
+    public static void removeFriendsFromPosts(String curUserId, DataManager dataManager){
+        // Access Posts in order to update the friends list
+        Task<QuerySnapshot> result = dataManager.db.collection("Posts").get();
+        result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot documentSnapshots) {
+                if (!documentSnapshots.isEmpty()) {
+                    for(Post post: documentSnapshots.toObjects(Post.class)){
+                        if(post.getUserId().equals(curUserId)){ // if it is his post, delete me from friend list
+                            dataManager.addStringFromPostArrayField(post.getPostId(),"friendList",dataManager.getMyId());
+                        }
+                        else if(post.getUserId().equals(dataManager.getMyId())){ // if it is my post, delete him from my friend list
+                            dataManager.addStringFromPostArrayField(post.getPostId(),"friendList",curUserId);
+                        }
+                    }
+                }
+            }
+        });
     }
 
 

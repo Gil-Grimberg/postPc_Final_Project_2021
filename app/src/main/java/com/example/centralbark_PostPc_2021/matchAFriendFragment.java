@@ -294,6 +294,7 @@ public class matchAFriendFragment extends Fragment {
                             {
                                 appInstance.getDataManager().addStringToUserArrayField(appInstance.getDataManager().getMyId(), "friendList", matchUserId);
                                 appInstance.getDataManager().addStringToUserArrayField(matchUserId, "friendList", appInstance.getDataManager().getMyId());
+                                Utils.removeFriendsFromPosts(matchUserId, appInstance.getDataManager());
                                 appInstance.getDataManager().sendNotification(NotificationTypes.TINDER_MATCH_NOTIFICATION, matchUserId, null, null);
                                 appInstance.getDataManager().sendMatchNotificationToMyself(matchUserId, matchUser.getProfilePhoto(), matchUser.getUsername());
                                 appInstance.getDataManager().sendFirebaseNotification("It's a Match!",

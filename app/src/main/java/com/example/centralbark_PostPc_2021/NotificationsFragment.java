@@ -117,7 +117,7 @@ public class NotificationsFragment extends Fragment {
                             model.getUserId(), null, null);
                     dataManager.addStringToUserArrayField(dataManager.getMyId(), "friendList", model.getUserId());
                     dataManager.addStringToUserArrayField(model.getUserId(), "friendList", dataManager.getMyId());
-                    removeFriendsFromPosts(model.getUserId());
+                    Utils.removeFriendsFromPosts(model.getUserId(), dataManager);
                     dataManager.removeStringFromUserArrayField(dataManager.getMyId(), "pendingRequests", model.getUserId());
                     holder.confirmButton.setVisibility(View.INVISIBLE);
                     String newText =  String.format("%s is now your friend!", model.getUserName());
@@ -210,23 +210,5 @@ public class NotificationsFragment extends Fragment {
 
     }
 
-    protected void removeFriendsFromPosts(String curUserId){
-        // Access Posts in order to update the friends list
-        Task<QuerySnapshot> result = dataManager.db.collection("Posts").get();
-        result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot documentSnapshots) {
-                if (!documentSnapshots.isEmpty()) {
-                    for(Post post: documentSnapshots.toObjects(Post.class)){
-                        if(post.getUserId().equals(curUserId)){ // if it is his post, delete me from friend list
-                            dataManager.addStringFromPostArrayField(post.getPostId(),"friendList",dataManager.getMyId());
-                        }
-                        else if(post.getUserId().equals(dataManager.getMyId())){ // if it is my post, delete him from my friend list
-                            dataManager.addStringFromPostArrayField(post.getPostId(),"friendList",curUserId);
-                        }
-                    }
-                }
-            }
-        });
-    }
+
 }

@@ -5,9 +5,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.media.AudioAttributes;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -79,30 +82,37 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 channelId
         );
         builder.setSmallIcon(R.drawable.app_icon);  //  TODO: define our logo here
-        builder.setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.app_icon));
+//        builder.setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.app_icon));
         builder.setContentTitle(title);
-        builder.setDefaults(NotificationCompat.DEFAULT_ALL);
+//        builder.setDefaults(NotificationCompat.DEFAULT_ALL);
         builder.setContentText(body);
         builder.setContentIntent(pendingIntent);
         builder.setAutoCancel(true);
         builder.setPriority(NotificationCompat.PRIORITY_MAX);
         builder.setOngoing(true);
-//        builder.setSound();  TODO: define here the sound that we want
+        Uri soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+ getApplicationContext().getPackageName() + "/" + R.raw.notification_sound);
+        builder.setSound(soundUri);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (notificationManager != null && notificationManager.getNotificationChannel(channelId) == null) {
+            if (notificationManager != null) {
                 NotificationChannel notificationChannel = new NotificationChannel(
                         channelId,
                         "Central Bark",
                         NotificationManager.IMPORTANCE_HIGH
                 );
                 notificationChannel.setDescription("This channel is used by central bark app");
+                AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                        .build();
+                notificationChannel.setSound(soundUri, audioAttributes);
                 notificationManager.createNotificationChannel(notificationChannel);
             }
         }
+
 //        startForeground(Utils.NOTIFICATION_SERVICE_ID, builder.build());
         notificationManager.notify(Utils.NOTIFICATION_SERVICE_ID, builder.build());
 

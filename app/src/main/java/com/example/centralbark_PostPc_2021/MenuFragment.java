@@ -3,9 +3,11 @@ package com.example.centralbark_PostPc_2021;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 
 import android.view.View;
 import android.widget.ImageButton;
@@ -40,7 +42,7 @@ public class MenuFragment extends Fragment {
         searchButton.setOnClickListener(v->{
             ArrayList<ImageView> makeSmaller = addToMakeSmallerLst(tinderButton, homeButton, locationButton, profileButton);
             sizeUpIcon(searchButton, makeSmaller);
-            Utils.moveBetweenFragments(R.id.the_screen, new searchAccountFragment(), getActivity(), "search_accounts");
+            Utils.moveBetweenFragments(R.id.the_screen, new searchAccountFragment(this), getActivity(), "search_accounts");
         });
         tinderButton.setOnClickListener(v->{
             ArrayList<ImageView> makeSmaller =addToMakeSmallerLst(searchButton, homeButton, locationButton, profileButton);
@@ -62,6 +64,14 @@ public class MenuFragment extends Fragment {
             sizeUpIcon(profileButton, makeSmaller);
             myUserId = CentralBarkApp.getInstance().getDataManager().getMyId();
             Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(myUserId), getActivity(), "myProfile");
+        });
+        getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                // Do something with the result
+                ArrayList<ImageView> makeSmaller =addToMakeSmallerLst(tinderButton, homeButton, profileButton, searchButton);
+                sizeUpIcon(locationButton, makeSmaller);
+            }
         });
     }
     private ArrayList<ImageView> addToMakeSmallerLst(ImageView makeSmaller1, ImageView makeSmaller2, ImageView makeSmaller3, ImageView makeSmaller4){
