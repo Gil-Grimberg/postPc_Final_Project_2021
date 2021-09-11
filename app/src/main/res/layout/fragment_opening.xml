@@ -5,31 +5,9 @@
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/logo_background"
     tools:context=".openingFragment">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
-        android:fontFamily="casual"
-        android:text="Central Bark"
-        android:textSize="40sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/opening_imageView"
-        android:layout_width="382dp"
-        android:layout_height="266dp"
-        android:background="@android:color/black"
-        android:backgroundTint="#B8BACA"
-        android:src="@drawable/opening_photo"
-        android:layout_marginTop="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/sign_in_button_opening_screen"
@@ -45,7 +23,7 @@
         android:paddingEnd="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/opening_imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/app_logo" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/sign_un_button_opening_screen"
@@ -62,5 +40,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_in_button_opening_screen" />
+
+    <ImageView
+        android:id="@+id/app_logo"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginBottom="70dp"
+        android:src="@drawable/app_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/bone"
+        android:layout_width="90dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/bone2"
+        android:layout_marginTop="260dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/app_logo" />
+
+    <ImageView
+        android:id="@+id/bowl"
+        android:layout_width="115dp"
+        android:layout_height="115dp"
+        android:layout_marginStart="15dp"
+        android:src="@drawable/bowl_good"
+        android:layout_marginBottom="220dp"
+        app:layout_constraintBottom_toBottomOf="@+id/app_logo"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

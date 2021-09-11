@@ -50,6 +50,7 @@ public class adapterSearchPlaces extends RecyclerView.Adapter<adapterSearchPlace
         holder.dogParkName.setText(parksNames.get(position));
         holder.goNowButton.setOnClickListener(v->{
             Utils.moveBetweenFragments(R.id.the_screen, new MapsFragment(locations.get(position)), (FragmentActivity) context, "maps_fragment");
+            // todo: if works, change the size of map icon in menu bar
         });
     }
 
