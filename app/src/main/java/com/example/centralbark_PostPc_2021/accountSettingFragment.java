@@ -209,15 +209,14 @@ public class accountSettingFragment extends Fragment {
                                                 @Override
                                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                                     myUser.setProfilePhoto(remoteImgName);
-
-
+                                                    dataManager.addToUsers(myUser);
                                                 }
                                             })
                                                     .addOnFailureListener(new OnFailureListener() {
                                                         @Override
                                                         public void onFailure(Exception e) {
                                                             myUser.setProfilePhoto("default");
-
+                                                            dataManager.addToUsers(myUser);
                                                         }
                                                     });
                                         }
