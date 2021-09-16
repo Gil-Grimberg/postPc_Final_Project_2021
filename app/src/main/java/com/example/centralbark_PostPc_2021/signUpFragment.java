@@ -196,7 +196,7 @@ public class signUpFragment extends Fragment {
 
                     else if (!Utils.isBirthdayValid(birthday.getText().toString()))
                     {
-                        Toast.makeText(getContext(), "Error: birthday format is MM/DD/YYYY", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Error: birthday format is DD/MM/YYYY", Toast.LENGTH_LONG).show();
                     }
                     else
                     {

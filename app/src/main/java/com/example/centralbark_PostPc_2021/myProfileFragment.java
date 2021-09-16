@@ -163,7 +163,7 @@ public class myProfileFragment extends Fragment {
                             dataManager.addToUsers(curUser);
                             makeFriendButton.setText("Pending request");
                             dataManager.sendNotification(NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION, curUser.getId(), null,null);
-                            dataManager.db.collection("Users").document(dataManager.getMyId()).get()
+                            dataManager.db.collection("Users").document(curUser.getId()).get()
                                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                         @Override
                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -173,7 +173,7 @@ public class myProfileFragment extends Fragment {
                                                 if (myUser != null && myUser.getDeviceToken() != null)
                                                 {
                                                     dataManager.sendFirebaseNotification("You Have A New Friend Request!",
-                                                            String.format("%s wants yo be your friend", dataManager.getUsernameFromSp()),
+                                                            String.format("You got a friend request from %s!", dataManager.getUsernameFromSp()),
                                                             myUser.getDeviceToken());
                                                 }
                                             }

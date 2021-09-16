@@ -8,7 +8,10 @@ import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Icon;
 import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
@@ -81,15 +84,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 getApplicationContext(),
                 channelId
         );
-//        builder.setSmallIcon(R.drawable.app_icon);  //  TODO: define our logo here
-//        builder.setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.app_icon));
+
+        builder.setSmallIcon(R.drawable.app_logo_no_background);  //  TODO: define our logo here
+        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.app_logo_no_background));
         builder.setContentTitle(title);
 //        builder.setDefaults(NotificationCompat.DEFAULT_ALL);
         builder.setContentText(body);
         builder.setContentIntent(pendingIntent);
-        builder.setAutoCancel(true);
-        builder.setPriority(NotificationCompat.PRIORITY_MAX);
-        builder.setOngoing(true);
+        builder.setOngoing(false);
+//        builder.setPriority(NotificationCompat.PRIORITY_MAX);
         Uri soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+ getApplicationContext().getPackageName() + "/" + R.raw.notification_sound);
         builder.setSound(soundUri);
 
@@ -101,7 +104,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 NotificationChannel notificationChannel = new NotificationChannel(
                         channelId,
                         "Central Bark",
-                        NotificationManager.IMPORTANCE_HIGH
+                        NotificationManager.IMPORTANCE_DEFAULT
                 );
                 notificationChannel.setDescription("This channel is used by central bark app");
                 AudioAttributes audioAttributes = new AudioAttributes.Builder()
@@ -113,8 +116,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
         }
 
-//        startForeground(Utils.NOTIFICATION_SERVICE_ID, builder.build());
-        notificationManager.notify(Utils.NOTIFICATION_SERVICE_ID, builder.build());
+        startForeground(Utils.NOTIFICATION_SERVICE_ID, builder.build());
+//        notificationManager.notify(Utils.NOTIFICATION_SERVICE_ID, builder.build());
 
     }
 

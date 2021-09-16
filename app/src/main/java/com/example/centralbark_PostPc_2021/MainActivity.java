@@ -4,8 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentContainerView;
 
 import android.app.ActivityManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioAttributes;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -41,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        defineNotificationChannel();
         setContentView(R.layout.activity_main);
         FragmentContainerView screen = findViewById(R.id.the_screen);
         FragmentContainerView menu = findViewById(R.id.menu_bar);
@@ -135,6 +141,30 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         CentralBarkApp.activityPaused();
+    }
+
+    void defineNotificationChannel()
+    {
+        Uri soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+ getApplicationContext().getPackageName() + "/" + R.raw.notification_sound);
+        String channelId = "central_app_notifications";
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (notificationManager != null) {
+                NotificationChannel notificationChannel = new NotificationChannel(
+                        channelId,
+                        "Central Bark",
+                        NotificationManager.IMPORTANCE_DEFAULT
+                );
+                notificationChannel.setDescription("This channel is used by central bark app");
+                AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                        .build();
+                notificationChannel.setSound(soundUri, audioAttributes);
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+        }
     }
 
 }
