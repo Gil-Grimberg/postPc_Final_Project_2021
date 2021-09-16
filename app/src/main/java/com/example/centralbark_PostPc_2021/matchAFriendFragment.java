@@ -298,7 +298,7 @@ public class matchAFriendFragment extends Fragment {
                                 appInstance.getDataManager().sendNotification(NotificationTypes.TINDER_MATCH_NOTIFICATION, matchUserId, null, null);
                                 appInstance.getDataManager().sendMatchNotificationToMyself(matchUserId, matchUser.getProfilePhoto(), matchUser.getUsername());
                                 appInstance.getDataManager().sendFirebaseNotification("It's a Match!",
-                                        String.format("you have a match with %s", appInstance.getDataManager().getUsernameFromSp()),
+                                        String.format("you have a match with %s!", appInstance.getDataManager().getUsernameFromSp()),
                                         matchUser.getDeviceToken());
                                 appInstance.getDataManager().db.collection("Users").document(myId).get()
                                         .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -310,7 +310,7 @@ public class matchAFriendFragment extends Fragment {
                                                     if (myUser != null && myUser.getDeviceToken() != null)
                                                     {
                                                         appInstance.getDataManager().sendFirebaseNotification("It's a Match!",
-                                                                String.format("you have a match with %s", matchUser.getUsername()),
+                                                                String.format("you have a match with %s!", matchUser.getUsername()),
                                                                 myUser.getDeviceToken());
                                                     }
                                                 }
