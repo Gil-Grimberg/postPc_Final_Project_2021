@@ -34,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class NotificationsFragment extends Fragment {
 
@@ -78,11 +79,6 @@ public class NotificationsFragment extends Fragment {
                 if (!model.isHasUserSeen())
                 {
                     model.setHasUserSeen(true);
-                }
-                if (model.getNotificationType() == NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION &&
-                    !model.getNotificationContent().contains("is now your friend!"))
-                {
-                    holder.confirmButton.setVisibility(View.VISIBLE);
                 }
 
                 String profileImgPath = model.getProfilePhoto();
@@ -145,10 +141,20 @@ public class NotificationsFragment extends Fragment {
                             Toast.makeText(getContext(), "DB Error", Toast.LENGTH_SHORT).show();
                         }
                     });
+                    updateNotificationsIfNecessary(dataManager.getMyId(), newText, model.getUserName());
                 });
 
                 holder.notificationTime.setText(getTimeDifference(Timestamp.now(), model.getTimestamp()));
                 dataManager.updateNotification(dataManager.getMyId(), model.getId(), model);
+                if (model.getNotificationType() == NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION &&
+                        !model.getNotificationContent().contains("is now your friend!"))
+                {
+                    holder.confirmButton.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    holder.confirmButton.setVisibility(View.INVISIBLE);
+                }
             }
 
         };
@@ -157,6 +163,33 @@ public class NotificationsFragment extends Fragment {
         this.recyclerViewNotifications.setAdapter(notificationsAdapter);
 
 
+    }
+
+    public void updateNotificationsIfNecessary(String userId, String newText, String requestedUserName)
+    {
+        dataManager.db.collection("Users").document(userId).collection("Notifications").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot documentSnapshots) {
+                        if (documentSnapshots != null)
+                        {
+                            ArrayList<Notification> notifications = (ArrayList<Notification>) documentSnapshots.toObjects(Notification.class);
+                            for (Notification notification: notifications)
+                            {
+                                if (notification.getNotificationType() == NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION && notification.getNotificationContent().contains(requestedUserName))
+                                {
+                                    notification.setNotificationContent(newText);
+                                    dataManager.updateNotification(dataManager.getMyId(), notification.getId(), notification);
+                                }
+                            }
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Toast.makeText(getContext(), "DB Error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

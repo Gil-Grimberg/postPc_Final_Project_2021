@@ -51,7 +51,8 @@
         <activity
             android:name="com.example.centralbark_PostPc_2021.MainActivity"
             android:label="@string/app_name"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

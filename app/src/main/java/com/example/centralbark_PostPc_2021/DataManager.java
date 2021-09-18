@@ -315,11 +315,7 @@ public class DataManager {
 
                             else if (notificationType == NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION)
                             {
-                                if (!notification.isHasUserSeen())
-                                {
                                     removeNotification(friendId, notification.getId());
-                                    return;
-                                }
                             }
 
                         }
