@@ -121,39 +121,39 @@ public class searchAccountFragment extends Fragment {
                 });
 
 
-                if(model.isFriend(dataManager.getMyId())){
-                    holder.sendFriendRequest.setVisibility(View.GONE);
-                }
-
-                //if(model.isPendingRequest(dataManager.getMyId()) || dataManager.getMyId().equals(model.getId())){
-                if(model.isPendingRequest(dataManager.getMyId())){
-                    holder.sendFriendRequest.setText("Pending request");
-                }
-
-                else
-                {
-                    holder.sendFriendRequest.setText("Make Friend");
-                }
-
-                // make friend was pressed
-                holder.sendFriendRequest.setOnClickListener(v->{
-                    if(model.isPendingRequest(dataManager.getMyId())){
-                        model.removeFromPendingList(dataManager.getMyId());
-                        dataManager.addToUsers(model);
-                        holder.sendFriendRequest.setText("Make Friend");
-                        dataManager.deleteNotification(NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION, model.getId(), null);
-                    }
-                    else{
-                        model.addToPendingList(dataManager.getMyId());
-                        dataManager.addToUsers(model);
-                        holder.sendFriendRequest.setText("Pending request");
-                        dataManager.sendNotification(NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION, model.getId(), null,null);
-                        dataManager.sendFirebaseNotification("You Have A New Friend Request!",
-                                String.format("%s wants to be your friend!", dataManager.getUsernameFromSp()),
-                                model.getDeviceToken());
-
-                    }
-                });
+//                if(model.isFriend(dataManager.getMyId())){
+//                    holder.sendFriendRequest.setVisibility(View.GONE);
+//                }
+//
+//                //if(model.isPendingRequest(dataManager.getMyId()) || dataManager.getMyId().equals(model.getId())){
+//                if(model.isPendingRequest(dataManager.getMyId())){
+//                    holder.sendFriendRequest.setText("Pending request");
+//                }
+//
+//                else
+//                {
+//                    holder.sendFriendRequest.setText("Make Friend");
+//                }
+//
+//                // make friend was pressed
+//                holder.sendFriendRequest.setOnClickListener(v->{
+//                    if(model.isPendingRequest(dataManager.getMyId())){
+//                        model.removeFromPendingList(dataManager.getMyId());
+//                        dataManager.addToUsers(model);
+//                        holder.sendFriendRequest.setText("Make Friend");
+//                        dataManager.deleteNotification(NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION, model.getId(), null);
+//                    }
+//                    else{
+//                        model.addToPendingList(dataManager.getMyId());
+//                        dataManager.addToUsers(model);
+//                        holder.sendFriendRequest.setText("Pending request");
+//                        dataManager.sendNotification(NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION, model.getId(), null,null);
+//                        dataManager.sendFirebaseNotification("You Have A New Friend Request!",
+//                                String.format("%s wants to be your friend!", dataManager.getUsernameFromSp()),
+//                                model.getDeviceToken());
+//
+//                    }
+//                });
             }
         };
 
@@ -208,14 +208,12 @@ public class searchAccountFragment extends Fragment {
 
     private class RecyclerAccountsHolder extends RecyclerView.ViewHolder{
         private TextView userName;
-        private Button sendFriendRequest;
         private ImageView profilePhoto;
 
         @SuppressLint("CutPasteId")
         public RecyclerAccountsHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             this.userName = itemView.findViewById(R.id.userName_TextView);
-            this.sendFriendRequest = itemView.findViewById(R.id.makeFriend_Button);
             this.profilePhoto = itemView.findViewById(R.id.profilePhoto_ImageView);
         }
     }
