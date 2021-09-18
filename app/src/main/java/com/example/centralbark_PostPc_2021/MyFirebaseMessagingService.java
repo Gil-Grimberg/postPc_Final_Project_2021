@@ -85,7 +85,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 channelId
         );
 
-        builder.setSmallIcon(R.drawable.app_logo_no_background);  //  TODO: define our logo here
+        builder.setSmallIcon(R.drawable.app_logo_no_background);
         builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.app_logo_no_background));
         builder.setContentTitle(title);
 //        builder.setDefaults(NotificationCompat.DEFAULT_ALL);
