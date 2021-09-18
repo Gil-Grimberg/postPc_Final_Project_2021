@@ -8,6 +8,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Build;
 import android.os.IBinder;
@@ -168,7 +169,8 @@ public class LocationService extends Service {
                 getApplicationContext(),
                 channelId
         );
-        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setSmallIcon(R.drawable.app_logo_no_background);
+        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.app_logo_no_background));
         builder.setContentTitle("Location_Service");
         builder.setDefaults(NotificationCompat.DEFAULT_ALL);
         builder.setSound(null);
@@ -176,7 +178,6 @@ public class LocationService extends Service {
         builder.setContentIntent(pendingIntent);
         builder.setAutoCancel(false);
         builder.setPriority(NotificationCompat.PRIORITY_MIN);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (notificationManager != null && notificationManager.getNotificationChannel(channelId) == null) {
                 NotificationChannel notificationChannel = new NotificationChannel(

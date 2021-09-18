@@ -68,7 +68,10 @@ public class DataManager {
 
     public void updateDeviceToken(String token)
     {
-        this.db.collection("Users").document(getMyId()).update("deviceToken", token);
+        if (getMyId() != null)
+        {
+            this.db.collection("Users").document(getMyId()).update("deviceToken", token);
+        }
     }
 
     private String initializeFromSp() {
@@ -404,6 +407,8 @@ public class DataManager {
                             .put("notification", new JSONObject().put("title", title)
                                     .put("body", body)
                                     .put("click_action", "OPEN_ACTIVITY_1")
+                                    .put("sound", "notification_sound.mp3")
+                                    .put("android_channel_id", "central_app_notifications")
                             )
                             .put("to", token)
                             .toString();

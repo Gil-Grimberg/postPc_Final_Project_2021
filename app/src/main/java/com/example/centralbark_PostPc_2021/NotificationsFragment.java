@@ -124,7 +124,7 @@ public class NotificationsFragment extends Fragment {
                     holder.notificationContent.setText(newText);
                     model.setNotificationContent(newText);
                     dataManager.updateNotification(dataManager.getMyId(), model.getId(), model);
-                    dataManager.db.collection("Users").document(model.getId()).get()
+                    dataManager.db.collection("Users").document(model.getUserId()).get()
                             .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                 @Override
                                 public void onSuccess(DocumentSnapshot documentSnapshot) {

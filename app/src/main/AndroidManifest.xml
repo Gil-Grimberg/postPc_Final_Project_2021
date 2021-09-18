@@ -24,6 +24,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CentralBark"
         android:requestLegacyExternalStorage="true"
+        android:largeHeap="true"
+        android:hardwareAccelerated="false"
         android:preserveLegacyExternalStorage="true">
 
         <!--
@@ -44,7 +46,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/app_icon" />
+            android:resource="@drawable/app_logo_no_background" />
 
         <activity
             android:name="com.example.centralbark_PostPc_2021.MainActivity"
