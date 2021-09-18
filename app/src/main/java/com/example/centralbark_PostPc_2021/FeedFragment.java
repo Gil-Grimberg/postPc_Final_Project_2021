@@ -132,6 +132,14 @@ public class FeedFragment extends Fragment {
                 // set the content of the post
                 holder.postContent.setText(model.getContent());
 
+                // set the delete button
+                if(!model.getUserId().equals(dataManager.getMyId())){
+                    holder.deletePost.setVisibility(View.GONE);
+                }
+                holder.deletePost.setOnClickListener(v -> {
+                    dataManager.deletePost(model);
+                });
+
                 // set the number of likes, and update
                 holder.numOfLikes.setText(String.valueOf(model.getNumOfLikes()));
                 holder.likeButton.setOnClickListener(v -> {
@@ -165,8 +173,6 @@ public class FeedFragment extends Fragment {
                                     Toast.makeText(getContext(), "DB Error", Toast.LENGTH_SHORT).show();
                                 }
                             });
-
-
                         }
                     }
                     holder.numOfLikes.setText(String.valueOf(model.getNumOfLikes()));
@@ -203,25 +209,31 @@ public class FeedFragment extends Fragment {
                 }
 
                 // set users profile image
-                StorageReference profileImag = dataManager.storage.getReference().child(model.getUserProfilePhoto());
-                File localProfileImFile = null;
-                try {
-                    localProfileImFile = File.createTempFile("profile_photos", "g");
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(!model.getUserProfilePhoto().equals("default")){
+                    StorageReference profileImag = dataManager.storage.getReference().child(model.getUserProfilePhoto());
+                    File localProfileImFile = null;
+                    try {
+                        localProfileImFile = File.createTempFile("profile_photos", "g");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    File profileImFile = localProfileImFile;
+                    profileImag.getFile(profileImFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            holder.profileIm.setImageURI(Uri.fromFile(profileImFile));
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // keeps the default profile image
+                        }
+                    });
                 }
-                File profileImFile = localProfileImFile;
-                profileImag.getFile(profileImFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        holder.profileIm.setImageURI(Uri.fromFile(profileImFile));
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // keeps the default profile image
-                    }
-                });
+                else{
+                    holder.profileIm.setImageResource(R.drawable.default_dog);
+                }
+
 
                 // set users post image
                 StorageReference postImag = dataManager.storage.getReference().child(model.getUploadedPhoto());
@@ -292,41 +304,6 @@ public class FeedFragment extends Fragment {
         });
     }
 
-//    public List<Post> findAllRelevantPosts(){
-//        // todo: dont use this- copy every time that want the posts
-//        List<Post> allRelevantPosts = new ArrayList<>();
-//        String myId = this.dataManager.getMyId();
-//        this.dataManager.db.collection("Users").document(myId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-////            @Override
-////            public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                User myUser = documentSnapshot.toObject(User.class);
-//                ArrayList<String> allRelevantIds = new ArrayList<>();
-//                allRelevantIds.add(myId);
-//                allRelevantIds.addAll(myUser.getFriendList());
-//
-//                Task<QuerySnapshot> result = dataManager.db.collection("Posts").get();
-//                result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                        List<DocumentSnapshot> allPosts = queryDocumentSnapshots.getDocuments();
-//                        for (DocumentSnapshot post : allPosts) {
-//                            Post curPost = post.toObject(Post.class);
-//                            if (allRelevantIds.contains(curPost.getUserId())) {
-//                                allRelevantPosts.add(curPost);
-//                            }
-//                        }
-//                    }
-//                });
-//            }
-//        });
-//        Collections.sort(allRelevantPosts, new SortPosts());
-//
-//        if(allRelevantPosts.size()>this.maxPostsInFeed){
-//            return allRelevantPosts.subList(0,this.maxPostsInFeed);
-//        }
-//        return allRelevantPosts;
-//    }
-
     private void askPermissions() {
         if (!hasPermissions(Utils.PERMISSIONS))
         {
@@ -372,6 +349,7 @@ public class FeedFragment extends Fragment {
         private TextView postTime;
         private TextView userNameContent;
         private TextView postContent;
+        private ImageView deletePost;
 
         public RecyclerPostsHolder(View view) {
             super(view);
@@ -383,6 +361,7 @@ public class FeedFragment extends Fragment {
             this.postTime = view.findViewById(R.id.post_time_textview_one_post_feed_screen);
             this.userNameContent = view.findViewById(R.id.user_name_content_textview_one_post_feed_screen);
             this.postContent = view.findViewById(R.id.content_textview_one_post_feed_screen);
+            this.deletePost = view.findViewById(R.id.delete_post_icon_one_post_feed_screen);
         }
     }
 }

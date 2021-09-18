@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,8 @@ public class searchAccountFragment extends Fragment {
         this.searchPlacesButton = view.findViewById(R.id.searchPlaces_Button);
         this.searchAccountsEditText = view.findViewById(R.id.searchAccounts_EditText);
 
-        Query query = this.dataManager.db.collection("Users").whereNotIn("id", Collections.singletonList(dataManager.getMyId()));
+        Query query = this.dataManager.db.collection("Users")
+                .whereNotIn("id", Collections.singletonList(dataManager.getMyId()));
 
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(query, User.class).build();
@@ -85,25 +87,30 @@ public class searchAccountFragment extends Fragment {
                 holder.userName.setText(model.getUsername());
 
                 // set users profile image
-                StorageReference profileImg = dataManager.storage.getReference().child(model.getProfilePhoto());
-                File localProfileImFile = null;
-                try {
-                    localProfileImFile = File.createTempFile("profile_photos", "g");
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(!model.getProfilePhoto().equals("default")){
+                    StorageReference profileImg = dataManager.storage.getReference().child(model.getProfilePhoto());
+                    File localProfileImFile = null;
+                    try {
+                        localProfileImFile = File.createTempFile("profile_photos", "g");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    File profileImFile = localProfileImFile;
+                    profileImg.getFile(profileImFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            holder.profilePhoto.setImageURI(Uri.fromFile(profileImFile));
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // keeps the default profile image
+                        }
+                    });
                 }
-                File profileImFile = localProfileImFile;
-                profileImg.getFile(profileImFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        holder.profilePhoto.setImageURI(Uri.fromFile(profileImFile));
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // keeps the default profile image
-                    }
-                });
+            else{
+                    holder.profilePhoto.setImageResource(R.drawable.default_dog);
+                }
 
                 holder.profilePhoto.setOnClickListener(v->{
                     Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(model.getId()), getActivity(), "myProfile");

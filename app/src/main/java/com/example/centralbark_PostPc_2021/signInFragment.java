@@ -99,8 +99,8 @@ public class signInFragment extends Fragment {
                                         {
                                             appInstance.getDataManager().updateDeviceToken(token);
                                         }
-                                        Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
                                         Utils.moveBetweenFragments(R.id.menu_bar, new MenuFragment(), getActivity(), "menu");
+                                        Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                             @Override
