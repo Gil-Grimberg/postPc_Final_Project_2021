@@ -184,6 +184,10 @@ public class DataManager {
         this.db.collection("Posts").document(post.getPostId()).set(post);
     }
 
+    public void deletePost(Post post) {
+        this.db.collection("Posts").document(post.getPostId()).delete();
+    }
+
     public void addToUsers(User user) {
         // update or add user to firebase
         this.db.collection("Users").document(user.getId()).set(user);
