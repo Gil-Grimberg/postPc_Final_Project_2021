@@ -14,9 +14,7 @@
         android:layout_marginBottom="57dp"
         tools:background="@color/black"
         />
-<!--    todo: remeber that it's belong to the bellow two fragments-->
-<!--    class="com.example.centralbark_PostPc_2021.openingFragment"-->
-<!--    class="com.example.centralbark_PostPc_2021.MenuFragment"-->
+
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/the_screen"

@@ -36,7 +36,7 @@ public class Post implements Serializable {
         this.content = content;
         this.numOfLikes = numOfLikes;
         this.usersLikesLst = new ArrayList<>();
-        this.timePosted = timePosted; // todo: when creating new post need to send SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.timePosted = timePosted;
         this.friendList = new ArrayList<>();
         this.friendList.addAll(friendList);
         this.friendList.add(this.userId);
@@ -124,7 +124,7 @@ public class Post implements Serializable {
     }
 
     public boolean isUserLikesPost(String userId){
-        if(this.usersLikesLst==null){ // todo: maybe delete, created this patch because i created a post throw the db
+        if(this.usersLikesLst==null){
             this.usersLikesLst = new ArrayList<>();
             return false;
         }

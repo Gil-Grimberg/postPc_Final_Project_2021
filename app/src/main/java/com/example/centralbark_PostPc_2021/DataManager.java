@@ -53,9 +53,6 @@ public class DataManager {
         this.context = context;
         this.sp = context.getSharedPreferences("local_db", Context.MODE_PRIVATE);
         this.userId = initializeFromSp();
-//        if (this.userId.equals("noId")) {
-//            //todo: go to main sign Up/In screen!
-//        }
         app = FirebaseApp.initializeApp(this.context);
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
