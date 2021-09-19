@@ -42,7 +42,7 @@ public class LocationService extends Service {
     private LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
-            super.onLocationResult(locationResult);//todo: shir added 3 cond
+            super.onLocationResult(locationResult);
             if (locationResult != null && locationResult.getLastLocation() != null && CentralBarkApp.getInstance().getDataManager().getMyId()!=null) {
                 Location myLocation = locationResult.getLastLocation();
 

@@ -227,7 +227,7 @@ public class myProfileFragment extends Fragment {
 
                 // query relevant friends:
                 Query friendsQuery = dataManager.db.collection("Users")
-                        .whereArrayContains("friendList",curUser.getId()); //todo: maybe limit
+                        .whereArrayContains("friendList",curUser.getId());
 
                 FirestoreRecyclerOptions<User> friendsOptions = new FirestoreRecyclerOptions.Builder<User>()
                         .setQuery(friendsQuery,User.class).build();
@@ -286,7 +286,7 @@ public class myProfileFragment extends Fragment {
                 // query relevant posts- only my posts:
                 Query postsQuery = dataManager.db.collection("Posts")
                         .whereEqualTo("userId", curUser.getId())
-                        .orderBy("timePosted", Query.Direction.DESCENDING); //todo: maybe limit
+                        .orderBy("timePosted", Query.Direction.DESCENDING);
 
                 FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
                         .setQuery(postsQuery,Post.class).build();

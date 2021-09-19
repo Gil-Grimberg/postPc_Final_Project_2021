@@ -287,7 +287,7 @@ public class FeedFragment extends Fragment {
                             if (numberOfNotifications > 0)
                             {
                                 notificationCounter.setText(String.valueOf(numberOfNotifications));
-                                redNotificationCircle.setVisibility(View.VISIBLE); // todo:check if works and maybe disappear
+                                redNotificationCircle.setVisibility(View.VISIBLE);
                             }
                         }
                     }
