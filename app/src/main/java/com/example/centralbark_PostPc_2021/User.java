@@ -1,10 +1,8 @@
 package com.example.centralbark_PostPc_2021;
 
 import android.location.Location;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.GeoPoint;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -33,7 +31,6 @@ public class User implements Serializable {
     {
         this.id = UUID.randomUUID().toString();
         this.friendList = new ArrayList<>();
-//        this.friendList.add(this.id); // friends with himself
         this.likedUsers = new ArrayList<>();
         this.dislikeUsers = new ArrayList<>();
         this.pendingRequests = new ArrayList<>();
@@ -46,7 +43,6 @@ public class User implements Serializable {
     {
         this.id = UUID.randomUUID().toString();
         this.friendList = new ArrayList<>();
-//        this.friendList.add(this.id); // friends with himself
         this.likedUsers = new ArrayList<>();
         this.dislikeUsers = new ArrayList<>();
         this.pendingRequests = new ArrayList<>();
@@ -206,19 +202,6 @@ public class User implements Serializable {
     }
 
     public ArrayList<String> getPendingRequests() { return pendingRequests; }
-
-    public Location getLocationAsLocation()
-    {
-        if (this.location == null)
-        {
-            return null;
-        }
-
-        Location userLocation = new Location("");
-        userLocation.setLatitude(this.getLocationAsGeoPoint().getLatitude());
-        userLocation.setLongitude(this.getLocationAsGeoPoint().getLongitude());
-        return userLocation;
-    }
 
     public LatLng getLocationAsLatLng()
     {
