@@ -58,16 +58,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     final LatLng[] DOG_PARKS =
             {
-                    new LatLng(31.781896, 35.20541), // Sacher park
+                    new LatLng(31.781896, 35.20541), // Sacher Park
                     new LatLng(31.772408, 35.190774), // Ramat Beit Hakerem Park
-                    new LatLng(37.4219983, -122.084) // test
+                    new LatLng(31.773485113624243, 35.21957354419318), // Sokolov Park
+                    new LatLng(31.762733966751608, 35.206619469755076), // San Simon Park
+                    new LatLng(31.757139379888653, 35.1673460059339), // Mexico Garden Park
+                    new LatLng(31.791138758045847, 35.19212324356424), // Zarchi Park
+                    new LatLng(31.756352613824877, 35.20847005180395), // Gonenim Park
             };
-
-    final String[] DOG_PARKS_NAMES =
-            {
-                    "Sacher park", "Ramat Beit Hakerem Park"
-            };
-
 
     ActivityResultContracts.RequestMultiplePermissions requestMultiplePermissionsContract;
     ActivityResultLauncher<String[]> multiplePermissionActivityResultLauncher;
@@ -209,15 +207,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                         @Override
                         public void onMapReady(GoogleMap googleMap) {
                             MarkerOptions options = new MarkerOptions().position(latLng);
-//
                             if (locationToZoomIn == null) {
                                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
                             } else {
                                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(locationToZoomIn, 18));
-//                                options.position(locationToZoomIn).title(Utils.locationToNameMapping.get(locationToZoomIn));
                             }
-//
-//                            googleMap.addMarker(options);
+
                             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                                 return;
                             }
