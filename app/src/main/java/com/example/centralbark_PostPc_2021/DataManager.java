@@ -2,51 +2,35 @@ package com.example.centralbark_PostPc_2021;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class DataManager {
 
     public final Context context;
     public SharedPreferences sp;
-    public FirebaseApp app; //
+    public FirebaseApp app;
     public FirebaseFirestore db;
     public FirebaseStorage storage;
-    private String separator = "7f802626-2d3c-4b94-8df3-a5bb13fc6ff9";
+    private final String separator = "7f802626-2d3c-4b94-8df3-a5bb13fc6ff9";
     private String userId;
 
     public DataManager(Context context) {
@@ -101,15 +85,8 @@ public class DataManager {
         return this.sp.getString("username", "");
     }
 
-    public void deleteUsernameFromSp() {
-        SharedPreferences.Editor editor = this.sp.edit();
-        editor.remove("username");
-        editor.apply();
-    }
-
-    public String[] getInfoForSignIn()
+    public String[] getInfoForSignIn(){
     // notice - if no info, returns null
-    {
         String mail = sp.getString("userMail", null);
         String password = sp.getString("userPassword", null);
         if (mail == null || password == null) {
@@ -118,7 +95,6 @@ public class DataManager {
                 mail,
                 password
         };
-
     }
 
     public void deleteSignInInfoFromSp() {
@@ -163,22 +139,6 @@ public class DataManager {
                 .set(notification);
     }
 
-
-    public String uploadImgToStorageAndGetImgPath(String localImgPath, String RemoteImageName) {
-        StorageReference storageReference = storage.getReference();
-        StorageReference imgRef = storageReference.child(RemoteImageName);
-        UploadTask uploadTask = imgRef.putFile(Uri.fromFile(new File(localImgPath)));
-        final String[] downloadUrl = new String[1];
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                downloadUrl[0] = taskSnapshot.getStorage().getDownloadUrl().toString();
-            }
-        });
-
-        return downloadUrl[0];
-    }
-
     public void addToPost(Post post) {
         // update or add post to firebase
         this.db.collection("Posts").document(post.getPostId()).set(post);
@@ -191,80 +151,6 @@ public class DataManager {
     public void addToUsers(User user) {
         // update or add user to firebase
         this.db.collection("Users").document(user.getId()).set(user);
-    }
-
-
-    public ArrayList<Post> getPostsById(String idToFindPostsFor) {
-        ArrayList<Post> myPosts = new ArrayList<>();
-        this.db.collection("Users").document(idToFindPostsFor).collection("myPosts").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                        Post obj = document.toObject(Post.class);
-                        myPosts.add(obj);
-                    }
-                }
-            }
-        });
-        return myPosts;
-    }
-
-    public User getUserById(String idToFind) {
-        User[] user = new User[1];
-        this.db.collection("Users").document(idToFind).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                user[0] = documentSnapshot.toObject(User.class);
-            }
-        });
-        return user[0];
-    }
-
-
-    /**
-     * @param post
-     * @return a string representing the post with $ as seperators
-     */
-    public String convertPostToString(Post post) {
-        return post.getUserId() + separator + post.getPostId() + separator + post.getUserName() + separator +
-                post.getFriendList() + post.getUsersLikesLst() + separator + post.getUploadedPhoto() + separator +
-                post.getContent() + separator + post.getNumOfLikes().toString() + separator + post.getTimePosted().toString();
-    }
-
-    /**
-     * @param user
-     * @return 4 strings in an array. the first one is for all fields that are not lists or sets
-     * the second is for friendsList, third for liked and fourth for dislike
-     */
-    public String[] convertUserToString(User user) {
-        String fields = user.getId() + separator + user.getUsername() + separator + user.getPassword() + separator + user.getBreed() + separator + user.getMail() + separator + user.getProfilePhoto() + separator + user.getBirthday().toString() + separator + user.getCity() + separator + user.getRememberMe().toString() + separator + user.getAllowNotifications().toString() + separator + user.getAllowLocation().toString() + separator + user.getSelfSummary();
-        String friendsListStr = friendsListToStr(user.getFriendList());
-        String likedUsersStr = likedAndDislikedUsersToStr(user.getLikedUsers());
-        String dislikeUsersStr = likedAndDislikedUsersToStr(user.getDislikeUsers());
-        return new String[]{fields, friendsListStr, likedUsersStr, dislikeUsersStr};
-    }
-
-    public String convertNotificationToString(Notification notification) {
-        return "";
-    }
-
-    private String friendsListToStr(ArrayList<String> friendsList) {
-        String res = "";
-        for (String user : friendsList) {
-            res += user + separator;
-        }
-        res = res.substring(0, res.length() - 2);
-        return res;
-    }
-
-    private String likedAndDislikedUsersToStr(ArrayList<String> users) {
-        String res = "";
-        for (String user : users) {
-            res += user + separator;
-        }
-        res = res.substring(0, res.length() - 2);
-        return res;
     }
 
     public String getMyId() {
@@ -292,42 +178,33 @@ public class DataManager {
     public void deleteNotification(int notificationType, String friendId, String postId) {
         ArrayList<Notification> friendNotifications = new ArrayList<>();
         Task<QuerySnapshot> result = this.db.collection("Users").document(friendId).collection("Notifications").get();
-        result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot documentSnapshots) {
-                if (documentSnapshots != null && !documentSnapshots.isEmpty())
+        result.addOnSuccessListener(documentSnapshots -> {
+            if (documentSnapshots != null && !documentSnapshots.isEmpty())
+            {
+                friendNotifications.addAll(documentSnapshots.toObjects(Notification.class));
+                for (Notification notification: friendNotifications)
                 {
-                    friendNotifications.addAll(documentSnapshots.toObjects(Notification.class));
-                    for (Notification notification: friendNotifications)
+                    if (notification.getNotificationType() == notificationType &&
+                            notification.getUserId().equals(getMyId()))
                     {
-                        if (notification.getNotificationType() == notificationType &&
-                                notification.getUserId().equals(getMyId()))
+                        if (notificationType == NotificationTypes.USER_LIKED_YOUR_POST_NOTIFICATION)
                         {
-                            if (notificationType == NotificationTypes.USER_LIKED_YOUR_POST_NOTIFICATION)
-                            {
-                                if (postId.equals(notification.getPostId()))
-                                    removeNotification(friendId, notification.getId());
-                                    return;
-                            }
-
-                            else if (notificationType == NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION)
-                            {
-                                    removeNotification(friendId, notification.getId());
-                            }
-
+                            if (postId.equals(notification.getPostId()))
+                                removeNotification(friendId, notification.getId());
+                                return;
                         }
+
+                        else if (notificationType == NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION)
+                        {
+                                removeNotification(friendId, notification.getId());
+                        }
+
                     }
                 }
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull @NotNull Exception e) {
-                Toast.makeText(app.getApplicationContext(),
-                        "Error: db error. Couldn't send Notification",
-                        Toast.LENGTH_LONG).show();
-
-            }
-        });
+        }).addOnFailureListener(e -> Toast.makeText(app.getApplicationContext(),
+                "Error: db error. Couldn't send Notification",
+                Toast.LENGTH_LONG).show());
 
     }
 
@@ -350,32 +227,24 @@ public class DataManager {
     {
         String notificationContent = Utils.getNotificationContent(notificationType, getUsernameFromSp(), park);
         this.db.collection("Users").document(this.getMyId()).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot != null)
-                        {
-                            User myUser = documentSnapshot.toObject(User.class);
-                            String profilePhoto = myUser.getProfilePhoto();
-                            Notification newNotification = new Notification(
-                                    CentralBarkApp.getInstance().getDataManager().getMyId(),
-                                    getUsernameFromSp(),
-                                    notificationType,
-                                    notificationContent,
-                                    Timestamp.now(),
-                                    postId,
-                                    profilePhoto);
-                            addNotification(friendId, newNotification);
-                        }
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot != null)
+                    {
+                        User myUser = documentSnapshot.toObject(User.class);
+                        String profilePhoto = myUser.getProfilePhoto();
+                        Notification newNotification = new Notification(
+                                CentralBarkApp.getInstance().getDataManager().getMyId(),
+                                getUsernameFromSp(),
+                                notificationType,
+                                notificationContent,
+                                Timestamp.now(),
+                                postId,
+                                profilePhoto);
+                        addNotification(friendId, newNotification);
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull @NotNull Exception e) {
-                Toast.makeText(app.getApplicationContext(),
+                }).addOnFailureListener(e -> Toast.makeText(app.getApplicationContext(),
                         "Error: db error. Couldn't send Notification",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
+                        Toast.LENGTH_LONG).show());
     }
 
     public void sendFirebaseNotification(String title, String body, String token)
@@ -384,50 +253,45 @@ public class DataManager {
         {
             return;
         }
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
+        Thread thread = new Thread(() -> {
+            try {
 
-                    URL url = new URL ("https://fcm.googleapis.com/fcm/send");
-                    HttpURLConnection con = (HttpURLConnection)url.openConnection();
-                    con.setRequestMethod("POST");
-                    con.setRequestProperty("Content-Type", "application/json; utf-8");
-                    con.setRequestProperty("Authorization", "key=AAAAbzd7iSg:APA91bGPO-iIepBp-Ke-sQXX2AOAABzsXiLEbCfpg84pY39INAZhOoljFNdG5fQU1jm4ztToPYmbXX01Rd28lqD5QCgDFJPxoT4g1o1iasqwnghm1BG5h7WKam2WtPO2D-B4l3TA5F-Z");
-                    con.setRequestProperty("Accept", "application/json");
-                    con.setDoOutput(true);
-                    String content = new JSONObject()
-                            .put("notification", new JSONObject().put("title", title)
-                                    .put("body", body)
-                                    .put("click_action", "OPEN_ACTIVITY_1")
-                                    .put("sound", "notification_sound.mp3")
-                                    .put("android_channel_id", "central_app_notifications")
-                            )
-                            .put("to", token)
-                            .toString();
+                URL url = new URL ("https://fcm.googleapis.com/fcm/send");
+                HttpURLConnection con = (HttpURLConnection)url.openConnection();
+                con.setRequestMethod("POST");
+                con.setRequestProperty("Content-Type", "application/json; utf-8");
+                con.setRequestProperty("Authorization", "key=AAAAbzd7iSg:APA91bGPO-iIepBp-Ke-sQXX2AOAABzsXiLEbCfpg84pY39INAZhOoljFNdG5fQU1jm4ztToPYmbXX01Rd28lqD5QCgDFJPxoT4g1o1iasqwnghm1BG5h7WKam2WtPO2D-B4l3TA5F-Z");
+                con.setRequestProperty("Accept", "application/json");
+                con.setDoOutput(true);
+                String content = new JSONObject()
+                        .put("notification", new JSONObject().put("title", title)
+                                .put("body", body)
+                                .put("click_action", "OPEN_ACTIVITY_1")
+                                .put("sound", "notification_sound.mp3")
+                                .put("android_channel_id", "central_app_notifications")
+                        )
+                        .put("to", token)
+                        .toString();
 
-                    try (OutputStream os = con.getOutputStream())
-                    {
-                        byte[] input = content.getBytes("utf-8");
-                        os.write(input, 0 ,input.length);
-                    }
-                    try(BufferedReader br = new BufferedReader(
-                            new InputStreamReader(con.getInputStream(), "utf-8")))
-                    {
-                        StringBuilder response = new StringBuilder();
-                        String responseLine = null;
-                        while ((responseLine = br.readLine()) != null)
-                        {
-                            response.append(responseLine.trim());
-                        }
-                        Log.d("RESPONSE", response.toString());
-                    }
-
-
+                try (OutputStream os = con.getOutputStream())
+                {
+                    byte[] input = content.getBytes(StandardCharsets.UTF_8);
+                    os.write(input, 0 ,input.length);
                 }
-                catch (IOException | JSONException e) {
-                    e.printStackTrace();
+                try(BufferedReader br = new BufferedReader(
+                        new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8)))
+                {
+                    StringBuilder response = new StringBuilder();
+                    String responseLine;
+                    while ((responseLine = br.readLine()) != null)
+                    {
+                        response.append(responseLine.trim());
+                    }
+                    Log.d("RESPONSE", response.toString());
                 }
+            }
+            catch (IOException | JSONException e) {
+                e.printStackTrace();
             }
         });
         thread.start();

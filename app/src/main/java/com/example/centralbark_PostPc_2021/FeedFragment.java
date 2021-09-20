@@ -1,9 +1,9 @@
 package com.example.centralbark_PostPc_2021;
 
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -11,9 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,20 +19,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageReference;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -63,7 +52,7 @@ public class FeedFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+    public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
         // handle back pressed
@@ -123,6 +112,7 @@ public class FeedFragment extends Fragment {
                 return new RecyclerPostsHolder(view);
             }
 
+            @SuppressLint("SetTextI18n")
             @Override
             protected void onBindViewHolder(@NonNull @NotNull RecyclerPostsHolder holder, int position, @NonNull @NotNull Post model) {
                 // set the user name
@@ -136,9 +126,8 @@ public class FeedFragment extends Fragment {
                 if(!model.getUserId().equals(dataManager.getMyId())){
                     holder.deletePost.setVisibility(View.GONE);
                 }
-                holder.deletePost.setOnClickListener(v -> {
-                    dataManager.deletePost(model);
-                });
+
+                holder.deletePost.setOnClickListener(v -> dataManager.deletePost(model));
 
                 // set the number of likes, and update
                 holder.numOfLikes.setText(String.valueOf(model.getNumOfLikes()));
@@ -153,26 +142,18 @@ public class FeedFragment extends Fragment {
                         {
                             dataManager.sendNotification(NotificationTypes.USER_LIKED_YOUR_POST_NOTIFICATION, model.getUserId(), model.getPostId(), "");
                             dataManager.db.collection("Users").document(model.getUserId()).get()
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                            if (documentSnapshot != null)
+                                    .addOnSuccessListener(documentSnapshot -> {
+                                        if (documentSnapshot != null)
+                                        {
+                                            User myFriend = documentSnapshot.toObject(User.class);
+                                            if (myFriend != null && myFriend.getDeviceToken() != null)
                                             {
-                                                User myFriend = documentSnapshot.toObject(User.class);
-                                                if (myFriend != null && myFriend.getDeviceToken() != null)
-                                                {
-                                                    dataManager.sendFirebaseNotification("Someone Liked Your Post!",
-                                                            String.format("%s likes your post", dataManager.getUsernameFromSp()),
-                                                            myFriend.getDeviceToken());
-                                                }
+                                                dataManager.sendFirebaseNotification("Someone Liked Your Post!",
+                                                        String.format("%s likes your post", dataManager.getUsernameFromSp()),
+                                                        myFriend.getDeviceToken());
                                             }
                                         }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull @NotNull Exception e) {
-                                    Toast.makeText(getContext(), "DB Error", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                                    }).addOnFailureListener(e -> Toast.makeText(getContext(), "DB Error", Toast.LENGTH_SHORT).show());
                         }
                     }
                     holder.numOfLikes.setText(String.valueOf(model.getNumOfLikes()));
@@ -184,6 +165,7 @@ public class FeedFragment extends Fragment {
                 try {
                     Date curTime = sdf.parse (curDateString);
                     Date postTime = model.parseStringToDate();
+                    assert curTime != null;
                     long diffInMilli = curTime.getTime() - postTime.getTime();
                     long diffInHours = TimeUnit.HOURS.convert(diffInMilli, TimeUnit.MILLISECONDS);
 
@@ -218,17 +200,10 @@ public class FeedFragment extends Fragment {
                         e.printStackTrace();
                     }
                     File profileImFile = localProfileImFile;
-                    profileImag.getFile(profileImFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            holder.profileIm.setImageURI(Uri.fromFile(profileImFile));
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // keeps the default profile image
-                        }
-                    });
+                    profileImag.getFile(profileImFile).addOnSuccessListener(taskSnapshot ->
+                            holder.profileIm.setImageURI(Uri.fromFile(profileImFile))).addOnFailureListener(exception -> {
+                                // keeps the default profile image
+                            });
                 }
                 else{
                     holder.profileIm.setImageResource(R.drawable.default_dog);
@@ -244,17 +219,8 @@ public class FeedFragment extends Fragment {
                     e.printStackTrace();
                 }
                 File finalLocalPostImFile = localPostImFile;
-                postImag.getFile(localPostImFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        holder.postIm.setImageURI(Uri.fromFile(finalLocalPostImFile));
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-
-                    }
-                });
+                postImag.getFile(localPostImFile).addOnSuccessListener(taskSnapshot ->
+                        holder.postIm.setImageURI(Uri.fromFile(finalLocalPostImFile))).addOnFailureListener(exception -> {});
 
                 holder.profileIm.setOnClickListener(v -> {
                     Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(model.getUserId()), getActivity(), "myProfile");
@@ -270,25 +236,22 @@ public class FeedFragment extends Fragment {
         this.recyclerViewPosts.setAdapter(postsAdapter);
 
         this.dataManager.db.collection("Users").document(dataManager.getMyId()).collection("Notifications").get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot documentSnapshots) {
-                        if (documentSnapshots != null && !documentSnapshots.isEmpty())
+                .addOnSuccessListener(documentSnapshots -> {
+                    if (documentSnapshots != null && !documentSnapshots.isEmpty())
+                    {
+                        int numberOfNotifications = 0;
+                        ArrayList<Notification> notificationList = new ArrayList<>(documentSnapshots.toObjects(Notification.class));
+                        for (Notification notification: notificationList)
                         {
-                            int numberOfNotifications = 0;
-                            ArrayList<Notification> notificationList = new ArrayList<>(documentSnapshots.toObjects(Notification.class));
-                            for (Notification notification: notificationList)
+                            if (!notification.isHasUserSeen())
                             {
-                                if (!notification.isHasUserSeen())
-                                {
-                                    numberOfNotifications++;
-                                }
+                                numberOfNotifications++;
                             }
-                            if (numberOfNotifications > 0)
-                            {
-                                notificationCounter.setText(String.valueOf(numberOfNotifications));
-                                redNotificationCircle.setVisibility(View.VISIBLE);
-                            }
+                        }
+                        if (numberOfNotifications > 0)
+                        {
+                            notificationCounter.setText(String.valueOf(numberOfNotifications));
+                            redNotificationCircle.setVisibility(View.VISIBLE);
                         }
                     }
                 });
