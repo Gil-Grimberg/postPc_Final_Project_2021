@@ -30,7 +30,6 @@ public class DataManager {
     public FirebaseApp app;
     public FirebaseFirestore db;
     public FirebaseStorage storage;
-    private final String separator = "7f802626-2d3c-4b94-8df3-a5bb13fc6ff9";
     private String userId;
 
     public DataManager(Context context) {

@@ -1,7 +1,6 @@
 package com.example.centralbark_PostPc_2021;
 
 import com.google.firebase.Timestamp;
-
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -98,7 +97,6 @@ public class Notification implements Serializable {
         return hasUserSeen;
     }
 
-
     public String getNotificationContent() {
         return notificationContent;
     }
@@ -114,6 +112,5 @@ public class Notification implements Serializable {
     public int getNotificationType() {
         return notificationType;
     }
-
 
 }

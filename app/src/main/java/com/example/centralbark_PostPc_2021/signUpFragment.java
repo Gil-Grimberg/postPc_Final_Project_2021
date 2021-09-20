@@ -1,21 +1,16 @@
 package com.example.centralbark_PostPc_2021;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -24,18 +19,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.util.ArrayList;
 
@@ -68,7 +56,7 @@ public class signUpFragment extends Fragment {
 
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         userName = view.findViewById(R.id.user_name_edit_text_sign_up_screen);
         password =  view.findViewById(R.id.password_edit_text_sign_up);
@@ -82,177 +70,161 @@ public class signUpFragment extends Fragment {
         signUpButton = view.findViewById(R.id.sign_me_up_button);
         imageName = view.findViewById(R.id.image_name);
 
-        ActivityResultLauncher<Intent> upLoadLauncher = registerForActivityResult(
+        @SuppressLint("SetTextI18n") ActivityResultLauncher<Intent> upLoadLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if(result.getResultCode()== Activity.RESULT_OK){
-                            Intent data = result.getData();
-                            Uri selectedImage = data.getData();
-                            if (selectedImage == null)
-                            {
-                                Toast.makeText(getContext(), "Error uploading image", Toast.LENGTH_LONG).show();
-                            }
-                            else
-                            {
-                                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                result -> {
+                    if(result.getResultCode()== Activity.RESULT_OK){
+                        Intent data = result.getData();
+                        Uri selectedImage = data.getData();
+                        if (selectedImage == null)
+                        {
+                            Toast.makeText(getContext(), "Error uploading image", Toast.LENGTH_LONG).show();
+                        }
+                        else
+                        {
+                            String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
-                                Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-                                        filePathColumn, null, null, null);
-                                cursor.moveToFirst();
-                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                                String picturePath = cursor.getString(columnIndex);
-                                String[] picturePathSplit = picturePath.split("\\.");
-                                fileType = picturePathSplit[picturePathSplit.length-1];
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                                    if (Environment.isExternalStorageManager())
-                                    {
-                                        imageName.setText("Uploaded successfully");
-                                        imageName.setTextColor(Color.GREEN);
-                                    }
-                                    else
-                                    {
-                                        imageName.setText("Permission denied");
-                                        imageName.setTextColor(Color.RED);
-                                    }
+                            Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                                    filePathColumn, null, null, null);
+                            cursor.moveToFirst();
+                            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                            String picturePath = cursor.getString(columnIndex);
+                            String[] picturePathSplit = picturePath.split("\\.");
+                            fileType = picturePathSplit[picturePathSplit.length-1];
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                if (Environment.isExternalStorageManager())
+                                {
+                                    imageName.setText("Uploaded successfully");
+                                    imageName.setTextColor(Color.GREEN);
                                 }
-
-
-                                imagePath = picturePath;
-                                cursor.close();
+                                else
+                                {
+                                    imageName.setText("Permission denied");
+                                    imageName.setTextColor(Color.RED);
+                                }
                             }
+                            imagePath = picturePath;
+                            cursor.close();
                         }
                     }
                 }
         );
 
 
-        uploadPhotoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    if (!Environment.isExternalStorageManager())
-                    {
-                        try {
-                            Uri uri = Uri.parse("package:" + BuildConfig.APPLICATION_ID);
-                            Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri);
-                            startActivity(intent);
-                        } catch (Exception ex){
-                            Intent intent = new Intent();
-                            intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-                            startActivity(intent);
-                        }
+        uploadPhotoButton.setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (!Environment.isExternalStorageManager())
+                {
+                    try {
+                        Uri uri = Uri.parse("package:" + BuildConfig.APPLICATION_ID);
+                        Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri);
+                        startActivity(intent);
+                    } catch (Exception ex){
+                        Intent intent = new Intent();
+                        intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                        startActivity(intent);
                     }
                 }
-
-                Intent uploadIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                upLoadLauncher.launch(uploadIntent);
             }
+
+            Intent uploadIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            upLoadLauncher.launch(uploadIntent);
         });
 
         signUpButton.setOnClickListener(v ->
         {
             ArrayList<User> users = new ArrayList<>();
             Task<QuerySnapshot> result = this.appInstance.getDataManager().db.collection("Users").get();
-            result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                @Override
-                public void onSuccess(QuerySnapshot documentSnapshots) {
-                    boolean is_mail_unique = true;
-                    if (!documentSnapshots.isEmpty())
+            result.addOnSuccessListener(documentSnapshots -> {
+                boolean is_mail_unique = true;
+                if (!documentSnapshots.isEmpty())
+                {
+                    users.addAll(documentSnapshots.toObjects(User.class));
+                    for (User user: users)
                     {
-                        users.addAll(documentSnapshots.toObjects(User.class));
-                        for (User user: users)
+                        if (user.getMail().equals(mail.getText().toString()))
                         {
-                            if (user.getMail().equals(mail.getText().toString()))
-                            {
-                                is_mail_unique = false;
-                                break;
-                            }
+                            is_mail_unique = false;
+                            break;
                         }
                     }
-                    if (!is_mail_unique)
-                    {
-                        Toast.makeText(getContext(), "The mail you chose is already in use!", Toast.LENGTH_LONG).show();
-                    }
-                    else if (password.getText().toString().equals(""))
-                    {
-                        Toast.makeText(getContext(), "Password cannot be empty!", Toast.LENGTH_LONG).show();
-                    }
+                }
+                if (!is_mail_unique)
+                {
+                    Toast.makeText(getContext(), "The mail you chose is already in use!", Toast.LENGTH_LONG).show();
+                }
+                else if (password.getText().toString().equals(""))
+                {
+                    Toast.makeText(getContext(), "Password cannot be empty!", Toast.LENGTH_LONG).show();
+                }
 
-                    else if (password.getText().toString().length() != 8)
-                    {
-                        Toast.makeText(getContext(), "Password must contain 8 chars!", Toast.LENGTH_LONG).show();
-                    }
-                    else if(!password.getText().toString().equals(repeatPassword.getText().toString()))
-                    {
-                        Toast.makeText(getContext(), "Inconsistent passwords", Toast.LENGTH_LONG).show();
-                    }
+                else if (password.getText().toString().length() != 8)
+                {
+                    Toast.makeText(getContext(), "Password must contain 8 chars!", Toast.LENGTH_LONG).show();
+                }
+                else if(!password.getText().toString().equals(repeatPassword.getText().toString()))
+                {
+                    Toast.makeText(getContext(), "Inconsistent passwords", Toast.LENGTH_LONG).show();
+                }
 
-                    else if (userName.getText().toString().equals(""))
-                    {
-                        Toast.makeText(getContext(), "Username cannot be empty!", Toast.LENGTH_LONG).show();
-                    }
+                else if (userName.getText().toString().equals(""))
+                {
+                    Toast.makeText(getContext(), "Username cannot be empty!", Toast.LENGTH_LONG).show();
+                }
 
-                    else if (!Utils.isBirthdayValid(birthday.getText().toString()))
+                else if (!Utils.isBirthdayValid(birthday.getText().toString()))
+                {
+                    Toast.makeText(getContext(), "Error: birthday format is DD/MM/YYYY", Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    User newUser = new User(userName.getText().toString(),
+                            password.getText().toString(),
+                            mail.getText().toString(),
+                            "",
+                            birthday.getText().toString(),
+                            breed.getText().toString(),
+                            city.getText().toString(),
+                            true,
+                            selfSummary.getText().toString(),
+                            null,
+                            deviceId);
+
+                    appInstance.getDataManager().updateSpWithUsername(newUser.getUsername());
+                    if (imagePath.equals(""))
                     {
-                        Toast.makeText(getContext(), "Error: birthday format is DD/MM/YYYY", Toast.LENGTH_LONG).show();
+                        newUser.setProfilePhoto("default");
+                        appInstance.getDataManager().updateSp(newUser.getId());
+                        appInstance.getDataManager().deleteSignInInfoFromSp();
+                        appInstance.getDataManager().addToUsers(newUser);
+                        Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
+                        Utils.moveBetweenFragments(R.id.menu_bar, new MenuFragment(), getActivity(), "menu");
                     }
                     else
                     {
-                        User newUser = new User(userName.getText().toString(),
-                                password.getText().toString(),
-                                mail.getText().toString(),
-                                "",
-                                birthday.getText().toString(),
-                                breed.getText().toString(),
-                                city.getText().toString(),
-                                true,
-                                selfSummary.getText().toString(),
-                                null,
-                                deviceId);
-
-                        appInstance.getDataManager().updateSpWithUsername(newUser.getUsername());
-                        if (imagePath.equals(""))
-                        {
+                        String remoteImgName = "profile_photos/" + newUser.getId()+"."+fileType;
+                        StorageReference storageReference = appInstance.getDataManager().storage.getReference();
+                        StorageReference imgRef = storageReference.child(remoteImgName);
+                        UploadTask uploadTask = imgRef.putFile(Uri.fromFile(new File(imagePath)));
+                        uploadTask.addOnSuccessListener(taskSnapshot -> {
+                            newUser.setProfilePhoto(remoteImgName);
+                            appInstance.getDataManager().updateSp(newUser.getId());
+                            appInstance.getDataManager().deleteSignInInfoFromSp();
+                            appInstance.getDataManager().addToUsers(newUser);
+                            Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
+                            Utils.moveBetweenFragments(R.id.menu_bar, new MenuFragment(), getActivity(), "menu");
+                        })
+                        .addOnFailureListener(e -> {
                             newUser.setProfilePhoto("default");
                             appInstance.getDataManager().updateSp(newUser.getId());
                             appInstance.getDataManager().deleteSignInInfoFromSp();
                             appInstance.getDataManager().addToUsers(newUser);
                             Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
                             Utils.moveBetweenFragments(R.id.menu_bar, new MenuFragment(), getActivity(), "menu");
-                        }
-                        else
-                        {
-                            String remoteImgName = "profile_photos/" + newUser.getId()+"."+fileType;
-                            StorageReference storageReference = appInstance.getDataManager().storage.getReference();
-                            StorageReference imgRef = storageReference.child(remoteImgName);
-                            UploadTask uploadTask = imgRef.putFile(Uri.fromFile(new File(imagePath)));
-                            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    newUser.setProfilePhoto(remoteImgName);
-                                    appInstance.getDataManager().updateSp(newUser.getId());
-                                    appInstance.getDataManager().deleteSignInInfoFromSp();
-                                    appInstance.getDataManager().addToUsers(newUser);
-                                    Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
-                                    Utils.moveBetweenFragments(R.id.menu_bar, new MenuFragment(), getActivity(), "menu");
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(Exception e) {
-                                    newUser.setProfilePhoto("default");
-                                    appInstance.getDataManager().updateSp(newUser.getId());
-                                    appInstance.getDataManager().deleteSignInInfoFromSp();
-                                    appInstance.getDataManager().addToUsers(newUser);
-                                    Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
-                                    Utils.moveBetweenFragments(R.id.menu_bar, new MenuFragment(), getActivity(), "menu");
-                                }
-                            });
-                        }
+                        });
+                    }
                 }
-            }});
+            });
         });
     }
 }

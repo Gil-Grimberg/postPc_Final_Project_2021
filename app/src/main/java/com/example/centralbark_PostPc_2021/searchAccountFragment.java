@@ -1,18 +1,14 @@
 package com.example.centralbark_PostPc_2021;
+
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,19 +16,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageReference;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -96,16 +84,10 @@ public class searchAccountFragment extends Fragment {
                         e.printStackTrace();
                     }
                     File profileImFile = localProfileImFile;
-                    profileImg.getFile(profileImFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            holder.profilePhoto.setImageURI(Uri.fromFile(profileImFile));
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // keeps the default profile image
-                        }
+                    profileImg.getFile(profileImFile)
+                            .addOnSuccessListener(taskSnapshot -> holder.profilePhoto.setImageURI(Uri.fromFile(profileImFile)))
+                            .addOnFailureListener(exception -> {
+                        // keeps the default profile image
                     });
                 }
             else{
@@ -119,50 +101,13 @@ public class searchAccountFragment extends Fragment {
                 holder.userName.setOnClickListener(v->{
                     Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(model.getId()), getActivity(), "myProfile");
                 });
-
-
-//                if(model.isFriend(dataManager.getMyId())){
-//                    holder.sendFriendRequest.setVisibility(View.GONE);
-//                }
-//
-//                //if(model.isPendingRequest(dataManager.getMyId()) || dataManager.getMyId().equals(model.getId())){
-//                if(model.isPendingRequest(dataManager.getMyId())){
-//                    holder.sendFriendRequest.setText("Pending request");
-//                }
-//
-//                else
-//                {
-//                    holder.sendFriendRequest.setText("Make Friend");
-//                }
-//
-//                // make friend was pressed
-//                holder.sendFriendRequest.setOnClickListener(v->{
-//                    if(model.isPendingRequest(dataManager.getMyId())){
-//                        model.removeFromPendingList(dataManager.getMyId());
-//                        dataManager.addToUsers(model);
-//                        holder.sendFriendRequest.setText("Make Friend");
-//                        dataManager.deleteNotification(NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION, model.getId(), null);
-//                    }
-//                    else{
-//                        model.addToPendingList(dataManager.getMyId());
-//                        dataManager.addToUsers(model);
-//                        holder.sendFriendRequest.setText("Pending request");
-//                        dataManager.sendNotification(NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION, model.getId(), null,null);
-//                        dataManager.sendFirebaseNotification("You Have A New Friend Request!",
-//                                String.format("%s wants to be your friend!", dataManager.getUsernameFromSp()),
-//                                model.getDeviceToken());
-//
-//                    }
-//                });
             }
         };
 
         //edit text was changed
         searchAccountsEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -182,8 +127,7 @@ public class searchAccountFragment extends Fragment {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-            }
+            public void afterTextChanged(Editable s) {}
         });
 
         this.accountsRecycler.setLayoutManager(new LinearLayoutManagerWrapper(this.getContext(),RecyclerView.VERTICAL,false));
@@ -191,7 +135,6 @@ public class searchAccountFragment extends Fragment {
         this.searchPlacesButton.setOnClickListener(v->{
             Utils.moveBetweenFragments(R.id.the_screen, new searchPlacesFragment(this.menuFragment), getActivity(), "search_places");
         });
-
     }
 
     @Override
@@ -206,7 +149,7 @@ public class searchAccountFragment extends Fragment {
         this.accountsAdapter.stopListening();
     }
 
-    private class RecyclerAccountsHolder extends RecyclerView.ViewHolder{
+    private static class RecyclerAccountsHolder extends RecyclerView.ViewHolder{
         private TextView userName;
         private ImageView profilePhoto;
 

@@ -211,24 +211,29 @@ public class FeedFragment extends Fragment {
 
 
                 // set users post image
-                StorageReference postImag = dataManager.storage.getReference().child(model.getUploadedPhoto());
-                File localPostImFile = null;
-                try {
-                    localPostImFile = File.createTempFile("post_photos", "g");
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(!model.getUploadedPhoto().equals("default")){
+                    StorageReference postImag = dataManager.storage.getReference().child(model.getUploadedPhoto());
+                    File localPostImFile = null;
+                    try {
+                        localPostImFile = File.createTempFile("post_photos", "g");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    File finalLocalPostImFile = localPostImFile;
+                    postImag.getFile(localPostImFile).addOnSuccessListener(taskSnapshot ->
+                            holder.postIm.setImageURI(Uri.fromFile(finalLocalPostImFile))).addOnFailureListener(exception -> {});
+
+                    holder.profileIm.setOnClickListener(v -> {
+                        Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(model.getUserId()), getActivity(), "myProfile");
+                    });
+
+                    holder.userNameTitle.setOnClickListener(v -> {
+                        Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(model.getUserId()), getActivity(), "myProfile");
+                    });
                 }
-                File finalLocalPostImFile = localPostImFile;
-                postImag.getFile(localPostImFile).addOnSuccessListener(taskSnapshot ->
-                        holder.postIm.setImageURI(Uri.fromFile(finalLocalPostImFile))).addOnFailureListener(exception -> {});
-
-                holder.profileIm.setOnClickListener(v -> {
-                    Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(model.getUserId()), getActivity(), "myProfile");
-                });
-
-                holder.userNameTitle.setOnClickListener(v -> {
-                    Utils.moveBetweenFragments(R.id.the_screen, new myProfileFragment(model.getUserId()), getActivity(), "myProfile");
-                });
+                else{
+                    holder.postIm.setImageResource(R.drawable.default_dog);
+                }
             }
         };
 

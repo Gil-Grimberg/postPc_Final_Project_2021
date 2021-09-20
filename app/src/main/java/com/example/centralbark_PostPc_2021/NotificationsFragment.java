@@ -1,15 +1,11 @@
 package com.example.centralbark_PostPc_2021;
 
-import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,21 +13,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageReference;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,7 +37,7 @@ public class NotificationsFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.recyclerViewNotifications = view.findViewById(R.id.notification_recyclerview_screen);
 
@@ -86,26 +73,25 @@ public class NotificationsFragment extends Fragment {
                 {
                     profileImgPath = "";
                 }
-                StorageReference profileImag = dataManager.storage.getReference().child(profileImgPath);
-                File localProfileImFile = null;
-                try {
-                    localProfileImFile = File.createTempFile("profile_photos", "g");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                if(!profileImgPath.equals("default")) {
+                    StorageReference profileImag = dataManager.storage.getReference().child(profileImgPath);
+                    File localProfileImFile = null;
+                    try {
+                        localProfileImFile = File.createTempFile("profile_photos", "g");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
-                File profileImFile = localProfileImFile;
-                profileImag.getFile(profileImFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        holder.profilePhoto.setImageURI(Uri.fromFile(profileImFile));
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull @NotNull Exception e) {
+                    File profileImFile = localProfileImFile;
+                    profileImag.getFile(profileImFile)
+                            .addOnSuccessListener(taskSnapshot -> holder.profilePhoto.setImageURI(Uri.fromFile(profileImFile)))
+                            .addOnFailureListener(e -> {
                         // keeps the default profile image
-                    }
-                });
+                    });
+                }
+                else{
+                    holder.profilePhoto.setImageResource(R.drawable.default_dog);
+                }
 
                 holder.confirmButton.setOnClickListener(v ->
                 {
@@ -121,26 +107,18 @@ public class NotificationsFragment extends Fragment {
                     model.setNotificationContent(newText);
                     dataManager.updateNotification(dataManager.getMyId(), model.getId(), model);
                     dataManager.db.collection("Users").document(model.getUserId()).get()
-                            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                @Override
-                                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                    if (documentSnapshot != null)
+                            .addOnSuccessListener(documentSnapshot -> {
+                                if (documentSnapshot != null)
+                                {
+                                    User myFriend = documentSnapshot.toObject(User.class);
+                                    if (myFriend != null && myFriend.getDeviceToken() != null)
                                     {
-                                        User myFriend = documentSnapshot.toObject(User.class);
-                                        if (myFriend != null && myFriend.getDeviceToken() != null)
-                                        {
-                                            dataManager.sendFirebaseNotification("Friend Request Accepted!",
-                                                    String.format("%s has accepted your friend request.", dataManager.getUsernameFromSp()),
-                                                    myFriend.getDeviceToken());
-                                        }
+                                        dataManager.sendFirebaseNotification("Friend Request Accepted!",
+                                                String.format("%s has accepted your friend request.", dataManager.getUsernameFromSp()),
+                                                myFriend.getDeviceToken());
                                     }
                                 }
-                            }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull @NotNull Exception e) {
-                            Toast.makeText(getContext(), "DB Error", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                            }).addOnFailureListener(e -> Toast.makeText(getContext(), "DB Error", Toast.LENGTH_SHORT).show());
                     updateNotificationsIfNecessary(dataManager.getMyId(), newText, model.getUserName());
                 });
 
@@ -156,40 +134,29 @@ public class NotificationsFragment extends Fragment {
                     holder.confirmButton.setVisibility(View.INVISIBLE);
                 }
             }
-
         };
 
         this.recyclerViewNotifications.setLayoutManager(new LinearLayoutManagerWrapper(this.getContext(), RecyclerView.VERTICAL, false));
         this.recyclerViewNotifications.setAdapter(notificationsAdapter);
-
-
     }
 
     public void updateNotificationsIfNecessary(String userId, String newText, String requestedUserName)
     {
         dataManager.db.collection("Users").document(userId).collection("Notifications").get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot documentSnapshots) {
-                        if (documentSnapshots != null)
+                .addOnSuccessListener(documentSnapshots -> {
+                    if (documentSnapshots != null)
+                    {
+                        ArrayList<Notification> notifications = (ArrayList<Notification>) documentSnapshots.toObjects(Notification.class);
+                        for (Notification notification: notifications)
                         {
-                            ArrayList<Notification> notifications = (ArrayList<Notification>) documentSnapshots.toObjects(Notification.class);
-                            for (Notification notification: notifications)
+                            if (notification.getNotificationType() == NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION && notification.getNotificationContent().contains(requestedUserName))
                             {
-                                if (notification.getNotificationType() == NotificationTypes.FRIEND_REQUEST_RECEIVED_NOTIFICATION && notification.getNotificationContent().contains(requestedUserName))
-                                {
-                                    notification.setNotificationContent(newText);
-                                    dataManager.updateNotification(dataManager.getMyId(), notification.getId(), notification);
-                                }
+                                notification.setNotificationContent(newText);
+                                dataManager.updateNotification(dataManager.getMyId(), notification.getId(), notification);
                             }
                         }
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull @NotNull Exception e) {
-                Toast.makeText(getContext(), "DB Error", Toast.LENGTH_SHORT).show();
-            }
-        });
+                }).addOnFailureListener(e -> Toast.makeText(getContext(), "DB Error", Toast.LENGTH_SHORT).show());
     }
 
     @Override
@@ -204,7 +171,7 @@ public class NotificationsFragment extends Fragment {
         this.notificationsAdapter.stopListening();
     }
 
-    private class RecyclerNotificationHolder extends RecyclerView.ViewHolder
+    private static class RecyclerNotificationHolder extends RecyclerView.ViewHolder
     {
         private TextView notificationTime;
         private TextView notificationContent;
@@ -240,8 +207,5 @@ public class NotificationsFragment extends Fragment {
 
         int daysDiff = (int) Utils.getTimeDifferenceInDays(timestamp1, timestamp2);
         return String.format("%s days ago", daysDiff);
-
     }
-
-
 }

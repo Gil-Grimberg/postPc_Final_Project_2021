@@ -2,7 +2,6 @@ package com.example.centralbark_PostPc_2021;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -27,12 +26,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 
@@ -41,21 +37,21 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     FusedLocationProviderClient fusedLocationProviderClient;
 
     final String[] PERMISSIONS =
-            {
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-            };
+        {
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        };
 
     final LatLng[] DOG_PARKS =
-            {
-                    new LatLng(31.781896, 35.20541), // Sacher Park
-                    new LatLng(31.772408, 35.190774), // Ramat Beit Hakerem Park
-                    new LatLng(31.773485113624243, 35.21957354419318), // Sokolov Park
-                    new LatLng(31.762733966751608, 35.206619469755076), // San Simon Park
-                    new LatLng(31.757139379888653, 35.1673460059339), // Mexico Garden Park
-                    new LatLng(31.791138758045847, 35.19212324356424), // Zarchi Park
-                    new LatLng(31.756352613824877, 35.20847005180395), // Gonenim Park
-            };
+        {
+            new LatLng(31.781896, 35.20541), // Sacher Park
+            new LatLng(31.772408, 35.190774), // Ramat Beit Hakerem Park
+            new LatLng(31.773485113624243, 35.21957354419318), // Sokolov Park
+            new LatLng(31.762733966751608, 35.206619469755076), // San Simon Park
+            new LatLng(31.757139379888653, 35.1673460059339), // Mexico Garden Park
+            new LatLng(31.791138758045847, 35.19212324356424), // Zarchi Park
+            new LatLng(31.756352613824877, 35.20847005180395), // Gonenim Park
+        };
 
     ActivityResultContracts.RequestMultiplePermissions requestMultiplePermissionsContract;
     ActivityResultLauncher<String[]> multiplePermissionActivityResultLauncher;
@@ -65,11 +61,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public MapsFragment() {
     }
 
-
-
     public MapsFragment(LatLng location) {
         locationToZoomIn = location;
-
     }
 
     @Nullable
@@ -82,9 +75,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             appInstance = CentralBarkApp.getInstance();
         }
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
-
         requestMultiplePermissionsContract = new ActivityResultContracts.RequestMultiplePermissions();
         multiplePermissionActivityResultLauncher = registerForActivityResult(requestMultiplePermissionsContract, isGranted ->
         {
@@ -121,92 +112,65 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         ArrayList<User> friendsList = new ArrayList<>();
         String userId = appInstance.getDataManager().getMyId();
         Task<DocumentSnapshot> result = appInstance.getDataManager().db.collection("Users").document(userId).get();
-        result.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                ArrayList<String> friendsIds = (ArrayList<String>) documentSnapshot.get("friendList");
-                if (friendsIds != null && friendsIds.size() > 0) {
-                    Task<QuerySnapshot> result = appInstance.getDataManager()
-                            .db.collection("Users")
-                            .whereIn("id", friendsIds).get();
-                    result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot documentSnapshots) {
-                            if (documentSnapshots != null && !documentSnapshots.isEmpty()) {
-                                friendsList.addAll(documentSnapshots.toObjects(User.class));
-                                addMarkers(friendsList);
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull @NotNull Exception e) {
-                            Toast.makeText(getContext(), "Error: db error", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
+        result.addOnSuccessListener(documentSnapshot -> {
+            ArrayList<String> friendsIds = (ArrayList<String>) documentSnapshot.get("friendList");
+            if (friendsIds != null && friendsIds.size() > 0) {
+                Task<QuerySnapshot> result1 = appInstance.getDataManager()
+                        .db.collection("Users")
+                        .whereIn("id", friendsIds).get();
+                result1.addOnSuccessListener(documentSnapshots -> {
+                    if (documentSnapshots != null && !documentSnapshots.isEmpty()) {
+                        friendsList.addAll(documentSnapshots.toObjects(User.class));
+                        addMarkers(friendsList);
+                    }
+                }).addOnFailureListener(e -> Toast.makeText(getContext(), "Error: db error", Toast.LENGTH_LONG).show());
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull @NotNull Exception e) {
-                Toast.makeText(getContext(), "Error: db error", Toast.LENGTH_LONG).show();
-            }
-        });
+        }).addOnFailureListener(e -> Toast.makeText(getContext(), "Error: db error", Toast.LENGTH_LONG).show());
     }
 
     private void addMarkers(ArrayList<User> friendsList) {
         if (friendsList == null || friendsList.size() == 0) {
             return;
         }
-        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                for (User user : friendsList) {
-                    LatLng curUserLocation = user.getLocationAsLatLng();
-                    if (curUserLocation != null) {
-                        for (LatLng park : DOG_PARKS) {
-                            if (Utils.isCloseToDogPark(park, curUserLocation, 200)) {
-                                MarkerOptions options = new MarkerOptions().position(curUserLocation).title(user.getUsername());
-                                googleMap.addMarker(options);
-                                break;
-                            }
+        supportMapFragment.getMapAsync(googleMap -> {
+            for (User user : friendsList) {
+                LatLng curUserLocation = user.getLocationAsLatLng();
+                if (curUserLocation != null) {
+                    for (LatLng park : DOG_PARKS) {
+                        if (Utils.isCloseToDogPark(park, curUserLocation, 200)) {
+                            MarkerOptions options = new MarkerOptions().position(curUserLocation).title(user.getUsername());
+                            googleMap.addMarker(options);
+                            break;
                         }
                     }
-
                 }
             }
         });
-
     }
 
     private void getCurrentLocation(LatLng locationToZoomIn) {
         @SuppressLint("MissingPermission") Task<Location> task = fusedLocationProviderClient.getLastLocation();
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-                        @Override
-                        public void onMapReady(GoogleMap googleMap) {
-                            MarkerOptions options = new MarkerOptions().position(latLng);
-                            if (locationToZoomIn == null) {
-                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
-                            } else {
-                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(locationToZoomIn, 18));
-                                options.position(locationToZoomIn).title(Utils.locationToNameMapping.get(locationToZoomIn));
-                                googleMap.addMarker(options);
-                            }
+        task.addOnSuccessListener(location -> {
+            if (location != null) {
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                supportMapFragment.getMapAsync(googleMap -> {
+                    MarkerOptions options = new MarkerOptions().position(latLng);
+                    if (locationToZoomIn == null) {
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+                    } else {
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(locationToZoomIn, 18));
+                        options.position(locationToZoomIn).title(Utils.locationToNameMapping.get(locationToZoomIn));
+                        googleMap.addMarker(options);
+                    }
 
 
-                            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                                return;
-                            }
-                            googleMap.setMyLocationEnabled(true);
-                            googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    googleMap.setMyLocationEnabled(true);
+                    googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-                        }
-                    });
-                }
+                });
             }
         });
     }
@@ -235,6 +199,5 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
     }
 }
