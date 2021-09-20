@@ -91,7 +91,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificationManager.createNotificationChannel(notificationChannel);
             }
         }
-
         startForeground(Utils.NOTIFICATION_SERVICE_ID, builder.build());
     }
 }

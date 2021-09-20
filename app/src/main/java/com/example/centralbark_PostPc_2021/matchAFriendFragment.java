@@ -69,6 +69,7 @@ public class matchAFriendFragment extends Fragment {
                     // update db
                     appInstance.getDataManager().addToUsers(myUser);
                     sendNotificationIfNecessary(otherId);
+
                     //find another profile and present
                     findRecommendedProfile();
                 }
@@ -88,6 +89,7 @@ public class matchAFriendFragment extends Fragment {
                     }
                     // update db
                     appInstance.getDataManager().addToUsers(myUser);
+
                     //find another profile and present
                     findRecommendedProfile();
                 }
@@ -174,15 +176,11 @@ public class matchAFriendFragment extends Fragment {
 
                     }
                 } else {
-//                        Toast.makeText(getContext(), "There are no users at all! there isn't any new friend to present", Toast.LENGTH_LONG).show();
                     // if there are no new friends to offer, change to blank page with appropriate message
                     Utils.moveBetweenFragments(R.id.the_screen, new matchAFriendFragmentNoFriendsFragment(), getActivity(), "match_a_friend_no_friends");
-
-
                 }
             }
         }).addOnFailureListener(e -> Toast.makeText(getContext(), "Error: couldn't connect to database", Toast.LENGTH_LONG).show());
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

@@ -93,8 +93,6 @@ public class NotificationsFragment extends Fragment {
                     holder.profilePhoto.setImageResource(R.drawable.default_dog);
                 }
 
-
-
                 holder.confirmButton.setOnClickListener(v ->
                 {
                     dataManager.sendNotification(NotificationTypes.FRIEND_REQUEST_ACCEPTED_NOTIFICATION,

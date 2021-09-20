@@ -18,7 +18,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import org.jetbrains.annotations.NotNull;
@@ -131,13 +130,7 @@ public class AddPostFragment extends Fragment {
                         Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
 
                     })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NotNull Exception e) {
-                                    Toast.makeText(getContext(), "Could not upload post, try again", Toast.LENGTH_LONG).show();
-
-                                }
-                            });
+                            .addOnFailureListener(e -> Toast.makeText(getContext(), "Could not upload post, try again", Toast.LENGTH_LONG).show());
                 });
             }
         });
