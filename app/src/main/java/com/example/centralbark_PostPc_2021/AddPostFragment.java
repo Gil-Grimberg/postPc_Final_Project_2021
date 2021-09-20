@@ -3,37 +3,25 @@ package com.example.centralbark_PostPc_2021;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
+import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -57,7 +45,7 @@ public class AddPostFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+    public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
         this.uploadIm = view.findViewById(R.id.upload_im_add_post_screen);
         this.caption = view.findViewById(R.id.caption_text_add_post_screen);
@@ -66,11 +54,10 @@ public class AddPostFragment extends Fragment {
         // upload image from phone method:
         ActivityResultLauncher<Intent> upLoadLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
+                result -> {
                     if(result.getResultCode()== Activity.RESULT_OK){
                         Intent data = result.getData();
+                        assert data != null;
                         Uri selectedImage = data.getData();
                         if (selectedImage == null)
                         {
@@ -95,7 +82,6 @@ public class AddPostFragment extends Fragment {
                         }
                     }
                 }
-            }
         );
 
         // upload photo button
@@ -128,39 +114,32 @@ public class AddPostFragment extends Fragment {
             }
             else{
                 String myId = this.dataManager.getMyId();
-                this.dataManager.db.collection("Users").document(myId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        myUser = documentSnapshot.toObject(User.class);
-                        String postId = UUID.randomUUID().toString();
-                        String postPath = "post_photos/"+postId+"."+fileType;
-                        String content = caption.getText().toString();
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        String curDateString = sdf.format(new Date());
+                this.dataManager.db.collection("Users").document(myId).get().addOnSuccessListener(documentSnapshot -> {
+                    myUser = documentSnapshot.toObject(User.class);
+                    String postId = UUID.randomUUID().toString();
+                    String postPath = "post_photos/"+postId+"."+fileType;
+                    String content = caption.getText().toString();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String curDateString = sdf.format(new Date());
 
-                        StorageReference storageReference = dataManager.storage.getReference();
-                        StorageReference imgRef = storageReference.child(postPath);
-                        UploadTask uploadTask = imgRef.putFile(Uri.fromFile(new File(picturePath)));
-                        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                Post curPost = new Post(myId,postId,myUser.getUsername(),myUser.getProfilePhoto(),postPath, content, 0, curDateString, myUser.getFriendList());
-                                dataManager.addToPost(curPost);
-                                Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
+                    StorageReference storageReference = dataManager.storage.getReference();
+                    StorageReference imgRef = storageReference.child(postPath);
+                    UploadTask uploadTask = imgRef.putFile(Uri.fromFile(new File(picturePath)));
+                    uploadTask.addOnSuccessListener(taskSnapshot -> {
+                        Post curPost = new Post(myId,postId,myUser.getUsername(),myUser.getProfilePhoto(),postPath, content, 0, curDateString, myUser.getFriendList());
+                        dataManager.addToPost(curPost);
+                        Utils.moveBetweenFragments(R.id.the_screen, new FeedFragment(), getActivity(), "feed");
 
-                            }
-                        })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(Exception e) {
-                                        Toast.makeText(getContext(), "Could not upload post, try again", Toast.LENGTH_LONG).show();
+                    })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NotNull Exception e) {
+                                    Toast.makeText(getContext(), "Could not upload post, try again", Toast.LENGTH_LONG).show();
 
-                                    }
-                                });
-                    }
+                                }
+                            });
                 });
             }
-
         });
     }
 }

@@ -30,7 +30,7 @@ public class CentralBarkApp extends Application {
         activityVisible = false;
     }
 
-    public static CentralBarkApp getInstance(){ return instance; };
+    public static CentralBarkApp getInstance(){ return instance; }
 
     public DataManager getDataManager() { return dataManager; }
 }

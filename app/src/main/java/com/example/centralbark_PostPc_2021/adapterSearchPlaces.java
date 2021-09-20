@@ -6,17 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.gms.maps.model.LatLng;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -65,7 +60,7 @@ public class adapterSearchPlaces extends RecyclerView.Adapter<adapterSearchPlace
 
 
 
-    public class rowSearchPlacesHolder extends RecyclerView.ViewHolder{
+    public static class rowSearchPlacesHolder extends RecyclerView.ViewHolder{
         private TextView dogParkName;
         private Button goNowButton;
 

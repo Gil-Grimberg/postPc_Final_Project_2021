@@ -6,6 +6,8 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import org.jetbrains.annotations.NotNull;
+
 public class aboutSettingFragment extends Fragment {
     private DataManager dataManager;
 
@@ -17,7 +19,7 @@ public class aboutSettingFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         super.onViewCreated(view, savedInstanceState);
     }
