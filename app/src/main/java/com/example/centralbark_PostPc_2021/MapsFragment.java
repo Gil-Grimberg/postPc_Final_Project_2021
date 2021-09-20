@@ -113,14 +113,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         LocationCallback mLocationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
-                for (Location location : locationResult.getLocations()) {
-                    if (location != null) {
-
-                    }
-                }
             }
         };
 
@@ -211,7 +203,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
                             } else {
                                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(locationToZoomIn, 18));
+                                options.position(locationToZoomIn).title(Utils.locationToNameMapping.get(locationToZoomIn));
+                                googleMap.addMarker(options);
                             }
+
 
                             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                                 return;
