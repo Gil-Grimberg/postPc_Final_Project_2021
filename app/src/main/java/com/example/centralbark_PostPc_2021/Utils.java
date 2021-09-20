@@ -20,12 +20,13 @@ import java.util.Map;
 public class Utils {
 
     final static List<String> VALID_MONTHS =
-           new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"));
+           new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
+                   "01", "02", "03", "04", "05", "06", "07", "08", "09"));
 
     final static List<String> VALID_DAYS =
             new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
             "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28",
-            "29", "30", "31"));
+            "29", "30", "31", "01", "02", "03", "04", "05", "06", "07", "08", "09"));
 
     final static Map<LatLng, String> locationToNameMapping = ImmutableMap.<LatLng, String>builder()
             .put(new LatLng(31.781896, 35.20541), "Sacher Park")
@@ -114,6 +115,12 @@ public class Utils {
         {
             return false;
         }
+        int year = Integer.parseInt(dateParts[2]);
+        if (year > 2021 || year < 1000)
+        {
+            return false;
+        }
+
         return dateParts[0].length() == 2 && dateParts[1].length() == 2 && dateParts[2].length() == 4;
     }
 
