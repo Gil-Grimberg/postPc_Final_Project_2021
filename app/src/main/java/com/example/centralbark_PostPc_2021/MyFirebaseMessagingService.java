@@ -3,40 +3,23 @@ package com.example.centralbark_PostPc_2021;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
-import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Icon;
 import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -57,12 +40,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
         if (CentralBarkApp.isActivityVisible())
         {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(getApplicationContext(), notification.getBody(), Toast.LENGTH_LONG).show();
-                }
-            });
+            new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(getApplicationContext(), notification.getBody(), Toast.LENGTH_LONG).show());
             return;
         }
 
@@ -88,11 +66,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         builder.setSmallIcon(R.drawable.app_logo_no_background);
         builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.app_logo_no_background));
         builder.setContentTitle(title);
-//        builder.setDefaults(NotificationCompat.DEFAULT_ALL);
         builder.setContentText(body);
         builder.setContentIntent(pendingIntent);
         builder.setOngoing(false);
-//        builder.setPriority(NotificationCompat.PRIORITY_MAX);
         Uri soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+ getApplicationContext().getPackageName() + "/" + R.raw.notification_sound);
         builder.setSound(soundUri);
 
@@ -117,8 +93,5 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         startForeground(Utils.NOTIFICATION_SERVICE_ID, builder.build());
-//        notificationManager.notify(Utils.NOTIFICATION_SERVICE_ID, builder.build());
-
     }
-
 }

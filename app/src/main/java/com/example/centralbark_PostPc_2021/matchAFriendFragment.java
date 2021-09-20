@@ -1,6 +1,5 @@
 package com.example.centralbark_PostPc_2021;
 
-import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -49,7 +48,6 @@ public class matchAFriendFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // find all views
         myName = view.findViewById(R.id.user_name_tinder);
         myDetailsDots = view.findViewById(R.id.details_tinder);
