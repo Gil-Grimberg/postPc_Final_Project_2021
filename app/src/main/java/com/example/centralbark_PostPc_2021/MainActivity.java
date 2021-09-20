@@ -2,7 +2,6 @@ package com.example.centralbark_PostPc_2021;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentContainerView;
-
 import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -13,32 +12,7 @@ import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.messaging.FirebaseMessaging;
-import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.google.firebase.messaging.RemoteMessage;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.UUID;
-
-import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,24 +24,11 @@ public class MainActivity extends AppCompatActivity {
         defineNotificationChannel();
         setContentView(R.layout.activity_main);
         FragmentContainerView screen = findViewById(R.id.the_screen);
-        FragmentContainerView menu = findViewById(R.id.menu_bar);
         openingFragment openingFragment = new openingFragment();
-        MenuFragment menuFragment = new MenuFragment();
         if (dataManager==null)
         {
             dataManager = CentralBarkApp.getInstance().getDataManager();
         }
-//        String[] userInfo = dataManager.getInfoForSignIn();
-//        if (userInfo != null)
-//        {
-//            getSupportFragmentManager().
-//                    beginTransaction().
-//                    replace(screen.getId(), new FeedFragment())
-//                    .addToBackStack(null)
-//                    .replace(menu.getId(), new menuFragment())
-//                    .addToBackStack(null)
-//                    .commit();
-//        }
         if (savedInstanceState == null)
         {
             getSupportFragmentManager().
@@ -76,15 +37,6 @@ public class MainActivity extends AppCompatActivity {
                     addToBackStack(null).
                     commit();
         }
-
-
-//        if (dataManager==null)
-//        {
-//            dataManager = CentralBarkApp.getInstance().getDataManager();
-//        }
-//        Post myPost = new Post("jTAfJDj6c6nB5HjD3NyB","gil","profile_photo_link","uploaded_photo_link","this post was created in android",12,"07/19/21");
-//
-//        this.dataManager.addToPost(myPost);
     }
 
 
@@ -166,5 +118,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
 }
