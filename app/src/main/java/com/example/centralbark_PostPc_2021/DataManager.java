@@ -169,7 +169,7 @@ public class DataManager {
         StorageReference imgRef = storageReference.child(RemoteImageName);
         UploadTask uploadTask = imgRef.putFile(Uri.fromFile(new File(localImgPath)));
         final String[] downloadUrl = new String[1];
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() { //todo: check that it works
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 downloadUrl[0] = taskSnapshot.getStorage().getDownloadUrl().toString();
@@ -210,7 +210,7 @@ public class DataManager {
         return myPosts;
     }
 
-    public User getUserById(String idToFind) { // todo: check if works
+    public User getUserById(String idToFind) {
         User[] user = new User[1];
         this.db.collection("Users").document(idToFind).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -226,7 +226,7 @@ public class DataManager {
      * @param post
      * @return a string representing the post with $ as seperators
      */
-    public String convertPostToString(Post post) { //todo: probably unnecessary
+    public String convertPostToString(Post post) {
         return post.getUserId() + separator + post.getPostId() + separator + post.getUserName() + separator +
                 post.getFriendList() + post.getUsersLikesLst() + separator + post.getUploadedPhoto() + separator +
                 post.getContent() + separator + post.getNumOfLikes().toString() + separator + post.getTimePosted().toString();
@@ -237,7 +237,7 @@ public class DataManager {
      * @return 4 strings in an array. the first one is for all fields that are not lists or sets
      * the second is for friendsList, third for liked and fourth for dislike
      */
-    public String[] convertUserToString(User user) { //todo: probably unnecessary
+    public String[] convertUserToString(User user) {
         String fields = user.getId() + separator + user.getUsername() + separator + user.getPassword() + separator + user.getBreed() + separator + user.getMail() + separator + user.getProfilePhoto() + separator + user.getBirthday().toString() + separator + user.getCity() + separator + user.getRememberMe().toString() + separator + user.getAllowNotifications().toString() + separator + user.getAllowLocation().toString() + separator + user.getSelfSummary();
         String friendsListStr = friendsListToStr(user.getFriendList());
         String likedUsersStr = likedAndDislikedUsersToStr(user.getLikedUsers());
@@ -245,7 +245,7 @@ public class DataManager {
         return new String[]{fields, friendsListStr, likedUsersStr, dislikeUsersStr};
     }
 
-    public String convertNotificationToString(Notification notification) { //todo: probably unnecessary
+    public String convertNotificationToString(Notification notification) {
         return "";
     }
 

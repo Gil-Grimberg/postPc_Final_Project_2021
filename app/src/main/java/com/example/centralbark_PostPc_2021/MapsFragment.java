@@ -120,7 +120,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 }
                 for (Location location : locationResult.getLocations()) {
                     if (location != null) {
-                        //TODO: UI updates.
+
                     }
                 }
             }
