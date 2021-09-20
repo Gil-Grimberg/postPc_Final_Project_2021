@@ -102,7 +102,6 @@ public class matchAFriendFragment extends Fragment {
 //        }
 
 
-        // todo: downLoad dog image and show on screen
 
 
         like.setOnClickListener(v -> {
@@ -116,7 +115,7 @@ public class matchAFriendFragment extends Fragment {
                             myUser.addToLikedList(otherId);
                         }
                         // update db
-                        appInstance.getDataManager().addToUsers(myUser); // todo: make sure it updates the existing user!
+                        appInstance.getDataManager().addToUsers(myUser);
                         sendNotificationIfNecessary(otherId);
                         //find another profile and present
                         findRecommendedProfile();
@@ -143,7 +142,7 @@ public class matchAFriendFragment extends Fragment {
                             myUser.addToDislikedList(otherId);
                         }
                         // update db
-                        appInstance.getDataManager().addToUsers(myUser); // todo: make sure it updates the existing user!
+                        appInstance.getDataManager().addToUsers(myUser);
                         //find another profile and present
                         findRecommendedProfile();
                     }
@@ -210,7 +209,7 @@ public class matchAFriendFragment extends Fragment {
     }
 
     private void findRecommendedProfile() {
-        // todo: filter the best recommended matches for the user based on ML
+
 
         ArrayList<User> users = new ArrayList<>();
         Task<QuerySnapshot> result = appInstance.getDataManager().db.collection("Users").get();

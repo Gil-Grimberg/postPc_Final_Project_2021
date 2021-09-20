@@ -35,17 +35,25 @@ public class Utils {
             "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28",
             "29", "30", "31"));
 
-    final static Map<LatLng, String> locationToNameMapping = ImmutableMap.of(
-            new LatLng(31.781896, 35.20541), "Sacher park",
-            new LatLng(31.772408, 35.190774), "Ramat Beit Hakerem Park",
-            new LatLng(37.4219983, -122.084), "test" //todo remove this pair after testing
-    );
+    final static Map<LatLng, String> locationToNameMapping = ImmutableMap.<LatLng, String>builder()
+            .put(new LatLng(31.781896, 35.20541), "Sacher Park")
+            .put(new LatLng(31.772408, 35.190774), "Ramat Beit Hakerem Park")
+            .put(new LatLng(31.773485113624243, 35.21957354419318), "Sokolov Park")
+            .put(new LatLng(31.762733966751608, 35.206619469755076), "San Simon Park")
+            .put(new LatLng(31.757139379888653, 35.1673460059339), "Mexico Garden Park")
+            .put(new LatLng(31.791138758045847, 35.19212324356424), "Zarchi Park")
+            .put(new LatLng(31.756352613824877, 35.20847005180395), "Gonenim Park")
+            .build();
 
     final static LatLng[] DOG_PARKS =
             {
-                    new LatLng(31.781896, 35.20541), // Sacher park
+                    new LatLng(31.781896, 35.20541), // Sacher Park
                     new LatLng(31.772408, 35.190774), // Ramat Beit Hakerem Park
-                    new LatLng(37.4219983, -122.084) // test
+                    new LatLng(31.773485113624243, 35.21957354419318), // Sokolov Park
+                    new LatLng(31.762733966751608, 35.206619469755076), // San Simon Park
+                    new LatLng(31.757139379888653, 35.1673460059339), // Mexico Garden Park
+                    new LatLng(31.791138758045847, 35.19212324356424), // Zarchi Park
+                    new LatLng(31.756352613824877, 35.20847005180395), // Gonenim Park
             };
 
     static final String[] PERMISSIONS =

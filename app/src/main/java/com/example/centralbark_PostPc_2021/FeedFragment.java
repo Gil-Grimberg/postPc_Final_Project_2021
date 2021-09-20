@@ -49,7 +49,7 @@ public class FeedFragment extends Fragment {
     private View redNotificationCircle;
     private ImageView notificationButton;
     private ImageView addPostButton;
-    private RecyclerView recyclerViewPosts; // todo: recycler on menu bar
+    private RecyclerView recyclerViewPosts;
     private FirestoreRecyclerAdapter postsAdapter;
 
     ActivityResultContracts.RequestMultiplePermissions requestMultiplePermissionsContract;
@@ -252,7 +252,7 @@ public class FeedFragment extends Fragment {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        // todo: something todo?
+
                     }
                 });
 
