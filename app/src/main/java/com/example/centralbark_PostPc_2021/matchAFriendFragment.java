@@ -4,34 +4,24 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageReference;
-
-import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
 import java.time.Period;
 
 public class matchAFriendFragment extends Fragment {
@@ -59,7 +49,7 @@ public class matchAFriendFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//        requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // find all views
         myName = view.findViewById(R.id.user_name_tinder);
         myDetailsDots = view.findViewById(R.id.details_tinder);
@@ -67,107 +57,56 @@ public class matchAFriendFragment extends Fragment {
         dislike = view.findViewById(R.id.x_view_tinder);
         like = view.findViewById(R.id.v_view_tinder);
         profileImg = view.findViewById(R.id.dog_image_tinder);
-        String myId = appInstance.getDataManager().getMyId();
-
-
-//        ArrayList<User> users = new ArrayList<>();
-//        Task<QuerySnapshot> result = appInstance.getDataManager().db.collection("Users").get();
-//        result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//            @Override
-//            public void onSuccess(QuerySnapshot documentSnapshots) {
-//                if (!documentSnapshots.isEmpty()) {
-//                    users.addAll(documentSnapshots.toObjects(User.class));
-//                    for (User user : users) {
-//                        if (user.getId().equals(myId)) {
-//                            myUser = user;
-//
-//                        }
-//                    }
-//                }
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(Exception e) {
-//                Toast.makeText(getContext(), "Error: couldn't connect to database", Toast.LENGTH_LONG).show();
-//            }
-//        });
-
         findRecommendedProfile();
-        // show on screen
-//        if (recommendedProfile != null) {
-//            renderUI(recommendedProfile);
-//        } else {
-//            Toast.makeText(getContext(), "There isn't any new friend to present", Toast.LENGTH_LONG).show();
-//
-//        }
-
-
-
 
         like.setOnClickListener(v -> {
             Task<DocumentSnapshot> result_likeButt = appInstance.getDataManager().db.collection("Users").document(appInstance.getDataManager().getMyId()).get();
-            result_likeButt.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if (documentSnapshot != null) {
-                        myUser = documentSnapshot.toObject(User.class);
-                        if (!myUser.getLikedUsers().contains(otherId)) {
-                            myUser.addToLikedList(otherId);
-                        }
-                        // update db
-                        appInstance.getDataManager().addToUsers(myUser);
-                        sendNotificationIfNecessary(otherId);
-                        //find another profile and present
-                        findRecommendedProfile();
+            result_likeButt.addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot != null) {
+                    myUser = documentSnapshot.toObject(User.class);
+                    assert myUser != null;
+                    if (!myUser.getLikedUsers().contains(otherId)) {
+                        myUser.addToLikedList(otherId);
                     }
+                    // update db
+                    appInstance.getDataManager().addToUsers(myUser);
+                    sendNotificationIfNecessary(otherId);
+                    //find another profile and present
+                    findRecommendedProfile();
                 }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull @NotNull Exception e) {
-                    Toast.makeText(getContext(), "Error: couldn't connect to database", Toast.LENGTH_LONG).show();
-                }
-            });
+            }).addOnFailureListener(e -> Toast.makeText(getContext(), "Error: couldn't connect to database", Toast.LENGTH_LONG).show());
 
 
         });
 
         dislike.setOnClickListener(v -> {
             Task<DocumentSnapshot> result_dislikeButt = appInstance.getDataManager().db.collection("Users").document(appInstance.getDataManager().getMyId()).get();
-            result_dislikeButt.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if (documentSnapshot != null) {
-                        User myUser = documentSnapshot.toObject(User.class);
-                        if (!myUser.getDislikeUsers().contains(otherId)) {
-                            myUser.addToDislikedList(otherId);
-                        }
-                        // update db
-                        appInstance.getDataManager().addToUsers(myUser);
-                        //find another profile and present
-                        findRecommendedProfile();
+            result_dislikeButt.addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot != null) {
+                    User myUser = documentSnapshot.toObject(User.class);
+                    assert myUser != null;
+                    if (!myUser.getDislikeUsers().contains(otherId)) {
+                        myUser.addToDislikedList(otherId);
                     }
+                    // update db
+                    appInstance.getDataManager().addToUsers(myUser);
+                    //find another profile and present
+                    findRecommendedProfile();
                 }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull @NotNull Exception e) {
-                    Toast.makeText(getContext(), "Error: couldn't connect to database", Toast.LENGTH_LONG).show();
-                }
-            });
+            }).addOnFailureListener(e -> Toast.makeText(getContext(), "Error: couldn't connect to database", Toast.LENGTH_LONG).show());
         });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void renderUI(User user) {
-
         // download and show profile image
-
-//        String photoAddress = "profile_photos/" + user.getId() + ".jpeg";
           String photoAddress = user.getProfilePhoto();
           if (photoAddress==null)
           {
               Toast.makeText(getContext(), "Error: couldn't upload profile image", Toast.LENGTH_LONG).show();
               return;
           }
+        if(!photoAddress.equals("default")){
             StorageReference profileImag = appInstance.getDataManager().storage.getReference().child(photoAddress);
             File localProfileImFile = null;
             try {
@@ -176,19 +115,13 @@ public class matchAFriendFragment extends Fragment {
                 e.printStackTrace();
             }
             File finalLocalProfileImFile = localProfileImFile;
-            profileImag.getFile(localProfileImFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    profileImg.setImageURI(Uri.fromFile(finalLocalProfileImFile));
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    profileImg.setImageResource(R.drawable.default_dog);
-                }
-            });
-
-
+            profileImag.getFile(localProfileImFile).addOnSuccessListener(taskSnapshot ->
+                    profileImg.setImageURI(Uri.fromFile(finalLocalProfileImFile))).addOnFailureListener(exception ->
+                    profileImg.setImageResource(R.drawable.default_dog));
+        }
+        else{
+            profileImg.setImageResource(R.drawable.default_dog);
+        }
 
         myName.setText(user.getUsername());
         String breed = user.getBreed();
@@ -208,63 +141,49 @@ public class matchAFriendFragment extends Fragment {
         aboutMe.setText(about);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void findRecommendedProfile() {
 
 
         ArrayList<User> users = new ArrayList<>();
         Task<QuerySnapshot> result = appInstance.getDataManager().db.collection("Users").get();
-        result.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onSuccess(QuerySnapshot documentSnapshots) {
-                if (!documentSnapshots.isEmpty()) {
-//                    User myUser;
-                    users.addAll(documentSnapshots.toObjects(User.class));
-                    if (!users.isEmpty()) {
-//                        Random generator = new Random();
-//                        int randomIndex = generator.nextInt(users.size());
-//                        // find another profile and present
-//                        User recommended = users.get(randomIndex);
-                        User me = new User();
-                        boolean foundMe = false;
-                        for (User user : users) {
-                            if (user.getId().equals(appInstance.getDataManager().getMyId())) {
-                                me = user;
-                                foundMe = true;
-                                break;
+        result.addOnSuccessListener(documentSnapshots -> {
+            if (!documentSnapshots.isEmpty()) {
+                users.addAll(documentSnapshots.toObjects(User.class));
+                if (!users.isEmpty()) {
+                    User me = new User();
+                    boolean foundMe = false;
+                    for (User user : users) {
+                        if (user.getId().equals(appInstance.getDataManager().getMyId())) {
+                            me = user;
+                            foundMe = true;
+                            break;
+                        }
+                    }
+                    if (foundMe) {
+                        for (User recommended : users) {
+                            if (!(me.getLikedUsers().contains(recommended.getId()) || me.getDislikeUsers().contains(recommended.getId()) ||
+                                    me.getId().equals(recommended.getId())||me.getFriendList().contains(recommended.getId()))) {
+                                renderUI(recommended);
+                                otherId = recommended.getId();
+                                recommendedProfile = recommended;
+                                return;
                             }
                         }
-                        if (foundMe) {
-                            for (User recommended : users) {
-                                if (me.getLikedUsers().contains(recommended.getId()) || me.getDislikeUsers().contains(recommended.getId()) || me.getId().equals(recommended.getId())||me.getFriendList().contains(recommended.getId())) {
-
-                                } else {
-                                    renderUI(recommended);
-                                    otherId = recommended.getId();
-                                    recommendedProfile = recommended;
-                                    return;
-                                }
-                            }
-                            // if there are no new friends to offer, change to blank page with appropriate message
-                            Utils.moveBetweenFragments(R.id.the_screen, new matchAFriendFragmentNoFriendsFragment(), getActivity(), "match_a_friend_no_friends");
-
-
-                        }
-                    } else {
-//                        Toast.makeText(getContext(), "There are no users at all! there isn't any new friend to present", Toast.LENGTH_LONG).show();
                         // if there are no new friends to offer, change to blank page with appropriate message
                         Utils.moveBetweenFragments(R.id.the_screen, new matchAFriendFragmentNoFriendsFragment(), getActivity(), "match_a_friend_no_friends");
 
 
                     }
+                } else {
+//                        Toast.makeText(getContext(), "There are no users at all! there isn't any new friend to present", Toast.LENGTH_LONG).show();
+                    // if there are no new friends to offer, change to blank page with appropriate message
+                    Utils.moveBetweenFragments(R.id.the_screen, new matchAFriendFragmentNoFriendsFragment(), getActivity(), "match_a_friend_no_friends");
+
+
                 }
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(Exception e) {
-                Toast.makeText(getContext(), "Error: couldn't connect to database", Toast.LENGTH_LONG).show();
-            }
-        });
+        }).addOnFailureListener(e -> Toast.makeText(getContext(), "Error: couldn't connect to database", Toast.LENGTH_LONG).show());
 
     }
 
@@ -282,57 +201,37 @@ public class matchAFriendFragment extends Fragment {
     private void sendNotificationIfNecessary(String matchUserId)
     {
         appInstance.getDataManager().db.collection("Users").document(matchUserId).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot != null)
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot != null)
+                    {
+                        String myId = appInstance.getDataManager().getMyId();
+                        User matchUser = documentSnapshot.toObject(User.class);
+                        if (matchUser != null && matchUser.getLikedUsers().contains(myId))
                         {
-                            String myId = appInstance.getDataManager().getMyId();
-                            User matchUser = documentSnapshot.toObject(User.class);
-                            if (matchUser != null && matchUser.getLikedUsers().contains(myId))
-                            {
-                                appInstance.getDataManager().addStringToUserArrayField(appInstance.getDataManager().getMyId(), "friendList", matchUserId);
-                                appInstance.getDataManager().addStringToUserArrayField(matchUserId, "friendList", appInstance.getDataManager().getMyId());
-                                Utils.removeFriendsFromPosts(matchUserId, appInstance.getDataManager());
-                                appInstance.getDataManager().sendNotification(NotificationTypes.TINDER_MATCH_NOTIFICATION, matchUserId, null, null);
-                                appInstance.getDataManager().sendMatchNotificationToMyself(matchUserId, matchUser.getProfilePhoto(), matchUser.getUsername());
-                                appInstance.getDataManager().sendFirebaseNotification("It's a Match!",
-                                        String.format("you have a match with %s!", appInstance.getDataManager().getUsernameFromSp()),
-                                        matchUser.getDeviceToken());
-                                appInstance.getDataManager().db.collection("Users").document(myId).get()
-                                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                if (documentSnapshot != null)
-                                                {
-                                                    User myUser = documentSnapshot.toObject(User.class);
-                                                    if (myUser != null && myUser.getDeviceToken() != null)
-                                                    {
-                                                        appInstance.getDataManager().sendFirebaseNotification("It's a Match!",
-                                                                String.format("you have a match with %s!", matchUser.getUsername()),
-                                                                myUser.getDeviceToken());
-                                                    }
-                                                }
+                            appInstance.getDataManager().addStringToUserArrayField(appInstance.getDataManager().getMyId(), "friendList", matchUserId);
+                            appInstance.getDataManager().addStringToUserArrayField(matchUserId, "friendList", appInstance.getDataManager().getMyId());
+                            Utils.removeFriendsFromPosts(matchUserId, appInstance.getDataManager());
+                            appInstance.getDataManager().sendNotification(NotificationTypes.TINDER_MATCH_NOTIFICATION, matchUserId, null, null);
+                            appInstance.getDataManager().sendMatchNotificationToMyself(matchUserId, matchUser.getProfilePhoto(), matchUser.getUsername());
+                            appInstance.getDataManager().sendFirebaseNotification("It's a Match!",
+                                    String.format("you have a match with %s!", appInstance.getDataManager().getUsernameFromSp()),
+                                    matchUser.getDeviceToken());
+                            appInstance.getDataManager().db.collection("Users").document(myId).get()
+                                    .addOnSuccessListener(documentSnapshot1 -> {
+                                        if (documentSnapshot1 != null)
+                                        {
+                                            User myUser = documentSnapshot1.toObject(User.class);
+                                            if (myUser != null && myUser.getDeviceToken() != null)
+                                            {
+                                                appInstance.getDataManager().sendFirebaseNotification("It's a Match!",
+                                                        String.format("you have a match with %s!", matchUser.getUsername()),
+                                                        myUser.getDeviceToken());
                                             }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull @NotNull Exception e) {
-                                        Toast.makeText(getContext(), "DB Error", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-
-                            }
+                                        }
+                                    }).addOnFailureListener(e -> Toast.makeText(getContext(), "DB Error", Toast.LENGTH_SHORT).show());
                         }
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull @NotNull Exception e) {
-                Toast.makeText(getContext(), "DB error. Couldn't send notification", Toast.LENGTH_LONG).show();
-            }
-        });
-
-
+                }).addOnFailureListener(e ->
+                Toast.makeText(getContext(), "DB error. Couldn't send notification", Toast.LENGTH_LONG).show());
     }
-
-
 }
