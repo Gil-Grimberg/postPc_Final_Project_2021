@@ -1,8 +1,10 @@
 package com.example.centralbark_PostPc_2021;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -10,6 +12,9 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -44,7 +49,7 @@ public class signUpFragment extends Fragment {
     TextView imageName;
     String fileType;
     String deviceId;
-
+    private final int STORAGE_PERMISSION_CODE = 1;
 
     public signUpFragment(String deviceId) {
         super(R.layout.fragment_sign_up);
@@ -92,7 +97,7 @@ public class signUpFragment extends Fragment {
                             String[] picturePathSplit = picturePath.split("\\.");
                             fileType = picturePathSplit[picturePathSplit.length-1];
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                                if (Environment.isExternalStorageManager())
+                                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
                                 {
                                     imageName.setText("Uploaded successfully");
                                     imageName.setTextColor(Color.GREEN);
@@ -112,23 +117,22 @@ public class signUpFragment extends Fragment {
 
 
         uploadPhotoButton.setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                if (!Environment.isExternalStorageManager())
+            try {
+                if (!(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED))
                 {
-                    try {
-                        Uri uri = Uri.parse("package:" + BuildConfig.APPLICATION_ID);
-                        Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri);
-                        startActivity(intent);
-                    } catch (Exception ex){
-                        Intent intent = new Intent();
-                        intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-                        startActivity(intent);
-                    }
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
                 }
+                else
+                {
+                    Intent uploadIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    upLoadLauncher.launch(uploadIntent); }
+            }
+            catch (Exception e)
+            {
+                Toast.makeText(getContext(),"problem with media permissions",Toast.LENGTH_LONG).show();
             }
 
-            Intent uploadIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            upLoadLauncher.launch(uploadIntent);
         });
 
         signUpButton.setOnClickListener(v ->
@@ -227,4 +231,5 @@ public class signUpFragment extends Fragment {
             });
         });
     }
-}
+
+    }
