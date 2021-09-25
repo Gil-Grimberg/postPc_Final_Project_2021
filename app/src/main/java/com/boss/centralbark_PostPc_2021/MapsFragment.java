@@ -82,11 +82,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             Log.d("PERMISSIONS", "Launcher result: " + isGranted.toString());
             if (isGranted.containsValue(false)) {
                 Log.d("PERMISSIONS", "At least one of the permissions was not granted, launching again...");
-                multiplePermissionActivityResultLauncher.launch(PERMISSIONS);
+//                multiplePermissionActivityResultLauncher.launch(PERMISSIONS);
             }
         });
 
-        askPermissions();
+//        askPermissions();
         LocationRequest mLocationRequest = LocationRequest.create();
         mLocationRequest.setInterval(60000);
         mLocationRequest.setFastestInterval(5000);
@@ -101,7 +101,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             LocationServices.getFusedLocationProviderClient(getContext()).requestLocationUpdates(mLocationRequest, mLocationCallback, null);
             getCurrentLocation(locationToZoomIn);
         } else {
-            multiplePermissionActivityResultLauncher.launch(PERMISSIONS);
+            if (locationToZoomIn != null)
+            {
+                getCurrentLocation(locationToZoomIn);
+            }
+//            multiplePermissionActivityResultLauncher.launch(PERMISSIONS);
         }
 
         addFriendsToMap();
@@ -149,6 +153,16 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void getCurrentLocation(LatLng locationToZoomIn) {
+        if (!hasPermissions(PERMISSIONS))
+        {
+            supportMapFragment.getMapAsync(googleMap -> {
+                MarkerOptions options = new MarkerOptions().position(locationToZoomIn);
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(locationToZoomIn, 18));
+                options.position(locationToZoomIn).title(Utils.locationToNameMapping.get(locationToZoomIn));
+                googleMap.addMarker(options);
+            });
+        }
+
         @SuppressLint("MissingPermission") Task<Location> task = fusedLocationProviderClient.getLastLocation();
         task.addOnSuccessListener(location -> {
             if (location != null) {
