@@ -73,14 +73,25 @@ public class FeedFragment extends Fragment {
         {
             Log.d("PERMISSIONS", "Launcher result: " + isGranted.toString());
             if (isGranted.containsValue(false)) {
-                Log.d("PERMISSIONS", "At least one of the permissions was not granted, launching again...");
-                multiplePermissionActivityResultLauncher.launch(Utils.PERMISSIONS);
+                Toast.makeText(getContext(), "Location permission denied. If you want to allow it," +
+                        " do it in your phone settings.", Toast.LENGTH_LONG).show();
+                this.dataManager.setUserLocationPermission(false);
+            }
+            else
+            {
+                if (hasPermissions(Utils.PERMISSIONS))
+                {
+                    this.dataManager.setUserLocationPermission(true);
+                    ((MainActivity) requireActivity()).startLocationService();
+                }
             }
         });
-        askPermissions(); // this will cause a loop until the user agrees :)
+        askPermissions();
 
-        // now we can start the location service:
-        ((MainActivity) requireActivity()).startLocationService();
+        if (hasPermissions(Utils.PERMISSIONS)) {
+            this.dataManager.setUserLocationPermission(true);
+            ((MainActivity) requireActivity()).startLocationService();
+        }
 
 
         // Inflate the layout for this fragment
@@ -273,6 +284,10 @@ public class FeedFragment extends Fragment {
     }
 
     private void askPermissions() {
+        if (this.dataManager.isSpContainsLocationPermission() && !this.dataManager.getUserLocationPermission())
+        {
+            return;
+        }
         if (!hasPermissions(Utils.PERMISSIONS))
         {
             multiplePermissionActivityResultLauncher.launch(Utils.PERMISSIONS);
