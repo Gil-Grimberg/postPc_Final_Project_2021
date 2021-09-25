@@ -8,7 +8,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.centralbark_PostPc_2021"
+        applicationId "com.boss.centralbark_PostPc_2021"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
