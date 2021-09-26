@@ -41,6 +41,30 @@ public class DataManager {
         storage = FirebaseStorage.getInstance();
     }
 
+    public void deleteUserLocationPermission()
+    {
+        SharedPreferences.Editor editor = this.sp.edit();
+        editor.remove("location_permission");
+        editor.apply();
+    }
+
+    public void setUserLocationPermission(boolean isGranted)
+    {
+        SharedPreferences.Editor editor = this.sp.edit();
+        editor.putBoolean("location_permission", isGranted);
+        editor.apply();
+    }
+
+    public boolean isSpContainsLocationPermission()
+    {
+        return this.sp.contains("location_permission");
+    }
+
+    public boolean getUserLocationPermission()
+    {
+        return this.sp.getBoolean("location_permission", false);
+    }
+
     public void removeDeviceTokenOnLogOut()
     {
         this.db.collection("Users").document(getMyId()).update("deviceToken", null);

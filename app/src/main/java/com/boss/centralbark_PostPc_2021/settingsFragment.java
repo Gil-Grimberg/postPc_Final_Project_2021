@@ -50,6 +50,7 @@ public class settingsFragment extends Fragment {
         this.logOut.setOnClickListener(v->{
             dataManager.removeDeviceTokenOnLogOut();
             dataManager.updateSp(null);
+            dataManager.deleteUserLocationPermission();
             ((MainActivity) requireActivity()).stopLocationService();
             Utils.moveBetweenFragmentsAndHideMenuBar(new openingFragment(), getActivity(), "opening");
         });
