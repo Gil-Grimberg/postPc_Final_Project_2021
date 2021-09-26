@@ -65,6 +65,30 @@ public class DataManager {
         return this.sp.getBoolean("location_permission", false);
     }
 
+    public boolean isSpContainsMediaPermission()
+    {
+        return this.sp.contains("media_permission");
+    }
+
+    public void setMediaPermission(boolean isGranted)
+    {
+        SharedPreferences.Editor editor = this.sp.edit();
+        editor.putBoolean("media_permission", isGranted);
+        editor.apply();
+    }
+
+    public boolean isMediaPermissionGranted()
+    {
+        return this.sp.getBoolean("media_permission",false);
+    }
+
+    public void deleteMediaPermission()
+    {
+        SharedPreferences.Editor editor = this.sp.edit();
+        editor.remove("media_permission");
+        editor.apply();
+    }
+
     public void removeDeviceTokenOnLogOut()
     {
         this.db.collection("Users").document(getMyId()).update("deviceToken", null);
