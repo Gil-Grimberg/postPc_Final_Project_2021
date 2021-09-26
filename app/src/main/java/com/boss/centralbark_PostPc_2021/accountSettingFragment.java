@@ -1,7 +1,9 @@
 package com.boss.centralbark_PostPc_2021;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -9,6 +11,8 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -40,6 +44,7 @@ public class accountSettingFragment extends Fragment {
     private String fileType;
     private String picturePath = "not changed";
     private File image;
+    private final int STORAGE_PERMISSION_CODE = 1;
 
     public accountSettingFragment(){
         super(R.layout.fragment_acount_setting);
@@ -148,23 +153,47 @@ public class accountSettingFragment extends Fragment {
 
             // upload new photo if profile image is clicked
             profileImage.setOnClickListener(v -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    if (!Environment.isExternalStorageManager())
+                try{
+                    if(this.dataManager.isSpContainsMediaPermission())
                     {
-                        try {
-                            Uri uri = Uri.parse("package:" + BuildConfig.APPLICATION_ID);
-                            Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri);
-                            startActivity(intent);
-                        } catch (Exception ex){
-                            Intent intent = new Intent();
-                            intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-                            startActivity(intent);
+                        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                        {
+                            if(!this.dataManager.isMediaPermissionGranted())
+                                this.dataManager.setMediaPermission(true);
+                            Intent uploadIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            upLoadLauncher.launch(uploadIntent);
+                        }
+                        else
+                        {
+                            Toast.makeText(getContext(), "Media access permission denied. If you want to allow it," +
+                                    " do it in your phone settings.", Toast.LENGTH_LONG).show();
+                            if (this.dataManager.isMediaPermissionGranted())
+                            {
+                                this.dataManager.deleteMediaPermission();
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                        {
+                            this.dataManager.setMediaPermission(true);
+                            Intent uploadIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            upLoadLauncher.launch(uploadIntent);
+                        }
+                        else
+                        {
+                            this.dataManager.setMediaPermission(false);
+                            ActivityCompat.requestPermissions(getActivity(),
+                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
                         }
                     }
-                }
 
-                Intent uploadIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                upLoadLauncher.launch(uploadIntent);
+                }
+                catch (Exception e) {
+                    Toast.makeText(getContext(), "problem with media permissions", Toast.LENGTH_LONG).show();
+                }
             });
 
             // if save changes clicked - save the changes
