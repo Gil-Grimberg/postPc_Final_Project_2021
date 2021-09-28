@@ -109,7 +109,7 @@ public class AddPostFragment extends Fragment {
                                 " do it in your phone settings.", Toast.LENGTH_LONG).show();
                         if (this.dataManager.isMediaPermissionGranted())
                         {
-                            this.dataManager.deleteMediaPermission();
+                            this.dataManager.setMediaPermission(false);
                         }
                     }
 
