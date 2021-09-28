@@ -132,7 +132,7 @@ public class signUpFragment extends Fragment {
                                 " do it in your phone settings.", Toast.LENGTH_LONG).show();
                         if (appInstance.getDataManager().isMediaPermissionGranted())
                         {
-                            appInstance.getDataManager().deleteMediaPermission();
+                            appInstance.getDataManager().setMediaPermission(false);
                         }
                     }
 
