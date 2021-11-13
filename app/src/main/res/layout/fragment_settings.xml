@@ -5,6 +5,7 @@
     android:id="@+id/frameLayout5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".settingsFragment">
 
 
@@ -14,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginTop="25dp"
+        android:textColor="@color/text_color"
         android:fontFamily="casual"
         android:text="@string/settings"
         android:textSize="28sp"
@@ -38,6 +40,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="24dp"
         android:fontFamily="casual"
+        android:textColor="@color/text_color"
         android:text="@string/Password"
         app:layout_constraintStart_toEndOf="@+id/password_logo_setting_screen"
         app:layout_constraintTop_toBottomOf="@id/account_logo_setting_screen"
@@ -68,6 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/account"
+        android:textColor="@color/text_color"
         android:layout_marginStart="12dp"
         android:layout_marginTop="24dp"
         android:fontFamily="casual"
@@ -100,6 +104,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="24dp"
+        android:textColor="@color/text_color"
         android:fontFamily="casual"
         android:text="@string/about"
         app:layout_constraintStart_toEndOf="@+id/about_logo_setting_screen"

@@ -5,6 +5,7 @@
     android:id="@+id/frameLayout_add_post"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     >
 
     <TextView
@@ -44,10 +45,12 @@
         android:layout_width="match_parent"
         android:layout_height="135dp"
         android:hint="@string/write_cation_here"
+        android:textColorHint="@color/hint"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         android:clickable="true"
         android:textSize="15sp"
+        android:textColor="@color/text_color"
         android:layout_alignParentTop="true"
         app:layout_constraintBottom_toBottomOf="@+id/caption_background_add_post_screen"
         app:layout_constraintEnd_toEndOf="@id/caption_background_add_post_screen"

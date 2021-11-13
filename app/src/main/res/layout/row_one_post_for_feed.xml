@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/profile_image_one_post_feed_screen"
@@ -74,6 +75,7 @@
         android:fontFamily="casual"
         android:text="time"
         android:textSize="10sp"
+        android:textColor="@color/text_color"
         android:layout_marginStart="12dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_name_content_textview_one_post_feed_screen" />
@@ -99,7 +101,7 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         android:fontFamily="casual"
-        android:textColor="@color/black"
+        android:textColor="@color/text_color"
         android:textSize="12sp"
         android:layout_marginStart="4dp"
         app:layout_constraintStart_toEndOf="@+id/user_name_content_textview_one_post_feed_screen"

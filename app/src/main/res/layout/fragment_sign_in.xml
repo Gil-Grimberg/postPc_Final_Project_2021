@@ -24,6 +24,7 @@
         android:fontFamily="casual"
         android:text="@string/sign_in"
         android:textSize="25sp"
+        android:textColor="@color/text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
@@ -35,6 +36,7 @@
         android:layout_marginStart="76dp"
         android:fontFamily="casual"
         android:text="@string/mail"
+        android:textColor="@color/text_color"
         android:textSize="12sp"
         android:layout_marginTop="70dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,6 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="54dp"
         android:ems="10"
+        android:backgroundTint="@color/text_color"
         android:fontFamily="casual"
         android:inputType="textEmailAddress"
         android:textSize="12sp"
@@ -59,6 +62,7 @@
         android:fontFamily="casual"
         android:text="@string/password"
         android:textSize="12sp"
+        android:textColor="@color/text_color"
         android:layout_marginStart="70dp"
         android:layout_marginTop="26dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,7 +76,7 @@
         android:fontFamily="casual"
         android:textSize="12sp"
         android:layout_marginTop="5dp"
-
+        android:backgroundTint="@color/text_color"
         android:inputType="textPassword"
         app:layout_constraintStart_toEndOf="@+id/password_title_sign_in_screen"
         app:layout_constraintTop_toBottomOf="@+id/mail_edit_text_sign_in_screen" />
