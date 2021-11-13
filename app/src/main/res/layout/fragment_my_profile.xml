@@ -5,6 +5,7 @@
     android:id="@+id/frameLayout5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".myProfileFragment">
 
 
@@ -63,6 +64,7 @@
         android:text="@string/lives_in"
         android:fontFamily="casual"
         android:textSize="13sp"
+        android:textColor="@color/text_color"
         android:layout_marginTop="4dp"
         android:layout_marginStart="14dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -88,6 +90,7 @@
         android:fontFamily="casual"
         android:textSize="13sp"
         android:layout_marginTop="4dp"
+        android:textColor="@color/text_color"
         android:layout_marginStart="14dp"
         android:text="@string/breed"
         app:layout_constraintStart_toStartOf="parent"
@@ -114,6 +117,7 @@
         android:textSize="13sp"
         android:layout_marginTop="4dp"
         android:layout_marginStart="14dp"
+        android:textColor="@color/text_color"
         android:text="@string/age"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/breed_title_profile_screen" />

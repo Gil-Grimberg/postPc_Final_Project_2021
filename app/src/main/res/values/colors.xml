@@ -11,4 +11,6 @@
     <color name="darkRed">#9e0909</color>
     <color name="green">#0ed145</color>
     <color name="logo_background">#f7f7f7</color>
+    <color name="text_color">#717171</color>
+    <color name="hint">#bababa</color>
 </resources>

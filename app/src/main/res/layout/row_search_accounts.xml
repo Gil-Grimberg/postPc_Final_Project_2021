@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="90dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:minHeight="40dp">
+    android:minHeight="40dp"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/userName_TextView"
@@ -12,6 +13,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="casual"
         android:text="the name of the user"
+        android:textColor="@color/text_color"
         android:layout_marginStart="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/profilePhoto_ImageView"

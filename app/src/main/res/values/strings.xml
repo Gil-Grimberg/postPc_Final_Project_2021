@@ -39,4 +39,5 @@
     <string name="search">Search</string>
     <string name="go_now">go now</string>
     <string name="my_self_summary">My self-summary</string>
+    <string name="must_contain_8_chars">Must contain 8 chars</string>
 </resources>
